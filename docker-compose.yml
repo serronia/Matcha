@@ -7,10 +7,10 @@ services:
     volumes:
       - ./database:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_ROOT_PASSWORD=devpass
       - MYSQL_DATABASE=matcha
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=rootpass
+      - MYSQL_USER=devuser
+      - MYSQL_PASSWORD=devpass
   app:
     build:
       context: ./app/

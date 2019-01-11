@@ -1,6 +1,13 @@
 var http = require('http');
 var url = require('url');
 var querystring = require('querystring');
+var fs = require('fs');
+
+require.extensions['.html'] = function (module, filename) {
+    module.exports = fs.readFileSync(filename, 'utf8');
+};
+var maison = require('./views/maison.html');
+//var maison = "balbalbalablablabl";
 
 var server = http.createServer(function(req, res) {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -13,7 +20,7 @@ var server = http.createServer(function(req, res) {
     '        <meta charset="utf-8" />'+
     '        <title>Ma page Node.js !</title>'+
     '    </head>'+ 
-    '    <body style="display: flex;justify-content: center;">');
+    '    <body style="display: flex;">');//justify-content: center;
   if (page == '/')
   {
     res.write('<p>Vous êtes à l\'accueil, que puis-je pour vous ?<p>');
@@ -32,6 +39,10 @@ var server = http.createServer(function(req, res) {
       else {
           res.write('Vous devez bien avoir un prénom et un nom, non ?');
       }
+  }
+  else if (page == '/lorette')
+  {
+      res.write(maison);
   }
   else
   {
