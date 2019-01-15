@@ -1,0 +1,14 @@
+.conteneur {
+    display: flex;
+    align-content: space-around;
+    flex-direction: column;
+}
+h1 {
+    color: blue;
+}
+div {
+    border: solid
+}
+#cont {
+    align-self: center;
+}
