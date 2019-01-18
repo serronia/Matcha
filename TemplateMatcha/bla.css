@@ -1,5 +1,5 @@
 header {
-    width: 100vw;
+    width: 99vw;
     height: 10vw;
     min-width: 300px;
     min-height: 30px;
@@ -15,7 +15,9 @@ header {
 
 body {
     background-image: url(back1.jpg);
-    background-size: cover;
+    background-size: contain;
+    background-repeat: repeat-x;
+    background-color: black;
 }
 
 i{
@@ -30,18 +32,19 @@ label{
     display: flex;
 }
 
-footer{
-    width: 100vw;
+footer {
+    width: 99vw;
     height: 10vw;
     min-width: 300px;
     min-height: 30px;
     max-height: 100px;
+    color: white;
 }
 
 .conteneur {
     display: flex;
-    width: 100vw;
-    height: 90vw;
+    width: 99vw;
+    height: fit-content;
     min-width: 300px;
     min-height: 300px;
 }
@@ -95,7 +98,7 @@ footer{
 }
 .pricipale {
     width: 70vw;
-    height: 90vw;
+    height: fit-content;
     min-width: 200px;
     min-height: 300px;
     padding: 10px;
