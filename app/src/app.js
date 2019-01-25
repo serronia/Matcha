@@ -15,4 +15,9 @@ app.use('/', HomeControllers);
 app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 
+var Install = require('./model/create_db');
+app.use('/db', Install);
+
+
+
 app.listen(8080);
