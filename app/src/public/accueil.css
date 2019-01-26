@@ -15,7 +15,7 @@ header {
 
 body {
     background-image: url(back1.jpg);
-    background-size: contain;
+    background-size: cover;
     background-repeat: repeat-x;
     background-color: black;
 }
@@ -73,6 +73,12 @@ footer {
     align-items: center;
     padding-left: 10px;
 }
+.menu_elem >a {
+    text-decoration: none;
+    color: black;
+    padding: 0px;
+}
+
 .droite{
     width: 15vw;
     /*height: 90vw;
@@ -162,4 +168,15 @@ input[type="range"]:after {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+}
+
+.search_elem_intern > a:hover {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    border-radius:20px; 
+    background: radial-gradient(#63615ec7, #ffffff1f);
+}
+.search_elem_intern > a{
+    text-decoration: none;
+    color: rgb(0, 0, 0);
 }

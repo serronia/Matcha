@@ -1,0 +1,16 @@
+.user_form > form input{
+    padding:3px;
+    border:1px solid #F5C5C5;
+    border-radius:5px;
+    width:200px;
+    box-shadow:1px 1px 2px #C0C0C0 inset;
+}
+
+.user_form > form input[type=submit]{
+    padding:3px;
+    border:1px solid #F5C5C5;
+    border-radius:5px;
+    width:auto;
+    box-shadow:1px 1px 2px #C0C0C0 inset;
+    background: border-box;
+}

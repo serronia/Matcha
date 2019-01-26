@@ -1,0 +1,33 @@
+<div class="droite">
+        <div class="menu_head">Menu</div>
+        <div class="search_elem"><i class="fas fa-pen"></i>Critères :</div>
+            <div class="search_elem_intern">Attiré.e par :</div>
+                <div class="search_elem_intern">
+                    <input type="radio" id="genre" name="drone" value="dewey"><label for="dewey">homme</label>
+                    <input type="radio" id="genre" name="drone" value="dewey"><label for="dewey">femme</label>
+                    <input type="radio" id="genre" name="drone" value="dewey"><label for="dewey">les 2</label>
+                </div>
+            <div class="search_elem_intern">Localisation :
+                <input type="text">
+            </div>
+            <div class="search_elem_intern">Tags :
+                <input type="text">
+            </div>
+            <div class="search_elem_intern">Popularité min:
+                <input id="slideCol" type="range" value="30" max="100" min="0" step="5">
+                <span id="f">30</span>
+                <script>
+                    var y = document.getElementById("f");
+                    var slideCol = document.getElementById("slideCol");
+                    slideCol.oninput = function() {
+                        y.innerHTML = this.value;
+                    }
+                </script>
+            </div>
+        <div class="search_elem"><i class="fas fa-filter"></i>Filtres :</div>
+        <div class="search_elem"><i class="fas fa-exchange-alt fa-rotate-90"></i>Trier par :</div>
+    </div>
+</div>
+<footer>Matcha</footer>
+</body>
+</html>
