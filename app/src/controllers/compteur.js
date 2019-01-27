@@ -1,4 +1,4 @@
-var cookieSession = require('cookie-session')
+/*var cookieSession = require('cookie-session')
 var express = require('express')
 
 var app = express()
@@ -18,4 +18,15 @@ app.get('/', function (req, res, next) {
   res.end(req.session.views + ' views')
 })
 
-app.listen(3000)
+app.listen(3000)*/
+
+var cookieSession = require('cookie-session')
+var express = require('express');
+var router = express.Router();
+
+
+router.get('/', function(req, res) {
+    res.sendFile('/usr/app/src/views/accueil.html');
+});
+
+module.exports = router;
