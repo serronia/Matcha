@@ -11,27 +11,27 @@ var con = mysql.createConnection(
     database: process.env.DB_NAME
     });
 */
-
 var con = require('../db');
 
 
-router.get('/', function(req, res)
+
+router.get('/db', function(req, res)
 {
-  con.connect(function(err) 
-  {
-    if (err) throw err;
+  console.log("first" + con + res);
+  //con.connect(function(err) 
+  //{
+   // if (err) throw err;
     console.log("Connected!");
-    var sql = "CREATE TABLE IF NOT EXIST customers (name VARCHAR(255), address VARCHAR(255))";
+    var sql = "CREATE TABLE IF NOT EXISTS customers (name VARCHAR(255), address VARCHAR(255))";
+
     con.query(sql, function (err, result) 
     {
       if (err) throw err;
-      console.log("Table created");
+      console.log("OK!");
     });
-
-
-
-  });
-
+ // });
 });
+
+
 
 module.exports = router;
