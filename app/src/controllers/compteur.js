@@ -1,6 +1,5 @@
-/*var express = require('express')
 var cookieSession = require('cookie-session')
-
+var express = require('express')
 
 var app = express()
 
@@ -19,4 +18,4 @@ app.get('/', function (req, res, next) {
   res.end(req.session.views + ' views')
 })
 
-app.listen(3000)*/
+app.listen(3000)
