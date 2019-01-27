@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Aelaiig/Matcha"
+    "url": ""
   },
   "description": "Web project Matcha @ Le-101",
   "main": "src/server.js",
