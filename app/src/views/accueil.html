@@ -5,18 +5,12 @@
         <title>Matcha</title>
         <link rel="stylesheet" href="/accueil.css"  type="text/css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        
     </head>
     <body>
         <header> Matcha </header>
         <div class="conteneur">
-            <div class="gauche">
-                <div class="menu_head">Menu</div>
-                <div class="menu_elem"><a href="login"><i class="fas fa-power-off"></i>Connection</a></div>
-                <div class="menu_elem"><a href="profil"><i class="fas fa-user"></i>Otterqueen</a></div>
-                <div class="menu_elem"><a href="chat"><i class="far fa-comments"></i>Chat</a></div>
-                <div class="menu_elem"><a href="likes"><i class="far fa-heart"></i>Likes</a></div>
-                <div class="menu_elem"><a href="recherche"><i class="fas fa-search"></i>Recherche</a></div>
-            </div>
+            <div id="gauche" class="gauche"></div>
             <div class="pricipale">
                 <div class="user_mini"><div class="bd"><i class="fas fa-mars"></i><span>Paris</span></div>
                     <img src="/default-user-image.png">
@@ -123,5 +117,7 @@
             </div>
         </div>
         <footer>Matcha</footer>
+        <script src="/dom.js"></script>
+        <script type="text/javascript">menu1()</script>
     </body>
 </html>

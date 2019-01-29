@@ -10,7 +10,8 @@ router.use(cookieSession({
 
 router.get('/', function (req, res, next) {
   // Update views
-  req.session.views = (req.session.views || 0) + 1
+  req.session.views = (req.session.views || 0) + 1;
+  console.log(req.session);
 
   // Write response
   res.end(req.session.views + ' views')
