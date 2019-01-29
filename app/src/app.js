@@ -16,6 +16,7 @@ router.use(cookieSession({
 var HomeControllers = require('./controllers/home');
 var loginController = require('./controllers/login');
 var ProfilControllers = require('./controllers/profil');
+var CreerControllers = require('./controllers/creer');
 //var Install = require('./model/create_db');
 var CmptControllers = require('./controllers/count');
 
@@ -24,6 +25,7 @@ app.use('/', HomeControllers);
 app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 app.use('/cmpt', CmptControllers);
+app.use('/creer', CreerControllers);
 
 
 app.listen(8080);
