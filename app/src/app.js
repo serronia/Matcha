@@ -1,7 +1,6 @@
-var cookieSession = require('cookie-session')
+var cookieSession = require('cookie-session');
 var express = require('express');
 var app = express();
-var cookieSession = require('cookie-session')
 var http = require('http').Server(app);
 var path = require("path");
 app.use(express.static(path.join(__dirname, 'public')));
