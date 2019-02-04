@@ -7,8 +7,9 @@ router.use(cookieSession({
   }))
 
 router.get('/', function(req, res) {
+    console.log("Getting user login")
+    req.session.login = "NomUser";
     res.sendFile('/usr/app/src/views/login.html');
-    req.session.login = "nomUser";
     console.log(req.session);
 });
 
