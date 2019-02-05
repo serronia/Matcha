@@ -1,4 +1,4 @@
-var cookieSession = require('cookie-session')
+var cookieSession = require('cookie-session');
 var express = require('express');
 var app = express();
 // var http = require('http').Server(app);
@@ -12,7 +12,8 @@ router.use(cookieSession({
     name: 'session',
     keys: ['key1', 'key2']
   }))
-  app.use(cookieSession({
+  
+app.use(cookieSession({
     name: 'session',
     keys: ['key1', 'key2']
   }))
@@ -30,7 +31,7 @@ var CreerControllers = require('./controllers/creer');
 var CmptControllers = require('./controllers/count');
 
 // app.use('/', Install);
-app.use('/', HomeControllers);
+app.use('/', HomeControllers); 
 app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 app.use('/cmpt', CmptControllers);

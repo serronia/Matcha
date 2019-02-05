@@ -5,6 +5,7 @@
         <title>Login</title>
         <link rel="stylesheet" href="/accueil.css"  type="text/css">
         <link rel="stylesheet" href="/form.css"  type="text/css">
+        <link rel="stylesheet" href="/style2.css"  type="text/css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     </head>
     <body>
@@ -19,6 +20,8 @@
                             <blockquote style="font-size: small; color: #efe1e1;">
                                 Le nom d'utilisateur doit faire 12 caractères maximum.
                             </blockquote>
+                            <p>Genre :  <input type="radio" id="genre" name="drone" value="homme"><label for="homme">Masculin</label>
+                                        <input type="radio" id="genre2" name="drone" value="femme"><label for="femme">Feminin</label></p>
                             <p>Votre adresse email : <input type="email" name="mail" value="" required></p>
                             <p style="display: inline-flex;">Mot de passe : <input type="password" name="mdp" value="" minlength="8" required/>confirmation : <input type="password" name="mdp" value="" minlength="8" required/></p>
                             <blockquote style="font-size: small; color: #efe1e1;">
@@ -36,7 +39,7 @@
                 </div>
             </div>
             <div class="droite">
-                <div class="menu_head">Menu</div>
+                <div class="menu_head">Options</div>
                 <div class="search_elem"><i class="far fa-plus-square"></i>Creer</div>
                     <div class="search_elem_intern"><a href="creer" style="padding:10px">Je n'ai pas encore de compte</a></div>
                 <div class="search_elem"><i class="fas fa-redo"></i>Reset :</div>
