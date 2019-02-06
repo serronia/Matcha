@@ -180,3 +180,7 @@ input[type="range"]:after {
     text-decoration: none;
     color: rgb(0, 0, 0);
 }
+
+#loginUser{
+    display: none;
+}

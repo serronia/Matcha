@@ -7,13 +7,9 @@ router.use(cookieSession({
   }))
 
 router.get('/', function(req, res) {
-    req.session.login = "NomUser";
-    res.sendFile('/usr/app/src/views/login.html');
+    res.sendFile('/usr/app/src/views/creer.html');
+    req.session.login = "nomUser";
     console.log(req.session);
 });
 
-router.get('/wrong', function(req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.send('mauvais mot de passe');
-});
 module.exports = router;

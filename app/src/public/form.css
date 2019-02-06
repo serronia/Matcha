@@ -1,16 +1,27 @@
-.user_form > form input{
-    padding:3px;
-    border:1px solid #F5C5C5;
-    border-radius:5px;
-    width:200px;
-    box-shadow:1px 1px 2px #C0C0C0 inset;
+.user_form{
+    color: yellowgreen;
 }
 
-.user_form > form input[type=submit]{
-    padding:3px;
-    border:1px solid #F5C5C5;
-    border-radius:5px;
-    width:auto;
-    box-shadow:1px 1px 2px #C0C0C0 inset;
-    background: border-box;
+.user_form > form input {
+    padding: 3px;
+    border: 1px solid #77aade;
+    border-radius: 5px;
+    width: 200px;
+    box-shadow: 1px 1px 2px #C0C0C0 inset;
+    background: #f0f8ff40;
+    margin-right: 10px;
+}
+
+.user_form > form input[type=submit] {
+    border: 1px solid #77aade;
+    width: auto;
+    background: #f0f8ff40;
+}
+
+.user_form > form input[type=radio] {
+    width: auto;
+}
+
+.user_form > form > p{
+    display: flex;
 }

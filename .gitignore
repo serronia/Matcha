@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 app/node_modules/
+=======
+/app/node_modules
+>>>>>>> ee93fe559429247f3663af7ee366fbf87f6a6217
 /node_modules
