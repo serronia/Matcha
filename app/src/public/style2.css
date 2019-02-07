@@ -4,11 +4,15 @@
     border-radius: 50px;
     border: solid 5px #986a6a7a;
 }
-.profil_user{
+.profil_user {
     display: flex;
     width: 95%;
     flex-wrap: wrap;
     background: #d1d1eac9;
+    flex-direction: column;
+    border-radius: 30px;
+    border: solid 10px #098a98;
+    padding: 10px;
 }
 .profil_user > p{
     display: flex;
@@ -16,14 +20,18 @@
     flex-wrap: wrap;
 }
 
-.Stat_user{
+.Stat_user {
     display: flex;
     width: 95%;
     flex-wrap: wrap;
     background: #d1ead7c9;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
+    border-radius: 30px;
+    border: solid 10px #619a7a;
+    padding: 10px;
 }
+
 .view{
     display: flex;
 }
@@ -34,8 +42,9 @@
 
 .popularité {
     font-size: 10vw;
-    color: bisque;
+    color: #c26b3c;
     border: solid #d6bcbc73;
     background: #49909061;
     border-radius: 60px;
+    width: 18%;
 }
