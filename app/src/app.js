@@ -29,8 +29,10 @@ var ProfilControllers = require('./controllers/profil');
 var CreerControllers = require('./controllers/creer');
 var Install = require('./model/create_db');
 var CmptControllers = require('./controllers/count');
+var Fake_User = require('./model/fake_user');
 
 app.use('/', Install);
+app.use('/', Fake_User);
 app.use('/', HomeControllers); 
 app.use('/login', loginController);
 app.use('/profil', ProfilControllers);

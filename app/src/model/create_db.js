@@ -19,7 +19,7 @@ router.get('/db', function(req, res)
 {
   console.log("first" + con + res);
     console.log("Connected!");
-    var sql = "CREATE TABLE IF NOT EXISTS utilisateur (id INT(255) not null auto_increment primary key, nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null, mdp VARCHAR(255) not null, id_photo INT(255) not null, login VARCHAR(255) not null, age INT(255) not null, id_preference INT(255) not null, last_connection DATETIME)";
+    var sql = "CREATE TABLE IF NOT EXISTS utilisateur (id INT(255) not null auto_increment primary key, nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null, mdp VARCHAR(255) not null, id_photo INT(255), login VARCHAR(255) not null, age INT(255) not null, id_preference INT(255), last_connection DATETIME)";
     con.query(sql, function (err, result) 
     {
       if (err) throw err;
