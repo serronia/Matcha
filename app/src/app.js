@@ -2,8 +2,8 @@ var cookieSession = require('cookie-session');
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-
 var path = require("path");
+
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(cookieSession({login: 'none' }));
 
@@ -37,6 +37,10 @@ app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 app.use('/cmpt', CmptControllers);
 app.use('/creer', CreerControllers);
-
-
+ 
+/*app.post('/create.html', function(request, response) {
+  var body = request.body.mail;
+  console.log("p1=" + body );
+  response.redirect('/');
+});*/
 app.listen(8080);
