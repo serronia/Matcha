@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var path = require("path");
+
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(cookieSession({login: 'none' }));
 
@@ -23,6 +24,11 @@ app.get("/user", function(req, res) {
     res.send(req.session.login);
 });
 
+app.get("/wrong", function(req, res) {
+  console.log("wrong dans app js"+req.session.wrong);
+  res.send(req.session.wrong);
+});
+
 var HomeControllers = require('./controllers/home');
 var loginController = require('./controllers/login');
 var ProfilControllers = require('./controllers/profil');
@@ -38,6 +44,10 @@ app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 app.use('/cmpt', CmptControllers);
 app.use('/creer', CreerControllers);
-
-
+ 
+/*app.post('/create.html', function(request, response) {
+  var body = request.body.mail;
+  console.log("p1=" + body );
+  response.redirect('/');
+});*/
 app.listen(8080);

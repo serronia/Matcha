@@ -22,3 +22,20 @@ function menu1(){
     '<div class="menu_elem"><a href="recherche"><i class="fas fa-search"></i>Recherche</a></div>';
 };
 
+function wrong(){
+    fetch("http://localhost:8080/wrong")
+        .then(response => response.text())
+        .then(response => {
+            if (response != "")
+            {
+                console.log("response = "+response);
+                document.getElementById("wrong").innerHTML = "<i class=\"far fa-times-circle\"></i>"+response;
+                document.getElementById("wrong").style.display="flex";
+            }
+            else{
+                document.getElementById("loginUser").style.display="none";
+            }
+        });
+}
+
+
