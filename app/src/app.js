@@ -25,8 +25,12 @@ app.get("/user", function(req, res) {
 });
 
 app.get("/wrong", function(req, res) {
-  console.log("wrong dans app js"+req.session.wrong);
   res.send(req.session.wrong);
+});
+
+app.get("/mail_alert", function(req, res) {
+  console.log("mail dans app js : "+req.session.mail);
+  res.send(req.session.mail);
 });
 
 var HomeControllers = require('./controllers/home');

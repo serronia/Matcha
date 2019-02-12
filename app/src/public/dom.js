@@ -33,7 +33,23 @@ function wrong(){
                 document.getElementById("wrong").style.display="flex";
             }
             else{
-                document.getElementById("loginUser").style.display="none";
+                document.getElementById("wrong").style.display="none";
+            }
+        });
+}
+
+function mail_alert(){
+    fetch("http://localhost:8080/mail_alert")
+        .then(response => response.text())
+        .then(response => {
+            if (response != "")
+            {
+                console.log("response = "+response);
+                document.getElementById("mail_alert").innerHTML = "<i class=\"far fa-times-circle\"></i>"+response;
+                document.getElementById("mail_alert").style.display="flex";
+            }
+            else{
+                document.getElementById("mail_alert").style.display="none";
             }
         });
 }
