@@ -19,12 +19,7 @@ router.get('/db', function(req, res)
 {
   console.log("first" + con + res);
     console.log("Connected!");
-    var sql = "CREATE TABLE IF NOT EXISTS utilisateur (id INT(255) not null auto_increment primary key, nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null, mdp VARCHAR(255) not null, id_photo INT(255), login VARCHAR(255) not null, age DATE, id_preference INT(255), city VARCHAR(255), latitude DOUBLE(255, 25), longitude DOUBLE(255, 25), last_connection DATETIME, FOREIGN KEY (id_photo) REFERENCES photo(id), FOREIGN KEY (id_preference) REFERENCES preference(id))";
-    con.query(sql, function (err, result) 
-    {
-      if (err) throw err;
-      console.log("[SQL][TABLE] \"utilsateur\" exist or created!");
-    });
+    
     var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, genre ENUM('hommme', 'femme') not null, orientation ENUM('homme', 'femme', 'bi') not null, bio VARCHAR(255) not null, tag VARCHAR(255) not null)";
     con.query(sql, function (err, result) 
     {
@@ -60,6 +55,12 @@ router.get('/db', function(req, res)
     {
       if (err) throw err;
       console.log("[SQL][TABLE] \"tags\" exist or created!");
+    });
+    var sql = "CREATE TABLE IF NOT EXISTS utilisateur (id INT(255) not null auto_increment primary key,nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null, mdp VARCHAR(255) not null, id_photo INT(255), login VARCHAR(255) not null, age DATE, id_preference INT(255), city VARCHAR(255), latitude DOUBLE(255, 25), longitude DOUBLE(255, 25), last_connection DATETIME, FOREIGN KEY (id_photo) REFERENCES photo(id), FOREIGN KEY (id_preference) REFERENCES preference(id))";
+    con.query(sql, function (err, result) 
+    {
+      if (err) throw err;
+      console.log("[SQL][TABLE] \"utilsateur\" exist or created!");
     });
     res.redirect('localhost:8080');
 });

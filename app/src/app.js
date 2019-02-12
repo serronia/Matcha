@@ -45,9 +45,4 @@ app.use('/profil', ProfilControllers);
 app.use('/cmpt', CmptControllers);
 app.use('/creer', CreerControllers);
  
-/*app.post('/create.html', function(request, response) {
-  var body = request.body.mail;
-  console.log("p1=" + body );
-  response.redirect('/');
-});*/
 app.listen(8080);
