@@ -48,3 +48,12 @@
     border-radius: 60px;
     width: 18%;
 }
+
+#wrong {
+    background: #ff0000a3;
+    color: black;
+    border-radius: 20px;
+    height: 25px;
+    display: none;
+    align-items: center;
+}

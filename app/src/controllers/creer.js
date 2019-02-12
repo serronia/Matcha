@@ -12,14 +12,36 @@ router.use(cookieSession({
 
 router.get('/', function(req, res) {
     res.sendFile('/usr/app/src/views/creer.html');
-    req.session.login = "nomUser";
-    console.log(req.session);
+    /*req.session.login = "nomUser";
+    console.log(req.session);*/
 });
 
 router.post('/create.html', function(request, response) {
-    var mail = request.body.mail;
-    console.log("p1=" + mail);
-    response.redirect('/');
+    var mdp = request.body.mdp;
+    console.log("mdp=" + mdp[0]);
+    console.log("mdp2=" + mdp[1]);
+    if (mdp[0] == mdp[1])
+    {
+      var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+      console.log(regex.test(mdp));
+      if (regex.test(mdp))
+      {
+        request.session.wrong = "";
+        response.redirect('/');
+      }
+      else
+      {
+        request.session.wrong = "mot de passe invalide";
+        console.log(request.session);
+        response.redirect('/creer');
+      }
+    }
+    else
+    {
+      request.session.wrong = "mots de passe different";
+      console.log(request.session);
+      response.redirect('/creer');
+    }
   });
 
 module.exports = router;

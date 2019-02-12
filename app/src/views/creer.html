@@ -14,28 +14,29 @@
             <div id="gauche" class="gauche"></div>
             <div class="pricipale">
                 <div class ="user_form">
-                        <form method="POST" action="./creer/create.html" style="padding-top: 50px; padding-bottom: 50px;">
-                            <p style="text-decoration: underline";>Mes identifiants :</p>
-                            <p>Nom d'utilisateur : <input type="text" name="login" value=""  maxlength="12" required></p>
-                            <blockquote style="font-size: small; color: #efe1e1;">
-                                Le nom d'utilisateur doit faire 12 caractères maximum.
-                            </blockquote>
-                            <p>Genre :  <input type="radio" id="genre" name="drone" value="homme"><label for="homme">Masculin</label>
-                                        <input type="radio" id="genre2" name="drone" value="femme"><label for="femme">Feminin</label></p>
-                            <p>Votre adresse email : <input type="email" name="mail" value="" required></p>
-                            <p style="display: inline-flex;">Mot de passe : <input type="password" name="mdp" value="" minlength="8" required/>confirmation : <input type="password" name="mdp" value="" minlength="8" required/></p>
-                            <blockquote style="font-size: small; color: #efe1e1;">
-                                Le mot de passe doit contenir au moins : un caractère spécial, une majuscule, une minuscule, 
-                                un chiffre et faire 8 caractères minimum
-                            </blockquote>
-                            </br>
-                            <p style="text-decoration: underline";>Mes coordonneées :</p>
-                            <p style="display: inline-flex;">Nom : <input type="text" name="nom" value="" required>
-                            Prénom :<input type="text" name="prenom" value="" required></p>
-                            <p>Mon adresse : <input type="text" name="adr" value="" required></p>
-                            <p>Mon numéro de téléphone : <input type="text" name="tel" value="" maxlength="10"  minlength="10" required></p></br>
-                            <input type="submit" name="submit" value="OK" />
-                        </form>
+                    <div id="wrong"></div>
+                    <form method="POST" action="./creer/create.html" style="padding-top: 50px; padding-bottom: 50px;">
+                        <p style="text-decoration: underline";>Mes identifiants :</p>
+                        <p>Nom d'utilisateur : <input type="text" name="login" value=""  maxlength="12" required></p>
+                        <blockquote style="font-size: small; color: #efe1e1;">
+                            Le nom d'utilisateur doit faire 12 caractères maximum.
+                        </blockquote>
+                        <p>Genre :  <input type="radio" id="genre" name="drone" value="homme"><label for="homme">Masculin</label>
+                                    <input type="radio" id="genre2" name="drone" value="femme"><label for="femme">Feminin</label></p>
+                        <p>Votre adresse email : <input type="email" name="mail" value="" required></p>
+                        <p style="display: inline-flex;">Mot de passe : <input type="password" name="mdp" value="" minlength="8" required/>confirmation : <input type="password" name="mdp" value="" minlength="8" required/></p>
+                        <blockquote style="font-size: small; color: #efe1e1;">
+                            Le mot de passe doit contenir au moins : un caractère spécial, une majuscule, une minuscule, 
+                            un chiffre et faire 8 caractères minimum
+                        </blockquote>
+                        </br>
+                        <p style="text-decoration: underline";>Mes coordonneées :</p>
+                        <p style="display: inline-flex;">Nom : <input type="text" name="nom" value="" required>
+                        Prénom :<input type="text" name="prenom" value="" required></p>
+                        <p>Mon adresse : <input type="text" name="adr" value="" required></p>
+                        <p>Mon numéro de téléphone : <input type="text" name="tel" value="" maxlength="10"  minlength="10" required></p></br>
+                        <input type="submit" name="submit" value="OK" />
+                    </form>
                 </div>
             </div>
             <div class="droite">
@@ -48,6 +49,6 @@
         </div>
         <footer>Matcha</footer>
         <script src="/dom.js"></script>
-        <script type="text/javascript">menu1()</script>
+        <script type="text/javascript">menu1();wrong();</script>
     </body>
 </html>

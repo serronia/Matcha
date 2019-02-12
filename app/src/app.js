@@ -24,6 +24,11 @@ app.get("/user", function(req, res) {
     res.send(req.session.login);
 });
 
+app.get("/wrong", function(req, res) {
+  console.log("wrong dans app js"+req.session.wrong);
+  res.send(req.session.wrong);
+});
+
 var HomeControllers = require('./controllers/home');
 var loginController = require('./controllers/login');
 var ProfilControllers = require('./controllers/profil');
