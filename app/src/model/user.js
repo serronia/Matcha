@@ -16,8 +16,7 @@ module.exports={
         console.log("city, longi, lati ok");
         return (0);
     },
-
-    
+ 
 
     majority: function(user_date){
         actual_date = new Date();
