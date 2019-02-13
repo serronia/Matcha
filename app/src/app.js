@@ -40,6 +40,8 @@ var CreerControllers = require('./controllers/creer');
 var Install = require('./model/create_db');
 var CmptControllers = require('./controllers/count');
 var Fake_User = require('./model/fake_user');
+var ValidatorController = require('./controllers/valid');
+
 
 app.use('/', Install);
 app.use('/', Fake_User);
@@ -48,5 +50,6 @@ app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 app.use('/cmpt', CmptControllers);
 app.use('/creer', CreerControllers);
+app.use('/valid', ValidatorController);
  
 app.listen(8080);

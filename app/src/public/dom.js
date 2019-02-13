@@ -45,7 +45,7 @@ function mail_alert(){
             if (response != "")
             {
                 console.log("response = "+response);
-                document.getElementById("mail_alert").innerHTML = "<i class=\"far fa-times-circle\"></i>"+response;
+                document.getElementById("mail_alert").innerHTML = "<i class=\"far fa-check-circle\"></i>"+response;
                 document.getElementById("mail_alert").style.display="flex";
             }
             else{

@@ -57,3 +57,12 @@
     display: none;
     align-items: center;
 }
+
+#mail_alert {
+    background: #1cb308a3;
+    color: black;
+    border-radius: 20px;
+    height: 25px;
+    display: none;
+    align-items: center;
+}

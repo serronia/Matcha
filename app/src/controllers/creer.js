@@ -20,7 +20,7 @@ function create_user(post)
 {
   mdp=post.mdp[0];
   create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
-  mail.send('activation', post.mail);
+  mail.send('activation', post.mail, post.login);
   console.log(post);
 }
 
@@ -35,7 +35,7 @@ router.post('/create.html', function(request, response) {
         create_user(request.body);
         request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
         console.log(request.session.mail);
-        response.redirect('/');
+        response.redirect('/login');
       }
       else
       {
