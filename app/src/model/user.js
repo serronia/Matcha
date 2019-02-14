@@ -17,7 +17,16 @@ module.exports={
         console.log("city, longi, lati ok");
         return (0);
     },
- 
+
+    user_exist: function(login, mail){
+        var sql = "SELECT * FROM `utilisateur` WHERE login =? OR mail =?";
+        var value = [login, mail];
+        con.query(sql, value, (err, res) => {if (err) throw(err)
+                                            else if(res != "") console.log(res)
+                                            else console.log(res)});
+     //   console.log(res);
+        return (0);
+    },
 
     majority: function(user_date){
         actual_date = new Date();
