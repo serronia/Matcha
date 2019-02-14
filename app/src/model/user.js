@@ -64,5 +64,13 @@ module.exports={
             var int = Math.random() * 21;
 	        int = Math.floor(int);
         return (city[int]);
+    },
+
+    valid: function(login,clef,actif){
+        var sql = "UPDATE `utilisateur` SET clef=?, actif=? WHERE login=?";
+        var value = [clef, actif, login];
+        con.query(sql, value, (err, res) => {if(err) throw(err)});
+        console.log("ok pour valid");
+        return (0);
     }
 };

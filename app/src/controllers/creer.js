@@ -4,6 +4,7 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 var create = require('../model/user');
 var mail = require('./mail');
+const bcrypt = require('bcrypt');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -18,7 +19,7 @@ router.get('/', function(req, res) {
 
 function create_user(post)
 {
-  mdp=post.mdp[0];
+  const mdp = bcrypt.hashSync(post.mdp[0], 10);
   create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
   mail.send('activation', post.mail, post.login);
   console.log(post);

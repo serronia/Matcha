@@ -17,3 +17,4 @@ router.get('/wrong', function(req, res) {
     res.send('mauvais mot de passe');
 });
 module.exports = router;
+//const result = bcrypt.compareSync('my password', hash)
