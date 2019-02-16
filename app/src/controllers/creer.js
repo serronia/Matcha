@@ -19,9 +19,15 @@ router.get('/', function(req, res) {
 function create_user(post)
 {
   mdp=post.mdp[0];
-  create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
-  mail.send('activation', post.mail, post.login);
-  console.log(post);
+  create.user_exist(post.login, post.mail)
+  .then (ret => {
+    if (ret == 1) {
+    console.log("ptdr");
+   create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
+    mail.send('activation', post.mail, post.login);
+  console.log(post);}
+  else (ret == 0)
+  console.log("doesn't work");})
 }
 
 router.post('/create.html', function(request, response) {

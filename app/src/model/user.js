@@ -21,11 +21,14 @@ module.exports={
     user_exist: function(login, mail){
         var sql = "SELECT * FROM `utilisateur` WHERE login =? OR mail =?";
         var value = [login, mail];
-        con.query(sql, value, (err, res) => {if (err) throw(err)
-                                            else if(res != "") console.log(res)
-                                            else console.log(res)});
-     //   console.log(res);
-        return (0);
+        return new Promise ((success, error) =>{
+            con.query(sql, value, (err, res) => {if (err) throw(err);
+                if (res[0]){ console.log("exist!!!!!");
+                                 success(0);}
+                else {console.log(res);
+                console.log("pas exist!!!!!!!!!!");
+                success(1);}});
+        });
     },
 
     majority: function(user_date){

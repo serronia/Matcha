@@ -21,9 +21,8 @@ fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
     user_date = user["dob"]["date"].split('T');
 
     if (create.majority(user_date[0]))
-        create.user_exist(user["login"]["username"], user["email"]);
-        console.log("check done");
-        create.create_user(user["name"]["last"], user["name"]["first"], user["login"]["sha256"], user_date[0], user["login"]["username"], user["email"]);
+        if (create.user_exist(user["login"]["username"], user["email"]))
+            create.create_user(user["name"]["last"], user["name"]["first"], user["login"]["sha256"], user_date[0], user["login"]["username"], user["email"]);
         create.fake_localisation(user["login"]["username"], user["login"]["sha256"], loca[0], loca[2], loca[3])
         //  console.log(user["dob"]["date"]);
     console.log("user a ete creer");
