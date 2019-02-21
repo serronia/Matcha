@@ -1,6 +1,12 @@
 var cookieSession = require('cookie-session')
 var express = require('express');
 var router = express.Router();
+var bodyParser = require("body-parser");
+var create = require('../model/user');
+var mail = require('./mail');
+
+router.use(bodyParser.urlencoded({ extended: true }));
+
 router.use(cookieSession({
     name: 'session',
     keys: ['key1', 'key2']
@@ -8,8 +14,46 @@ router.use(cookieSession({
 
 router.get('/', function(req, res) {
     res.sendFile('/usr/app/src/views/creer.html');
-    req.session.login = "nomUser";
-    console.log(req.session);
 });
+
+function create_user(post)
+{
+  mdp=post.mdp[0];
+  create.user_exist(post.login, post.mail)
+  .then (ret => {
+    if (ret == 1) {
+    console.log("ptdr");
+   create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
+    mail.send('activation', post.mail, post.login);
+  console.log(post);}
+  else (ret == 0)
+  console.log("doesn't work");})
+}
+
+router.post('/create.html', function(request, response) {
+    var mdp = request.body.mdp;
+    if (mdp[0] == mdp[1])
+    {
+      var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");   
+      if (regex.test(mdp[0])==true)
+      {
+        request.session.wrong = "";
+        create_user(request.body);
+        request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
+        console.log(request.session.mail);
+        response.redirect('/login');
+      }
+      else
+      {
+        request.session.wrong = "mot de passe invalide";
+        response.redirect('/creer');
+      }
+    }
+    else
+    {
+      request.session.wrong = "mots de passe different";
+      response.redirect('/creer');
+    }
+  });
 
 module.exports = router;
