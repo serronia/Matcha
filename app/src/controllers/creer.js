@@ -16,18 +16,15 @@ router.get('/', function(req, res) {
     res.sendFile('/usr/app/src/views/creer.html');
 });
 
-function create_user(post)
-{
+function create_user(post) {
   mdp=post.mdp[0];
   create.user_exist(post.login, post.mail)
   .then (ret => {
     if (ret == 1) {
-    console.log("ptdr");
-   create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
-    mail.send('activation', post.mail, post.login);
-  console.log(post);}
-  else (ret == 0)
-  console.log("doesn't work");})
+      create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
+      mail.send('activation', post.mail, post.login);
+      console.log(post);}
+    else (ret == 0);})
 }
 
 router.post('/create.html', function(request, response) {
