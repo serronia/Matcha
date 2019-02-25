@@ -6,7 +6,6 @@ var path = require("path");
 
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(cookieSession({login: 'none' }));
-
 var router = express.Router();
 
 router.use(cookieSession({
