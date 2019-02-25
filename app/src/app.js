@@ -43,10 +43,11 @@ var Fake_User = require('./model/fake_user');
 var ValidatorController = require('./controllers/valid');
 
 
-app.use('/valid', ValidatorController);
+
 app.use('/', Install);
-// app.use('/', Fake_User);
-// app.use('/', HomeControllers); 
+app.use('/', Fake_User);
+app.use('/', HomeControllers);
+app.use('/valid', ValidatorController);
 app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 app.use('/cmpt', CmptControllers);
