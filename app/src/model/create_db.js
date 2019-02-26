@@ -19,7 +19,15 @@ router.get('/db', function(req, res)
 {
   console.log("first" + con + res);
     console.log("Connected!");
-    
+//si la db plante car une table est buger, utilise ca pour la table qui bug
+
+  /*  var sql = "DROP TABLE `utilisateur`";
+    con.query(sql, function (err, result) 
+    {
+      if (err) throw err;
+      console.log("utilisateur deleted");
+    });
+  */  
     var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, \
               genre ENUM('hommme', 'femme') not null, orientation ENUM('homme', 'femme', 'bi') not null,\
               bio VARCHAR(255) not null, tag VARCHAR(255) not null)";
