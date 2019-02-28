@@ -6,7 +6,7 @@ var create = require('./user');
 
 router.get('/fake_user', function(req, res)
 {
-var j = 5;
+var j = 25;
 console.log("start");
 fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
 .then((res) => res.json())

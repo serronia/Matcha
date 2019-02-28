@@ -28,6 +28,15 @@ router.get('/db', function(req, res)
       if (err) throw err;
       console.log("[SQL][TABLE] \"preference\" exist or created!");
     });
+
+    var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, \
+              genre ENUM('hommme', 'femme') not null, orientation ENUM('homme', 'femme', 'bi') not null,\
+              bio VARCHAR(255) not null, tag VARCHAR(255) not null)";
+    con.query(sql, function (err, result) 
+    {
+      if (err) throw err;
+      console.log("[SQL][TABLE] \"preference\" exist or created!");
+    });
     var sql = "CREATE TABLE IF NOT EXISTS photo (id INT(255) not null auto_increment primary key, \
               id_photo_profile INT(255) not null, photo_1 VARCHAR(255) not null, photo_2 VARCHAR(255),\
               photo_3 VARCHAR(255), photo_4 VARCHAR(255), photo_5 VARCHAR(255))";
