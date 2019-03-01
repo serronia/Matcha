@@ -17,20 +17,23 @@ router.get('/', function(req, res) {
     res.sendFile('/usr/app/src/views/creer.html');
 });
 
-function create_user(request, post) {
+function create_user(post) {
   mdp=post.mdp[0];
   create.user_exist(post.login, post.mail)
   .then (ret => {
+    console.log(ret)
     if (ret == 1) {
       create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
       mail.send('activation', post.mail, post.login);
       console.log(post);
-      return(1);}
+      return(1)
+    }
     else (ret == 0)
     {
       return(0);
     };
   })
+
 }
 
 router.post('/create.html', function(request, response) {
@@ -42,8 +45,26 @@ router.post('/create.html', function(request, response) {
       if (regex.test(mdp[0])==true)
       {
         request.session.wrong = "";
-        exist = create_user(request, request.body);
-        if(exist)
+        create_user(request.body).then(ret => {
+            console.log("ret ="+ret);
+            if (ret == 1)
+            {
+              console.log("naniii");
+              request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
+              console.log(request.session.mail);
+              response.redirect('/login');
+            }
+            else
+            {
+              console.log("louper");
+              request.session.wrong = "l'adresse e-mail ou le login existe deja.";
+              response.redirect('/creer');
+            }
+          }
+        );
+        console.log("exist");
+        console.log(exist);
+        /*if(exist)
         {
           request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
           console.log(request.session.mail);
@@ -53,7 +74,7 @@ router.post('/create.html', function(request, response) {
         {
           request.session.wrong = "l'adresse e-mail ou le login existe deja.";
           response.redirect('/creer');
-        }     
+        }   */  
         
       }
       else
