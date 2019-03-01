@@ -4,6 +4,7 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 var create = require('../model/user');
 var mail = require('./mail');
+const bcrypt = require('bcrypt');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
