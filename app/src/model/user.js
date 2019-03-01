@@ -4,7 +4,8 @@ module.exports={
     create_user: function(nom, prenom, mdp, naissance, login, mail){
     var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, age) VALUE ?"
     var value = [nom, prenom, mail, mdp, login, naissance];
-    con.query(sql, [[value]], (err, res) => {if(err) throw(err)} );
+    
+    con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
     console.log("create fake done (normalement)");
     return (0);
     },
@@ -16,7 +17,19 @@ module.exports={
         console.log("city, longi, lati ok");
         return (0);
     },
- 
+
+    user_exist: function(login, mail){
+        var sql = "SELECT * FROM `utilisateur` WHERE login =? OR mail =?";
+        var value = [login, mail];
+        return new Promise ((success, error) =>{
+            con.query(sql, value, (err, res) => {if (err) throw(err);
+                if (res[0]){ console.log("exist!!!!!");
+                                 success(0);}
+                else {console.log(res);
+                console.log("pas exist!!!!!!!!!!");
+                success(1);}});
+        });
+    },
 
     majority: function(user_date){
         actual_date = new Date();
@@ -64,5 +77,13 @@ module.exports={
             var int = Math.random() * 21;
 	        int = Math.floor(int);
         return (city[int]);
+    },
+
+    valid: function(login,clef,actif){
+        var sql = "UPDATE `utilisateur` SET clef=?, actif=? WHERE login=?";
+        var value = [clef, actif, login];
+        con.query(sql, value, (err, res) => {if(err) throw(err)});
+        console.log("ok pour valid");
+        return (0);
     }
 };

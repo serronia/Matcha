@@ -19,7 +19,15 @@ router.get('/db', function(req, res)
 {
   console.log("first" + con + res);
     console.log("Connected!");
-    
+//si la db plante car une table est buger, utilise ca pour la table qui bug
+
+  /*  var sql = "DROP TABLE `utilisateur`";
+    con.query(sql, function (err, result) 
+    {
+      if (err) throw err;
+      console.log("utilisateur deleted");
+    });
+  */  
     var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, \
               genre ENUM('hommme', 'femme') not null, orientation ENUM('homme', 'femme', 'bi') not null,\
               bio VARCHAR(255) not null, tag VARCHAR(255) not null)";
@@ -69,6 +77,7 @@ router.get('/db', function(req, res)
               mdp VARCHAR(255) not null, id_photo INT(255), login VARCHAR(255) not null UNIQUE, age DATE,\
               id_preference INT(255), city VARCHAR(255), latitude DOUBLE(255, 25), longitude DOUBLE(255, 25),\
               last_connection DATETIME, actif BOOLEAN NOT NULL DEFAULT FALSE, \
+              clef VARCHAR(64) NOT NULL DEFAULT '',\
               FOREIGN KEY (id_photo) REFERENCES photo(id),\
               FOREIGN KEY (id_preference) REFERENCES preference(id))";
     con.query(sql, function (err, result) 

@@ -4,6 +4,7 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 var create = require('../model/user');
 var mail = require('./mail');
+const bcrypt = require('bcrypt');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -16,12 +17,15 @@ router.get('/', function(req, res) {
     res.sendFile('/usr/app/src/views/creer.html');
 });
 
-function create_user(post)
-{
+function create_user(post) {
   mdp=post.mdp[0];
-  create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
-  mail.send('activation', post.mail, post.login);
-  console.log(post);
+  create.user_exist(post.login, post.mail)
+  .then (ret => {
+    if (ret == 1) {
+      create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
+      mail.send('activation', post.mail, post.login);
+      console.log(post);}
+    else (ret == 0);})
 }
 
 router.post('/create.html', function(request, response) {

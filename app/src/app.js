@@ -6,7 +6,6 @@ var path = require("path");
 
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(cookieSession({login: 'none' }));
-
 var router = express.Router();
 
 router.use(cookieSession({
@@ -43,13 +42,14 @@ var Fake_User = require('./model/fake_user');
 var ValidatorController = require('./controllers/valid');
 
 
+
 app.use('/', Install);
 app.use('/', Fake_User);
-app.use('/', HomeControllers); 
+app.use('/', HomeControllers);
+app.use('/valid', ValidatorController);
 app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 app.use('/cmpt', CmptControllers);
 app.use('/creer', CreerControllers);
-app.use('/valid', ValidatorController);
  
 app.listen(8080);
