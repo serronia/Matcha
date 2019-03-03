@@ -92,5 +92,29 @@ module.exports={
         con.query(sql, value, (err, res) => {if(err) throw(err)});
         console.log("ok pour valid");
         return (0);
+    },
+
+    get_cle_db: function(login){
+        var selectQuery = 'SELECT clef FROM utilisateur where login=?';
+        var value = [login];
+        
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if ( results.length == 1)
+                { 
+                    var firstResult = results[ 0 ];
+                    console.log('cle:lololilol ' + firstResult['clef']);
+                    success(results);
+                } 
+                else
+                {
+                    console.log("Pas de données");
+                    success(0);
+                }
+            }
+            );
+        });
     }
+    
 };

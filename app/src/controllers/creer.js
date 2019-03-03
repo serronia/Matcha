@@ -45,7 +45,8 @@ router.post('/create.html', function(request, response) {
       if (regex.test(mdp[0])==true)
       {
         request.session.wrong = "";
-        create_user(request.body).then(ret => {
+        exist = create_user(request.body);
+        /*create_user(request.body).then(ret => {
             console.log("ret ="+ret);
             if (ret == 1)
             {
@@ -61,10 +62,10 @@ router.post('/create.html', function(request, response) {
               response.redirect('/creer');
             }
           }
-        );
+        );*/
         console.log("exist");
         console.log(exist);
-        /*if(exist)
+        if(exist)
         {
           request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
           console.log(request.session.mail);
@@ -74,8 +75,7 @@ router.post('/create.html', function(request, response) {
         {
           request.session.wrong = "l'adresse e-mail ou le login existe deja.";
           response.redirect('/creer');
-        }   */  
-        
+        }        
       }
       else
       {
