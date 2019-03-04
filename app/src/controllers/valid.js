@@ -24,21 +24,24 @@ router.get('/:p1/:p2', function(request, response) {
         if(ret[0]["clef"] == cle)
         {
           request.session.mail = "Votre compte est bien activé";
+          console.log("mail dans valid = ",request.session.mail);
           db.valid(login, "",1);
+          response.redirect('/login');
         }
         else
         {
           request.session.mail = "Un probleme est survenu, contactez l'administrateur";
+          response.redirect('/login');
         }
         return(1)
       }
       else
       {
         request.session.mail = "Un probleme est survenu, contactez l'administrateur";
+        response.redirect('/login');
         return(0);
       };
     })
-    response.redirect('/login');
   });
   
 

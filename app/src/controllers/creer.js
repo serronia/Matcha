@@ -17,65 +17,34 @@ router.get('/', function(req, res) {
     res.sendFile('/usr/app/src/views/creer.html');
 });
 
-function create_user(post) {
-  mdp=post.mdp[0];
-  create.user_exist(post.login, post.mail)
-  .then (ret => {
-    console.log(ret)
-    if (ret == 1) {
-      create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
-      mail.send('activation', post.mail, post.login);
-      console.log(post);
-      return(1)
-    }
-    else (ret == 0)
-    {
-      return(0);
-    };
-  })
-
-}
-
 router.post('/create.html', function(request, response) {
     var mdp = request.body.mdp;
     var exist = "1";
+    post =request.body;
     if (mdp[0] == mdp[1])
     {
       var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");   
       if (regex.test(mdp[0])==true)
       {
         request.session.wrong = "";
-        exist = create_user(request.body);
-        /*create_user(request.body).then(ret => {
-            console.log("ret ="+ret);
-            if (ret == 1)
-            {
-              console.log("naniii");
-              request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
-              console.log(request.session.mail);
-              response.redirect('/login');
-            }
-            else
-            {
-              console.log("louper");
-              request.session.wrong = "l'adresse e-mail ou le login existe deja.";
-              response.redirect('/creer');
-            }
+        mdp=post.mdp[0];
+        create.user_exist(post.login, post.mail)
+        .then (ret => {
+          console.log(ret)
+          if (ret == 1) {
+            create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
+            mail.send('activation', post.mail, post.login);
+            console.log(post);
+            request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
+            console.log(request.session.mail);
+            response.redirect('/login');
           }
-        );*/
-        console.log("exist");
-        console.log(exist);
-        if(exist)
-        {
-          request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
-          console.log(request.session.mail);
-          response.redirect('/login');
-        }
-        else
-        {
-          request.session.wrong = "l'adresse e-mail ou le login existe deja.";
-          response.redirect('/creer');
-        }        
+          else (ret == 0)
+          {
+            request.session.wrong = "l'adresse e-mail ou le login existe deja.";
+            response.redirect('/creer');
+          };
+        })
       }
       else
       {
