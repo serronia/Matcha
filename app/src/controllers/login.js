@@ -17,5 +17,18 @@ router.get('/wrong', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.send('mauvais mot de passe');
 });
+
+
+router.post('/logintest.html', function(request, response) {
+    post = request.body;
+    console.log("post = ",post);
+    /*if(bcrypt.compareSync('somePassword', hash)) 
+    {
+        // Passwords match
+    } else 
+    {
+        // Passwords don't match
+    }*/
+});
+
 module.exports = router;
-//const result = bcrypt.compareSync('my password', hash)

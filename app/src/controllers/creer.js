@@ -19,7 +19,9 @@ router.get('/', function(req, res) {
 
 router.post('/create.html', function(request, response) {
     var mdp = request.body.mdp;
-    var exist = "1";
+    console.log("mdp = ", mdp);
+    let hash = bcrypt.hashSync(mdp[0], 10);
+    console.log("hash = ", hash);
     post =request.body;
     if (mdp[0] == mdp[1])
     {
@@ -32,7 +34,7 @@ router.post('/create.html', function(request, response) {
         .then (ret => {
           console.log(ret)
           if (ret == 1) {
-            create.create_user(post.nom, post.prenom, mdp, post.naissance, post.login, post.mail);
+            create.create_user(post.nom, post.prenom, hash, post.naissance, post.login, post.mail);
             mail.send('activation', post.mail, post.login);
             console.log(post);
             request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
