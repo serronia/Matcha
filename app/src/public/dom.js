@@ -6,6 +6,7 @@ function menu1(){
         .then(response => {
             if (response != "NomUser")
             {document.getElementById("login").innerHTML = "<i class=\"fas fa-power-off\"></i>Deconnection";
+            document.getElementById("login").href = "/deco";
             document.getElementById("loginUser").style.display="flex";
             document.getElementById("loginUser2").innerHTML = "<i class=\"fas fa-user\"></i>"+response;}
             else{

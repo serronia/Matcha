@@ -1,6 +1,11 @@
 var cookieSession = require('cookie-session')
 var express = require('express');
+var bodyParser = require("body-parser");
 var router = express.Router();
+const bcrypt = require('bcrypt');
+var db = require('../model/rq_db');
+
+router.use(bodyParser.urlencoded({ extended: true }));
 
 router.use(cookieSession({
     name: 'session',
@@ -8,27 +13,40 @@ router.use(cookieSession({
   }))
 
 router.get('/', function(req, res) {
-    req.session.login = "NomUser";
     res.sendFile('/usr/app/src/views/login.html');
-    console.log(req.session);
-});
-
-router.get('/wrong', function(req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.send('mauvais mot de passe');
 });
 
 
 router.post('/logintest.html', function(request, response) {
+    console.log("before");
+
     post = request.body;
-    console.log("post = ",post);
-    /*if(bcrypt.compareSync('somePassword', hash)) 
-    {
-        // Passwords match
-    } else 
-    {
-        // Passwords don't match
-    }*/
+    db.get_mdp(post.login).then(ret => {
+        console.log('ret = ',ret)
+        if (ret) 
+        {
+            mdp = ret[0]['mdp'];
+            if(bcrypt.compareSync(post.passwd, mdp)) 
+            {
+                console.log('match OK :)')
+                console.log(request.session);
+                request.session.login = post.login;
+                request.session.wrong = "";
+                response.redirect('/');
+            } 
+            else 
+            {
+                request.session.wrong = "Mauvais mot de passe";
+                console.log('match KO :\'(')
+                response.redirect('/login');
+            }
+        }
+        else
+        {
+            request.session.wrong = "Login incorrect";
+            response.redirect('/login');
+        };
+      })
 });
 
 module.exports = router;
