@@ -17,7 +17,8 @@ router.get('/', function(req, res) {
     res.sendFile('/usr/app/src/views/creer.html');
 });
 
-router.post('/create.html', function(request, response) {
+router.post('/create.html', function(request, response)
+{
     var mdp = request.body.mdp;
     console.log("mdp = ", mdp);
     let hash = bcrypt.hashSync(mdp[0], 10);
