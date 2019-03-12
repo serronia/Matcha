@@ -1,13 +1,31 @@
 var con = require('../db');
 
 module.exports={
+    majority: function(user_date){
+        actual_date = new Date();
+        actual_date = actual_date.toISOString().split('T');
+        user_date = Date.parse(user_date);
+        actual_date = Date.parse(actual_date);
+        dif = (actual_date - user_date) / (1000 * 60 * 60 * 24 * 365);
+        if (dif < 18){
+            console.log("il est pas majeur");
+            return (0);
+        }
+        console.log("il est majeur");
+        return (1);
+    },
     create_user: function(nom, prenom, mdp, naissance, login, mail){
-    var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, age) VALUE ?"
-    var value = [nom, prenom, mail, mdp, login, naissance];
-    
-    con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
-    console.log("create fake done (normalement)");
-    return (0);
+        console.log("nassance =  ",naissance[0]);
+        user_date = naissance.split('-');
+        console.log("user_date =  ",user_date[0]);
+        if (this.majority(user_date[0]))
+        {console.log("------------------   miaou  ----------------")}
+        var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, age) VALUE ?"
+        var value = [nom, prenom, mail, mdp, login, naissance];
+        
+        con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+        console.log("create fake done (normalement)");
+        return (0);
     },
 
     fake_localisation: function(login, mdp, city, latitude, longitude){
@@ -18,7 +36,8 @@ module.exports={
         return (0);
     },
 
-    user_exist: function(login, mail){
+    user_exist: function(login, mail)
+    {
         var sql = "SELECT * FROM `utilisateur` WHERE login =? OR mail =?";
         var value = [login, mail];
         return new Promise ((success, error) =>{
@@ -38,20 +57,7 @@ module.exports={
         });
     },
 
-    majority: function(user_date){
-        actual_date = new Date();
-        actual_date = actual_date.toISOString().split('T');
-        user_date = Date.parse(user_date);
-        actual_date = Date.parse(actual_date);
-        dif = (actual_date - user_date) / (1000 * 60 * 60 * 24 * 365);
-        if (dif < 18){
-            console.log("il est pas majeur");
-            return (0);
-        }
-        console.log("il est majeur");
-        return (1);
-    },
-    
+   
     rand_int: function(i){
         var int = Math.random() * i;
 	    int = Math.floor(int);
