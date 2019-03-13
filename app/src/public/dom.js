@@ -29,7 +29,6 @@ function wrong(){
         .then(response => {
             if (response != "")
             {
-                console.log("response = "+response);
                 document.getElementById("wrong").innerHTML = "<i class=\"far fa-times-circle\"></i>"+response;
                 document.getElementById("wrong").style.display="flex";
             }
@@ -45,7 +44,6 @@ function mail_alert(){
         .then(response => {
             if (response != "")
             {
-                console.log("response = "+response);
                 document.getElementById("mail_alert").innerHTML = "<i class=\"far fa-check-circle\"></i>"+response;
                 document.getElementById("mail_alert").style.display="flex";
             }

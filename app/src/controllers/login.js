@@ -19,11 +19,8 @@ router.get('/', function(req, res) {
 
 router.post('/logintest.html', function(request, response)
 {
-    console.log("before");
-
     post = request.body;
     db.get_mdp(post.login).then(ret => {
-        console.log('ret = ',ret)
         if (ret) 
         {
             mdp = ret[0]['mdp'];
@@ -32,8 +29,6 @@ router.post('/logintest.html', function(request, response)
             {
                 if(bcrypt.compareSync(post.passwd, mdp)) 
                 {
-                    console.log('match OK :)')
-                    console.log(request.session);
                     request.session.login = post.login;
                     request.session.wrong = "";
                     response.redirect('/');
@@ -41,14 +36,12 @@ router.post('/logintest.html', function(request, response)
                 else 
                 {
                     request.session.wrong = "Mauvais mot de passe";
-                    console.log('match KO :\'(')
                     response.redirect('/login');
                 }
             }
             else
             {
                 request.session.wrong = "Votre compte n'est pas actif";
-                console.log('actif KO :\'(')
                 response.redirect('/login');
             }
             

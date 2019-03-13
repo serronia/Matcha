@@ -15,17 +15,24 @@ module.exports={
         return (1);
     },
     create_user: function(nom, prenom, mdp, naissance, login, mail){
-        console.log("nassance =  ",naissance[0]);
         user_date = naissance.split('-');
         console.log("user_date =  ",user_date[0]);
-        if (this.majority(user_date[0]))
-        {console.log("------------------   miaou  ----------------")}
-        var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, age) VALUE ?"
-        var value = [nom, prenom, mail, mdp, login, naissance];
-        
-        con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
-        console.log("create fake done (normalement)");
-        return (0);
+        return new Promise ((success, error) =>{
+            if (this.majority(user_date[0]))
+            {
+                console.log("------------------   miaou  ----------------")
+                var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, age) VALUE ?"
+                var value = [nom, prenom, mail, mdp, login, naissance];
+                con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+                console.log("create fake done (normalement)");
+                success (1);
+            }
+            else
+            {
+                console.log("------------------   ko  ----------------")
+                success (0);
+            }
+        });
     },
 
     fake_localisation: function(login, mdp, city, latitude, longitude){
@@ -100,7 +107,8 @@ module.exports={
         return (0);
     },
 
-    get_cle_db: function(login){
+    get_cle_db: function(login)
+    {
         var selectQuery = 'SELECT clef FROM utilisateur where login=?';
         var value = [login];
         

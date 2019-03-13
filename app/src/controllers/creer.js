@@ -20,9 +20,7 @@ router.get('/', function(req, res) {
 router.post('/create.html', function(request, response)
 {
     var mdp = request.body.mdp;
-    console.log("mdp = ", mdp);
     let hash = bcrypt.hashSync(mdp[0], 10);
-    console.log("hash = ", hash);
     post =request.body;
     if (mdp[0] == mdp[1])
     {
@@ -33,16 +31,24 @@ router.post('/create.html', function(request, response)
         mdp=post.mdp[0];
         create.user_exist(post.login, post.mail)
         .then (ret => {
-          console.log(ret)
-          if (ret == 1) {
-            create.create_user(post.nom, post.prenom, hash, post.naissance, post.login, post.mail);
-            mail.send('activation', post.mail, post.login);
-            console.log(post);
-            request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
-            console.log(request.session.mail);
-            response.redirect('/login');
+          if (ret == 1)
+          {
+            create.create_user(post.nom, post.prenom, hash, post.naissance, post.login, post.mail)
+            .then(res => {
+              if (res == 1)
+              {
+                mail.send('activation', post.mail, post.login);
+                request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
+                console.log(request.session.mail);
+              }
+              else
+              {
+                request.session.wrong = "Vous devez etre majeur";
+                response.redirect('/creer');
+              }
+            })
           }
-          else (ret == 0)
+          else
           {
             request.session.wrong = "l'adresse e-mail ou le login existe deja.";
             response.redirect('/creer');
