@@ -68,7 +68,6 @@ module.exports={
                 if (error) throw(error);
                 if (results.length == 1)
                 {
-                    //var ret = "<h1>bonjour  "+login+"</h1>";
                     var ret ="";
                     this.users_city(results[0].city, login).then(res => {
                         console.log("Res = ", res)
@@ -93,6 +92,25 @@ module.exports={
 
     },
 
+    profil_user: function(login){
+        var selectQuery = 'SELECT * FROM utilisateur WHERE login=?';
+        var value = [login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length == 1)
+                {
+                    success(results);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+
+    }
     
     
 };

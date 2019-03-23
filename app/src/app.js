@@ -49,6 +49,20 @@ app.get("/mini_user", function(req, res) {
     })
 });
 
+app.get("/user_profil", function(req, res) {
+  rq_db.profil_user(req.session.login)
+    .then(profil => {
+      if(profil)
+      {
+        console.log("profil dans app.js = ", profil);
+        res.send(profil);
+      }
+      else
+      {
+        res.send("Une erreur s'est produite, veuillez contactez l'admin")
+      }
+    })
+});
 
 
 var HomeControllers = require('./controllers/home');

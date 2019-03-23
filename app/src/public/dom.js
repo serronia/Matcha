@@ -68,14 +68,6 @@ function affiche_profil(){
                             console.log("res de mini_user : ", res);
                             var lol = "";
                             var princ = document.getElementById("principale");
-                            /*var i = res.length;
-                            console.log("i = ",i);
-                            while(i)
-                            {
-                                lol = lol + res[i];
-                                console.log("i = ",i,"res[i = ", res[i]);
-                                i--;
-                            }*/
                             lol = res;
                             console.log("lol = ",lol);
                             princ.innerHTML = lol;
@@ -93,5 +85,23 @@ function affiche_profil(){
                 princ.innerHTML="<h1 style=\"color: #fffdff;\">Bienvenu sur matcha. Vous devez être connecté pour voir les suggestions.</h1>";
             }
         });
+}
+function profil_user(){
+    var genre = document.getElementById("genre");
+    var age = document.getElementById("age");
+    var orientation = document.getElementById("orientation");
+    var ville = document.getElementById("ville");
+    fetch("http://localhost:8080/user_profil")
+        .then(profil => profil.text())
+        .then(profil => {
+            console.log("profil = ", profil);
+            if(profil.sexe == 0)
+                genre.innerHTML="Genre : Homme"
+            else
+                genre.innerHTML="Genre : Femme"
+            age.innerHTML="Age = "+profil.age;
+            orientation.innerHTML = "Attiré.e par :"+profil.orientation;
+            ville.innerHTML=profil.city;
 
+        });
 }
