@@ -38,7 +38,6 @@ app.get("/mini_user", function(req, res) {
     .then(tab => {
       if(tab)
       {
-        console.log("tab dans app.js = ", tab);
         res.send(tab);
       }
       else
@@ -54,7 +53,6 @@ app.get("/user_profil", function(req, res) {
     .then(profil => {
       if(profil)
       {
-        console.log("profil dans app.js = ", profil);
         res.send(profil);
       }
       else
@@ -64,6 +62,20 @@ app.get("/user_profil", function(req, res) {
     })
 });
 
+app.get("/user_pref", function(req, res) {
+  rq_db.pref_user(req.session.login)
+    .then(pref => {
+      if(pref)
+      {
+        console.log("preef dans app.js", pref);
+        res.send(pref);
+      }
+      else
+      {
+        res.send("Une erreur s'est produite, veuillez contactez l'admin")
+      }
+    })
+});
 
 var HomeControllers = require('./controllers/home');
 var loginController = require('./controllers/login');

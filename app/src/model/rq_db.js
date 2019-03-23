@@ -110,7 +110,28 @@ module.exports={
             );
         });
 
-    }
+    },
+
+    pref_user: function(login){
+        var selectQuery = 'SELECT orientation, bio, tag FROM (preference INNER JOIN utilisateur ON preference.id = utilisateur.id_preference) WHERE utilisateur.login=?';
+        var value = [login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    console.log("pref dans rq_db = ", results);
+                    success(results);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+
+    },
     
     
 };

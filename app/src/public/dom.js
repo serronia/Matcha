@@ -89,19 +89,39 @@ function affiche_profil(){
 function profil_user(){
     var genre = document.getElementById("genre");
     var age = document.getElementById("age");
-    var orientation = document.getElementById("orientation");
     var ville = document.getElementById("ville");
     fetch("http://localhost:8080/user_profil")
-        .then(profil => profil.text())
+        .then(profil => profil.json())
         .then(profil => {
-            console.log("profil = ", profil);
-            if(profil.sexe == 0)
+            console.log("-------------------- lolol ----------------")
+            console.log("profil = ", profil[0]);
+            if(profil[0].sexe == 0)
                 genre.innerHTML="Genre : Homme"
             else
                 genre.innerHTML="Genre : Femme"
-            age.innerHTML="Age = "+profil.age;
-            orientation.innerHTML = "Attiré.e par :"+profil.orientation;
-            ville.innerHTML=profil.city;
-
+            age.innerHTML="Age : "+profil[0].age;
+            ville.innerHTML="Ville : "+profil[0].city;
         });
+
+    fetch("http://localhost:8080/user_pref")
+        .then(pref => pref.json())
+        .then(pref => {
+            console.log("-------------------- lolol2 ----------------")
+            console.log("pref = ", pref[0]);
+            if(pref[0].orientation == "homme")
+            {
+                document.getElementById("atti").checked = true;
+            }
+            else if(pref[0].orientation == "femme")
+            {
+                document.getElementById("atti2").checked = true;
+            }
+            else
+            {
+                document.getElementById("atti3").checked = true;
+            }
+            document.getElementById("bio").value=pref[0].bio;
+            document.getElementById("tag").value=pref[0].tag;
+        });
+    
 }
