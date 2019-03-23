@@ -6,7 +6,7 @@ var create = require('./user');
 
 router.get('/fake_user', function(req, res)
 {
-var j = 5;
+var j = 25;
 console.log("start");
 fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
 .then((res) => res.json())
@@ -19,14 +19,21 @@ fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
     loca = create.random_city();
     var user = data["results"][i];
     user_date = user["dob"]["date"].split('T');
-
-    if (create.majority(user_date[0]))
+    var age = create.majority(user_date[0]);
+    var sexe;
+    if(user["gender"] == "female"){sexe=1;console.log("------------------  female")}else{sexe=0;console.log("--------------------  male")};
+    console.log("sexe = ", sexe)
+    if (age)
+    {
+        console.log(user)
         if (create.user_exist(user["login"]["username"], user["email"]))
-            create.create_user(user["name"]["last"], user["name"]["first"], user["login"]["sha256"], user_date[0], user["login"]["username"], user["email"]);
+            create.create_user(user["name"]["last"], user["name"]["first"], user["login"]["sha256"], user_date[0], user["login"]["username"], user["email"], sexe);
         create.fake_localisation(user["login"]["username"], user["login"]["sha256"], loca[0], loca[2], loca[3])
         //  console.log(user["dob"]["date"]);
-    console.log("user a ete creer");
-    i++;
+        console.log("user a ete creer");
+        i++;
+    }
+        
     }
 }))
 res.redirect('localhost:8080');

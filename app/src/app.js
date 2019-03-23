@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var path = require("path");
+var rq_db = require('./model/rq_db');
 
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(cookieSession({login: 'none' }));
@@ -28,18 +29,50 @@ app.get("/wrong", function(req, res) {
 });
 
 app.get("/mail_alert", function(req, res) {
-  console.log("mail dans app js : "+req.session.mail);
   res.send(req.session.mail);
 });
+
+
+app.get("/mini_user", function(req, res) {
+  rq_db.mini_user(req.session.login)
+    .then(tab => {
+      if(tab)
+      {
+        console.log("tab dans app.js = ", tab);
+        res.send(tab);
+      }
+      else
+      {
+        res.send("Une erreur s'est produite, veuillez contactez l'admin")
+      }
+      
+    })
+});
+
+app.get("/user_profil", function(req, res) {
+  rq_db.profil_user(req.session.login)
+    .then(profil => {
+      if(profil)
+      {
+        console.log("profil dans app.js = ", profil);
+        res.send(profil);
+      }
+      else
+      {
+        res.send("Une erreur s'est produite, veuillez contactez l'admin")
+      }
+    })
+});
+
 
 var HomeControllers = require('./controllers/home');
 var loginController = require('./controllers/login');
 var ProfilControllers = require('./controllers/profil');
 var CreerControllers = require('./controllers/creer');
 var Install = require('./model/create_db');
-var CmptControllers = require('./controllers/count');
 var Fake_User = require('./model/fake_user');
 var ValidatorController = require('./controllers/valid');
+var DecoController = require('./controllers/deco');
 
 
 
@@ -50,7 +83,7 @@ app.use('/', Install);
 app.use('/valid', ValidatorController);
 app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
-app.use('/cmpt', CmptControllers);
 app.use('/creer', CreerControllers);
+app.use('/deco', DecoController);
  
 app.listen(8080);

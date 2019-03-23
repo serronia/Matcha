@@ -15,9 +15,10 @@
             <div class="pricipale">
                 <div class ="user_form">
                     <div id="mail_alert"></div>
-                    <form method="POST" action="./User_action/login.php" style="margin-top: 10px; padding-top: 20px; padding-bottom: 40px;">
-                        <p>Votre adresse email <input type="text" name="login" value="" required></p>
-                        <p>Mot de passe <input type="password" name="passwd" value="" required/></p>
+                    <div id="wrong"></div>
+                    <form method="POST" action="./login/logintest.html" style="margin-top: 10px; padding-top: 20px; padding-bottom: 40px;">
+                        <p>Votre Login  : <input type="text" name="login" value="" required></p>
+                        <p>Mot de passe : <input type="password" name="passwd" value="" required/></p>
                         <input type="submit" name="submit" value="Se connecter"/>
                     </form>
                 </div>
@@ -32,6 +33,6 @@
         </div>
         <footer>Matcha</footer>
         <script src="/dom.js"></script>
-        <script type="text/javascript">menu1(); mail_alert();</script>
+        <script type="text/javascript">menu1(); mail_alert(); wrong();</script>
     </body>
 </html>

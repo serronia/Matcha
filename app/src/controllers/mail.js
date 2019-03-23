@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
 var add_cle = require('../model/user');
+const uuidv4 = require('uuid/v4')
+const uuidv3 = require('uuid/v3')
 
 module.exports={
     send: function(Reason, mailDest, login){
@@ -9,13 +10,14 @@ module.exports={
 
         if (Reason == "activation")
         {
-            const clef = bcrypt.hashSync(login, 10);
+            const UNI = uuidv4()
+            var clef = uuidv3(login, UNI);
             add_cle.valid(login,clef, 0);
             text_mail = "Bienvenue sur Matcha,\n \
             Pour activer votre compte, veuillez cliquer sur le lien ci dessous\n \
             ou le copier/coller dans votre navigateur internet.\n\
             \n\n\
-            http://localhost:8008/valid?log="+ login + '&cle='+ clef+
+            http://localhost:8080/valid/"+ login + '/'+ clef+
             "\n\n\
             ---------------\n\
             Ceci est un mail automatique, Merci de ne pas y répondre.';";

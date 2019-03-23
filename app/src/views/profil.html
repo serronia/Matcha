@@ -13,17 +13,17 @@
         <div class="conteneur">
             <div id="gauche" class="gauche"></div>
             <div class="pricipale">
-                <img id="photo_profil" src="https://cdn.intra.42.fr/users/medium_mchapard.JPG"/>
+                
                 <div class="profil_user">
-                    <p>Genre :  <input type="radio" id="genre" name="drone" value="homme"><label for="homme">Masculin</label>
-                    <input type="radio" id="genre2" name="drone" value="femme"><label for="femme">Feminin</label></p>
-                    <p>Age :<input type="number" name="age" value=""  min="18" max="77" required>ans</p>
-                    <p>Attiré.e par :<input type="radio" id="atti" name="drone" value="homme"><label for="homme">homme</label>
+                    <img id="photo_profil" src=""/>
+                    <p id="genre">Genre : </p>
+                    <p id="age">Age : </p>
+                    <p id="orientation">Attiré.e par :<input type="radio" id="atti" name="drone" value="homme"><label for="homme">homme</label>
                         <input type="radio" id="atti2" name="drone" value="femme"><label for="femme">femme</label>
                         <input type="radio" id="atti3" name="drone" value="bi"><label for="bi">les 2</label></p>
                     <p>Biography :<textarea id="bio" cols="40" rows="5" maxlength="200" required>entrez votre bio ici (max 200char)</textarea></p>
                     <p>Centres d'interets :<textarea id="hash" cols="40" rows="5" minlength="200" required>ecrivez vos centre d'interet sous la forme #interet1, #interet2</textarea></p>
-                    <p>Ville :<input type="text" name="ville" value=""  maxlength="20" required></p>
+                    <p id="ville">Ville :</p>
                 </div>
                 <div class="Stat_user">
                     Qui a vu votre profil en dernier :<div class="view"> 
@@ -68,6 +68,6 @@
         </div>
         <footer>Matcha</footer>
         <script src="/dom.js"></script>
-        <script type="text/javascript">menu1()</script>
+        <script type="text/javascript">menu1(); profil_user();</script>
     </body>
 </html>
