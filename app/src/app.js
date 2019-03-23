@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var path = require("path");
+var rq_db = require('./model/rq_db');
 
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(cookieSession({login: 'none' }));
@@ -30,6 +31,25 @@ app.get("/wrong", function(req, res) {
 app.get("/mail_alert", function(req, res) {
   res.send(req.session.mail);
 });
+
+
+app.get("/mini_user", function(req, res) {
+  rq_db.mini_user(req.session.login)
+    .then(tab => {
+      if(tab)
+      {
+        console.log("tab dans app.js = ", tab);
+        res.send(tab);
+      }
+      else
+      {
+        res.send("Une erreur s'est produite, veuillez contactez l'admin")
+      }
+      
+    })
+});
+
+
 
 var HomeControllers = require('./controllers/home');
 var loginController = require('./controllers/login');

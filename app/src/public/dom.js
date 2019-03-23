@@ -53,4 +53,45 @@ function mail_alert(){
         });
 }
 
+function affiche_profil(){
+    fetch("http://localhost:8080/user")
+        .then(response => response.text())
+        .then(response => {
+            if (response != "NomUser")
+            {
+                console.log("user connecté :  ",response);
+                fetch("http://localhost:8080/mini_user")
+                    .then(res => res.text())
+                    .then(res => {
+                        if (res.length)
+                        {
+                            console.log("res de mini_user : ", res);
+                            var lol = "";
+                            var princ = document.getElementById("principale");
+                            /*var i = res.length;
+                            console.log("i = ",i);
+                            while(i)
+                            {
+                                lol = lol + res[i];
+                                console.log("i = ",i,"res[i = ", res[i]);
+                                i--;
+                            }*/
+                            lol = res;
+                            console.log("lol = ",lol);
+                            princ.innerHTML = lol;
+                        }
+                        else
+                        {
+                            var princ = document.getElementById("principale");
+                            princ.innerHTML="<h1 style=\"color: #fffdff;\">pas de suggestion pour l'instant</h1>";
+                        }
+                    });
+            }
+            else
+            {
+                var princ = document.getElementById("principale");
+                princ.innerHTML="<h1 style=\"color: #fffdff;\">Bienvenu sur matcha. Vous devez être connecté pour voir les suggestions.</h1>";
+            }
+        });
 
+}

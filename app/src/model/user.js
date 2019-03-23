@@ -6,23 +6,25 @@ module.exports={
         actual_date = actual_date.toISOString().split('T');
         user_date = Date.parse(user_date);
         actual_date = Date.parse(actual_date);
-        dif = (actual_date - user_date) / (1000 * 60 * 60 * 24 * 365);
+        dif = (actual_date - user_date) / (1000 * 60 * 60 * 24 * 365.25);
         if (dif < 18){
             console.log("il est pas majeur");
             return (0);
         }
         console.log("il est majeur");
-        return (1);
+        return (dif);
     },
-    create_user: function(nom, prenom, mdp, naissance, login, mail){
+    
+    create_user: function(nom, prenom, mdp, naissance, login, mail, sexe){
         user_date = naissance.split('-');
         console.log("user_date =  ",user_date[0]);
+        var age = this.majority(user_date[0]);
         return new Promise ((success, error) =>{
-            if (this.majority(user_date[0]))
+            if (age)
             {
                 console.log("------------------   miaou  ----------------")
-                var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, age) VALUE ?"
-                var value = [nom, prenom, mail, mdp, login, naissance];
+                var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, naissance, age, sexe) VALUE ?"
+                var value = [nom, prenom, mail, mdp, login, naissance, age, sexe];
                 con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
                 console.log("create fake done (normalement)");
                 success (1);
@@ -32,6 +34,16 @@ module.exports={
                 console.log("------------------   ko  ----------------")
                 success (0);
             }
+        });
+    },
+
+    add_city: function(city, login){
+        return new Promise ((success, error) =>{
+            var sql = "UPDATE `utilisateur` SET city=? WHERE login=?";
+            var value = [city, login];
+            con.query(sql, value, (err, res) => {if(err) throw(err)});
+            console.log("ville ok");
+            success (1);
         });
     },
 

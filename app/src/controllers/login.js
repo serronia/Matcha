@@ -41,6 +41,7 @@ router.post('/logintest.html', function(request, response)
             }
             else
             {
+                request.session.mail = "";
                 request.session.wrong = "Votre compte n'est pas actif";
                 response.redirect('/login');
             }
