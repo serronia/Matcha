@@ -1,13 +1,50 @@
 var con = require('../db');
 
 module.exports={
-    create_user: function(nom, prenom, mdp, naissance, login, mail){
-    var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, age) VALUE ?"
-    var value = [nom, prenom, mail, mdp, login, naissance];
+    majority: function(user_date){
+        actual_date = new Date();
+        actual_date = actual_date.toISOString().split('T');
+        user_date = Date.parse(user_date);
+        actual_date = Date.parse(actual_date);
+        dif = (actual_date - user_date) / (1000 * 60 * 60 * 24 * 365.25);
+        if (dif < 18){
+            console.log("il est pas majeur");
+            return (0);
+        }
+        console.log("il est majeur");
+        return (dif);
+    },
     
-    con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
-    console.log("create fake done (normalement)");
-    return (0);
+    create_user: function(nom, prenom, mdp, naissance, login, mail, sexe){
+        user_date = naissance.split('-');
+        console.log("user_date =  ",user_date[0]);
+        var age = this.majority(user_date[0]);
+        return new Promise ((success, error) =>{
+            if (age)
+            {
+                console.log("------------------   miaou  ----------------")
+                var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, naissance, age, sexe) VALUE ?"
+                var value = [nom, prenom, mail, mdp, login, naissance, age, sexe];
+                con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+                console.log("create fake done (normalement)");
+                success (1);
+            }
+            else
+            {
+                console.log("------------------   ko  ----------------")
+                success (0);
+            }
+        });
+    },
+
+    add_city: function(city, login){
+        return new Promise ((success, error) =>{
+            var sql = "UPDATE `utilisateur` SET city=? WHERE login=?";
+            var value = [city, login];
+            con.query(sql, value, (err, res) => {if(err) throw(err)});
+            console.log("ville ok");
+            success (1);
+        });
     },
 
     fake_localisation: function(login, mdp, city, latitude, longitude){
@@ -18,33 +55,28 @@ module.exports={
         return (0);
     },
 
-    user_exist: function(login, mail){
+    user_exist: function(login, mail)
+    {
         var sql = "SELECT * FROM `utilisateur` WHERE login =? OR mail =?";
         var value = [login, mail];
         return new Promise ((success, error) =>{
             con.query(sql, value, (err, res) => {if (err) throw(err);
-                if (res[0]){ console.log("exist!!!!!");
-                                 success(0);}
-                else {console.log(res);
-                console.log("pas exist!!!!!!!!!!");
-                success(1);}});
+                if (res[0])
+                { 
+                    console.log("exist!!!!!");
+                    success(0);
+                }
+                else 
+                {
+                    console.log(res);
+                    console.log("pas exist!!!!!!!!!!");
+                    success(1);
+                }
+            });
         });
     },
 
-    majority: function(user_date){
-        actual_date = new Date();
-        actual_date = actual_date.toISOString().split('T');
-        user_date = Date.parse(user_date);
-        actual_date = Date.parse(actual_date);
-        dif = (actual_date - user_date) / (1000 * 60 * 60 * 24 * 365);
-        if (dif < 18){
-            console.log("il est pas majeur");
-            return (0);
-        }
-        console.log("il est majeur");
-        return (1);
-    },
-    
+   
     rand_int: function(i){
         var int = Math.random() * i;
 	    int = Math.floor(int);
@@ -85,5 +117,30 @@ module.exports={
         con.query(sql, value, (err, res) => {if(err) throw(err)});
         console.log("ok pour valid");
         return (0);
+    },
+
+    get_cle_db: function(login)
+    {
+        var selectQuery = 'SELECT clef FROM utilisateur where login=?';
+        var value = [login];
+        
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if ( results.length == 1)
+                { 
+                    var firstResult = results[ 0 ];
+                    console.log('cle:lololilol ' + firstResult['clef']);
+                    success(results);
+                } 
+                else
+                {
+                    console.log("Pas de données");
+                    success(0);
+                }
+            }
+            );
+        });
     }
+    
 };

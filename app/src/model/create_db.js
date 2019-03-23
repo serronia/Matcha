@@ -36,6 +36,15 @@ router.get('/db', function(req, res)
       if (err) throw err;
       console.log("[SQL][TABLE] \"preference\" exist or created!");
     });
+
+    var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, \
+              genre ENUM('hommme', 'femme') not null, orientation ENUM('homme', 'femme', 'bi') not null,\
+              bio VARCHAR(255) not null, tag VARCHAR(255) not null)";
+    con.query(sql, function (err, result) 
+    {
+      if (err) throw err;
+      console.log("[SQL][TABLE] \"preference\" exist or created!");
+    });
     var sql = "CREATE TABLE IF NOT EXISTS photo (id INT(255) not null auto_increment primary key, \
               id_photo_profile INT(255) not null, photo_1 VARCHAR(255) not null, photo_2 VARCHAR(255),\
               photo_3 VARCHAR(255), photo_4 VARCHAR(255), photo_5 VARCHAR(255))";
@@ -74,7 +83,8 @@ router.get('/db', function(req, res)
     });
     var sql = "CREATE TABLE IF NOT EXISTS utilisateur (id INT(255) not null auto_increment primary key,\
               nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null UNIQUE,\
-              mdp VARCHAR(255) not null, id_photo INT(255), login VARCHAR(255) not null UNIQUE, age DATE,\
+              mdp VARCHAR(255) not null, id_photo INT(255), login VARCHAR(255) not null UNIQUE, naissance DATE,\
+              age INT(255) NOT NULL, sexe BOOLEAN NOT NULL DEFAULT 1,\
               id_preference INT(255), city VARCHAR(255), latitude DOUBLE(255, 25), longitude DOUBLE(255, 25),\
               last_connection DATETIME, actif BOOLEAN NOT NULL DEFAULT FALSE, \
               clef VARCHAR(64) NOT NULL DEFAULT '',\
