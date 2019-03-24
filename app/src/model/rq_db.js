@@ -24,7 +24,6 @@ module.exports={
     users_city : function(city_user, login){
         var selectQuery = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND login!=?';
         var val = [city_user, login];
-        console.log(val);
         return new Promise ((success, error) =>{
             con.query(selectQuery, val, (error, res, fields) => {
                 if (error) throw(error);
@@ -70,7 +69,6 @@ module.exports={
                 {
                     var ret ="";
                     this.users_city(results[0].city, login).then(res => {
-                        console.log("Res = ", res)
                         if (res)
                         {
                           ret = ret + res;
@@ -120,7 +118,6 @@ module.exports={
                 if (error) throw(error);
                 if (results.length)
                 {
-                    console.log("pref dans rq_db = ", results);
                     success(results);
                 } 
                 else
@@ -131,6 +128,64 @@ module.exports={
             );
         });
 
+    },
+
+    photo_user: function(login){
+        var selectQuery = 'SELECT id_photo_profile, photo_1, photo_2, photo_3, photo_4, photo_5 FROM (photo INNER JOIN utilisateur ON photo.id = utilisateur.id_photo) WHERE utilisateur.login=?';
+        var value = [login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    success(results);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+
+    },
+
+    update_pref: function(atti, bio, tag, login){
+        var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id = utilisateur.id_preference) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
+        var value = [atti, bio, tag, login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+    modif_user: function(oldlogin, login, mail, genre, nom, prenom, adr){
+        var selectQuery = 'UPDATE utilisateur SET login=?, mail=?, sexe=?, nom=?, prenom=?, city=? WHERE login=?';
+        var value = [login, mail, genre, nom, prenom, adr, oldlogin];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
     },
     
     

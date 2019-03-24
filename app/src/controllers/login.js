@@ -5,6 +5,7 @@ var router = express.Router();
 const bcrypt = require('bcrypt');
 var db = require('../model/rq_db');
 
+
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.use(cookieSession({

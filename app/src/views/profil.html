@@ -5,8 +5,7 @@
         <title>Matcha</title>
         <link rel="stylesheet" href="/accueil.css"  type="text/css">
         <link rel="stylesheet" href="/style2.css"  type="text/css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-        
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">       
     </head>
     <body>
         <header> Matcha </header>
@@ -15,15 +14,23 @@
             <div class="pricipale">
                 
                 <div class="profil_user">
-                    <img id="photo_profil" src=""/>
+                    <div class="conteneur_horizontal">
+                        <img class="photo" id="photo_profil" src=""/>
+                        <img class="photo" id="photo_2" src="" style="display:none"/>
+                        <img class="photo" id="photo_3" src="" style="display:none"/>
+                    </div>
                     <p id="genre">Genre : </p>
                     <p id="age">Age : </p>
-                    <p id="orientation">Attiré.e par :<input type="radio" id="atti" name="drone" value="homme"><label for="homme">homme</label>
-                        <input type="radio" id="atti2" name="drone" value="femme"><label for="femme">femme</label>
-                        <input type="radio" id="atti3" name="drone" value="bi"><label for="bi">les 2</label></p>
-                    <p>Biography :<textarea id="bio" cols="40" rows="5" maxlength="200" required>entrez votre bio ici (max 200char)</textarea></p>
-                    <p>Centres d'interets :<textarea id="tag" cols="40" rows="5" minlength="200" required>ecrivez vos centre d'interet sous la forme #interet1, #interet2</textarea></p>
-                    <p id="ville">Ville :</p>
+                    <div id="mail_alert"></div>
+                    <form method="POST" action="./profil/profil_modif.html">
+                        <p id="orientation">Attiré.e par :<input type="radio" id="atti" name="atti" value="homme"><label for="homme">homme</label>
+                            <input type="radio" id="atti2" name="atti" value="femme"><label for="femme">femme</label>
+                            <input type="radio" id="atti3" name="atti" value="bi"><label for="bi">les 2</label></p>
+                        <p>Biography :<textarea name="bio" id="bio" cols="40" rows="5" maxlength="200" required>entrez votre bio ici (max 200char)</textarea></p>
+                        <p>Centres d'interets :<textarea name="tag" id="tag" cols="40" rows="5" maxlength="200" required>ecrivez vos centre d'interet sous la forme #interet1, #interet2</textarea></p>
+                        <p id="ville">Ville :</p>
+                        <input type="submit" name="submit" value="Enregistrer"/>
+                    </form>
                 </div>
                 <div class="Stat_user">
                     Qui a vu votre profil en dernier :<div class="view"> 
@@ -61,13 +68,13 @@
             <div class="droite">
                 <div class="menu_head">Options</div>
                     <div class="search_elem_intern"><i class="fas fa-pen"></i>
-                        <a href="creer" style="padding:10px">Modifier mon compte</a></div>
+                        <a href="modif_user" style="padding:10px">Modifier mon compte</a></div>
                     <div class="search_elem_intern"><i class="fas fa-images"></i>
                         <a href="reset" style="padding:10px">Modifier mes photos</a></div>
             </div>
         </div>
         <footer>Matcha</footer>
         <script src="/dom.js"></script>
-        <script type="text/javascript">menu1(); profil_user();</script>
+        <script type="text/javascript">menu1(); profil_user(); mail_alert()</script>
     </body>
 </html>

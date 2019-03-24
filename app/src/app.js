@@ -67,7 +67,6 @@ app.get("/user_pref", function(req, res) {
     .then(pref => {
       if(pref)
       {
-        console.log("preef dans app.js", pref);
         res.send(pref);
       }
       else
@@ -77,6 +76,22 @@ app.get("/user_pref", function(req, res) {
     })
 });
 
+
+app.get("/user_photo", function(req, res) {
+  rq_db.photo_user(req.session.login)
+    .then(photo => {
+      if(photo)
+      {
+        res.send(photo);
+      }
+      else
+      {
+        res.send("/default-user-image.png")
+      }
+    })
+});
+
+
 var HomeControllers = require('./controllers/home');
 var loginController = require('./controllers/login');
 var ProfilControllers = require('./controllers/profil');
@@ -85,6 +100,8 @@ var Install = require('./model/create_db');
 var Fake_User = require('./model/fake_user');
 var ValidatorController = require('./controllers/valid');
 var DecoController = require('./controllers/deco');
+var Modif_UserController = require('./controllers/modif_user');
+
 
 
 
@@ -97,5 +114,6 @@ app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 app.use('/creer', CreerControllers);
 app.use('/deco', DecoController);
+app.use('/modif_user', Modif_UserController);
  
 app.listen(8080);

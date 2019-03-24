@@ -59,17 +59,14 @@ function affiche_profil(){
         .then(response => {
             if (response != "NomUser")
             {
-                console.log("user connecté :  ",response);
                 fetch("http://localhost:8080/mini_user")
                     .then(res => res.text())
                     .then(res => {
                         if (res.length)
                         {
-                            console.log("res de mini_user : ", res);
                             var lol = "";
                             var princ = document.getElementById("principale");
                             lol = res;
-                            console.log("lol = ",lol);
                             princ.innerHTML = lol;
                         }
                         else
@@ -93,8 +90,6 @@ function profil_user(){
     fetch("http://localhost:8080/user_profil")
         .then(profil => profil.json())
         .then(profil => {
-            console.log("-------------------- lolol ----------------")
-            console.log("profil = ", profil[0]);
             if(profil[0].sexe == 0)
                 genre.innerHTML="Genre : Homme"
             else
@@ -106,8 +101,6 @@ function profil_user(){
     fetch("http://localhost:8080/user_pref")
         .then(pref => pref.json())
         .then(pref => {
-            console.log("-------------------- lolol2 ----------------")
-            console.log("pref = ", pref[0]);
             if(pref[0].orientation == "homme")
             {
                 document.getElementById("atti").checked = true;
@@ -123,5 +116,50 @@ function profil_user(){
             document.getElementById("bio").value=pref[0].bio;
             document.getElementById("tag").value=pref[0].tag;
         });
+
+    fetch("http://localhost:8080/user_photo")
+        .then(photo => photo.json())
+        .then(photo => {
+            document.getElementById("photo_profil").src=photo[0].photo_1;
+            if(photo[0].photo_2)
+            {
+                document.getElementById("photo_2").src=photo[0].photo_2;
+                document.getElementById("photo_2").style.display="flex";
+            }
+            if(photo[0].photo_3)
+            {
+                document.getElementById("photo_3").src=photo[0].photo_3;
+                document.getElementById("photo_3").style.display="flex";
+            }
+        });
     
+}
+
+function auto_compl(){
+    var user = document.getElementById("user");
+    var mail = document.getElementById("mail");
+    var date = document.getElementById("date");
+    var nom = document.getElementById("nom");
+    var prenom = document.getElementById("prenom");
+    var ville = document.getElementById("ville");
+    
+
+    fetch("http://localhost:8080/modif_user/auto_compl")
+        .then(profil => profil.json())
+        .then(profil => {
+            var date_split = profil[0].naissance.split('T')[0];
+            console.log("profil dans dom =" , profil[0])
+            user.value = profil[0].login;
+            mail.value = profil[0].mail;
+            date.value = date_split;
+            nom.value = profil[0].nom;
+            prenom.value = profil[0].prenom;
+            ville.value = profil[0].city;
+            if(profil[0].sexe == 1)
+                document.getElementById("femme").checked = true;
+            else
+                document.getElementById("homme").checked = false;
+
+        });
+
 }
