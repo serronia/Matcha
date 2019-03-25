@@ -22,9 +22,17 @@ module.exports={
             ---------------\n\
             Ceci est un mail automatique, Merci de ne pas y répondre.';";
         }
-        else
+        else if (Reason == "reset")
         {
-            text_mail = "Bienvenue sur Matcha,\
+            const UNI = uuidv4()
+            var clef = uuidv3(login, UNI);
+            add_cle.valid(login,clef, 1);
+            text_mail = "Bienvenue de nouveau sur Matcha,\
+            Pour changer votre mot de passe cliquez sur le lien ci-dessous\n\
+            ou le copier/coller dans votre navigateur internet.\n\
+            \n\n\
+            http://localhost:8080/reset/"+login+'/'+ clef+
+            "\n\n\
             ---------------\
             Ceci est un mail automatique, Merci de ne pas y répondre.\n";
 

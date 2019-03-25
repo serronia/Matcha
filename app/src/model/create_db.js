@@ -36,7 +36,7 @@ router.get('/db', function(req, res)
     });
 
     var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, \
-              genre ENUM('hommme', 'femme') not null, orientation ENUM('homme', 'femme', 'bi') not null,\
+              orientation ENUM('homme', 'femme', 'bi') not null,\
               bio VARCHAR(255) not null, tag VARCHAR(255) not null)";
     con.query(sql, function (err, result) 
     {
