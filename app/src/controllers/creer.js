@@ -33,7 +33,6 @@ router.post('/create.html', function(request, response)
         .then (ret => {
           if (ret == 1)
           {
-            console.log(post);
             create.create_user(post.nom, post.prenom, hash, post.naissance, post.login, post.mail, post.genre)
             .then(res => {
               if (res == 1)
@@ -41,7 +40,6 @@ router.post('/create.html', function(request, response)
                 create.add_city(post.adr, post.login).then(res => {
                   mail.send('activation', post.mail, post.login);
                   request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
-                  console.log(request.session.mail);
                   response.redirect('/login');
                 })
                 

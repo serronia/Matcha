@@ -161,8 +161,11 @@ input[type="range"]:after {
     margin: 5px;
     flex-direction: column;
 }
-.user_mini>img {
-    width: 60%;
+.user_mini>a {
+    width: 70%;
+}
+.user_mini>a >img{
+    width: 100%;
 }
 .user_mini>.bd {
     display: flex;

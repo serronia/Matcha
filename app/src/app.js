@@ -38,7 +38,6 @@ app.get("/mini_user", function(req, res) {
     .then(tab => {
       if(tab)
       {
-        console.log("tab dans app.js = ", tab);
         res.send(tab);
       }
       else
@@ -54,12 +53,40 @@ app.get("/user_profil", function(req, res) {
     .then(profil => {
       if(profil)
       {
-        console.log("profil dans app.js = ", profil);
         res.send(profil);
       }
       else
       {
         res.send("Une erreur s'est produite, veuillez contactez l'admin")
+      }
+    })
+});
+
+app.get("/user_pref", function(req, res) {
+  rq_db.pref_user(req.session.login)
+    .then(pref => {
+      if(pref)
+      {
+        res.send(pref);
+      }
+      else
+      {
+        res.send("Une erreur s'est produite, veuillez contactez l'admin")
+      }
+    })
+});
+
+
+app.get("/user_photo", function(req, res) {
+  rq_db.photo_user(req.session.login)
+    .then(photo => {
+      if(photo)
+      {
+        res.send(photo);
+      }
+      else
+      {
+        res.send("/default-user-image.png")
       }
     })
 });
@@ -73,7 +100,8 @@ var Install = require('./model/create_db');
 var Fake_User = require('./model/fake_user');
 var ValidatorController = require('./controllers/valid');
 var DecoController = require('./controllers/deco');
-
+var Modif_UserController = require('./controllers/modif_user');
+var ResetController = require('./controllers/reset');
 
 
 
@@ -85,5 +113,7 @@ app.use('/login', loginController);
 app.use('/profil', ProfilControllers);
 app.use('/creer', CreerControllers);
 app.use('/deco', DecoController);
+app.use('/modif_user', Modif_UserController);
+app.use('/reset', ResetController);
  
 app.listen(8080);

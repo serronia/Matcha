@@ -24,7 +24,6 @@ module.exports={
     users_city : function(city_user, login){
         var selectQuery = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND login!=?';
         var val = [city_user, login];
-        console.log(val);
         return new Promise ((success, error) =>{
             con.query(selectQuery, val, (error, res, fields) => {
                 if (error) throw(error);
@@ -37,13 +36,13 @@ module.exports={
                         if (res[i].sexe == 0)
                         {
                             var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
-                                    res[i].city+"</span></div><img src=\"/default-user-image.png\"><div class=\"bd\"><span>"+
+                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\"/default-user-image.png\"></a><div class=\"bd\"><span>"+
                                     res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
                         }
                         else
                         {
                             var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
-                                    res[i].city+"</span></div><img src=\"/default-user-image.png\"><div class=\"bd\"><span>"+
+                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\"/default-user-image.png\"></a><div class=\"bd\"><span>"+
                                     res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
                         }
                         i--;
@@ -70,7 +69,6 @@ module.exports={
                 {
                     var ret ="";
                     this.users_city(results[0].city, login).then(res => {
-                        console.log("Res = ", res)
                         if (res)
                         {
                           ret = ret + res;
@@ -110,8 +108,123 @@ module.exports={
             );
         });
 
+    },
+
+    pref_user: function(login){
+        var selectQuery = 'SELECT orientation, bio, tag FROM (preference INNER JOIN utilisateur ON preference.id = utilisateur.id_preference) WHERE utilisateur.login=?';
+        var value = [login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    success(results);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+
+    },
+
+    photo_user: function(login){
+        var selectQuery = 'SELECT id_photo_profile, photo_1, photo_2, photo_3, photo_4, photo_5 FROM (photo INNER JOIN utilisateur ON photo.id = utilisateur.id_photo) WHERE utilisateur.login=?';
+        var value = [login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    success(results);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+
+    },
+
+    update_pref: function(atti, bio, tag, login){
+        var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id = utilisateur.id_preference) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
+        var value = [atti, bio, tag, login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+    modif_user: function(oldlogin, login, mail, genre, nom, prenom, adr){
+        var selectQuery = 'UPDATE utilisateur SET login=?, mail=?, sexe=?, nom=?, prenom=?, city=? WHERE login=?';
+        var value = [login, mail, genre, nom, prenom, adr, oldlogin];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+    updade_mdp: function(login, mdp){
+        var selectQuery = 'UPDATE utilisateur SET mdp=? WHERE login=?';
+        var value = [mdp, login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+    verif_mail: function(mail, login){
+        var selectQuery = 'SELECT * FROM utilisateur WHERE login=? AND mail=?';
+        var value = [login, mail];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                console.log("res ans rq bd = ", results);
+                if (results.length != 0)
+                {
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
     }
-    
-    
 };
 

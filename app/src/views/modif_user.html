@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Login</title>
+        <link rel="stylesheet" href="/accueil.css"  type="text/css">
+        <link rel="stylesheet" href="/form.css"  type="text/css">
+        <link rel="stylesheet" href="/style2.css"  type="text/css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    </head>
+    <body>
+        <header> Modification </header>
+        <div class="conteneur">
+            <div id="gauche" class="gauche"></div>
+            <div class="pricipale">
+                <div class ="user_form">
+                    <div id="wrong"></div>
+                    <form method="POST" action="./modif_user/modif.html" style="padding-top: 50px; padding-bottom: 50px;">
+                        <p style="text-decoration: underline";>Mes identifiants :</p>
+                        <p>Nom d'utilisateur : <input id="user" type="text" name="login" value=""  minlength="5" maxlength="25"   pattern="^[a-zA-Z0-9_]{5,25}$"></p>
+                        <blockquote style="font-size: small; color: #efe1e1;">
+                            Le nom d'utilisateur doit faire 5 caractères minimum et ne doit pas comporter d'espace.
+                        </blockquote>
+                        <p>Genre :  <input type="radio" id="homme" name="genre" value="0"><label for="0">Masculin</label>
+                                    <input type="radio" id="femme" name="genre" value="1"><label for="1">Feminin</label></p>
+                        <p>Votre adresse email : <input id="mail" type="email" name="mail" value="" ></p>
+                        <p style="display: inline-flex;">Ancien mot de passe : <input type="password" name="mdp_old" value="" minlength="8" />Nouveau : <input type="password" name="mdp" value="" minlength="8" />confirmation : <input type="password" name="mdp" value="" minlength="8" /></p>
+                        <blockquote style="font-size: small; color: #efe1e1;">
+                            Le mot de passe doit contenir au moins : un caractère spécial, une majuscule, une minuscule,  
+                            un chiffre et faire 8 caractères minimum
+                        </blockquote>
+                        </br>
+                        <p>Ma date de naissance : <input id="date" type="date" id="naissance" name="naissance" required></p>
+                        <p style="text-decoration: underline";>Mes coordonneées :</p>
+                        <p style="display: inline-flex;">Nom : <input id="nom" type="text" name="nom" value="" required>
+                        Prénom :<input type="text" id="prenom" name="prenom" value="" required></p>
+                        <p>Ville (à l'arrondissement prêt) : <input id="ville" type="text" name="adr" value="" required></p>
+                        <input type="submit" name="submit" value="OK" />
+                    </form>
+                </div>
+            </div>
+            <div class="droite">
+                <div class="menu_head">Options</div>
+                <div class="search_elem"><i class="far fa-plus-square"></i></div>
+            </div>
+        </div>
+        <footer>Matcha</footer>
+        <script src="/dom.js"></script>
+        <script type="text/javascript">menu1();wrong();auto_compl();</script>
+    </body>
+</html>

@@ -1,4 +1,4 @@
-#photo_profil {
+.photo{
     max-width: 20vw;
     height: 15vw;
     border-radius: 50px;
@@ -15,6 +15,13 @@
     padding: 10px;
 }
 .profil_user > p{
+    display: flex;
+    padding-right: 50px;
+    flex-wrap: wrap;
+}
+
+
+.profil_user > form > p{
     display: flex;
     padding-right: 50px;
     flex-wrap: wrap;
@@ -47,6 +54,10 @@
     background: #49909061;
     border-radius: 60px;
     width: 18%;
+}
+.conteneur_horizontal {
+    display: flex;
+    flex-direction: row;
 }
 
 #wrong {
