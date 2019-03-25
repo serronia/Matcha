@@ -59,20 +59,31 @@ function affiche_profil(){
         .then(response => {
             if (response != "NomUser")
             {
-                fetch("http://localhost:8080/mini_user")
-                    .then(res => res.text())
-                    .then(res => {
-                        if (res.length)
+                fetch("http://localhost:8080/User_compl")
+                    .then(comp => comp.text())
+                    .then(comp => {
+                        if(comp == "1")
                         {
-                            var lol = "";
-                            var princ = document.getElementById("principale");
-                            lol = res;
-                            princ.innerHTML = lol;
+                            fetch("http://localhost:8080/mini_user")
+                                .then(res => res.text())
+                                .then(res => {
+                                    if (res.length)
+                                    {
+                                        var lol = "";
+                                        var princ = document.getElementById("principale");
+                                        lol = res;
+                                        princ.innerHTML = lol;
+                                    }
+                                    else
+                                    {
+                                        var princ = document.getElementById("principale");
+                                        princ.innerHTML="<h1 style=\"color: #fffdff;\">pas de suggestion pour l'instant</h1>";
+                                    }
+                                });
                         }
                         else
                         {
-                            var princ = document.getElementById("principale");
-                            princ.innerHTML="<h1 style=\"color: #fffdff;\">pas de suggestion pour l'instant</h1>";
+                            var princ = document.getElementById("principale").innerHTML = "<h1 style=\"color: #fffdff;\">pas de suggestion pour l'instant, veuillez completer votre profil.</h1>";
                         }
                     });
             }
