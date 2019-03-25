@@ -101,8 +101,7 @@ var Fake_User = require('./model/fake_user');
 var ValidatorController = require('./controllers/valid');
 var DecoController = require('./controllers/deco');
 var Modif_UserController = require('./controllers/modif_user');
-
-
+var ResetController = require('./controllers/reset');
 
 
 
@@ -115,5 +114,6 @@ app.use('/profil', ProfilControllers);
 app.use('/creer', CreerControllers);
 app.use('/deco', DecoController);
 app.use('/modif_user', Modif_UserController);
+app.use('/reset', ResetController);
  
 app.listen(8080);

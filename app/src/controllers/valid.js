@@ -9,7 +9,7 @@ router.use(cookieSession({
 }))
 
 
-router.get('/:p1/:p2', function(request, response) {
+router.get('/:p1/:p2', function(request, response){
     var login = request.params.p1; 
     var cle = request.params.p2;
     db.get_cle_db(login)

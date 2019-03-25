@@ -44,7 +44,8 @@ router.post("/modif.html", function(req, res) {
                     var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");   
                     if (regex.test(post.mdp[0])==true)
                     {
-                        rq_db.updade_mdp(req.session.login, post.mdp[0]);
+                        let hash = bcrypt.hashSync(post.mdp[0], 10);
+                        rq_db.updade_mdp(req.session.login, hash);
                         res.redirect('/deco');
                     }
                     else

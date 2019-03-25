@@ -206,7 +206,26 @@ module.exports={
             );
         });
     },
-    
+
+    verif_mail: function(mail, login){
+        var selectQuery = 'SELECT * FROM utilisateur WHERE login=? AND mail=?';
+        var value = [login, mail];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                console.log("res ans rq bd = ", results);
+                if (results.length != 0)
+                {
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    }
     
 };
 
