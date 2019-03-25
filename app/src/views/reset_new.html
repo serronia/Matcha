@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Matcha</title>
+        <link rel="stylesheet" href="/accueil.css"  type="text/css">
+        <link rel="stylesheet" href="/style2.css"  type="text/css">
+        <link rel="stylesheet" href="/form.css"  type="text/css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        
+    </head>
+    <body>
+        <header> Matcha </header>
+        <div class="conteneur">
+            <div class="pricipale" style="width: 100%;">
+                <div class ="user_form">
+                    <div id="mail_alert"></div>
+                    <div id="wrong"></div>
+                    <form method="POST" action="./new.html" style="margin-top: 10px; padding-top: 20px; padding-bottom: 40px;">
+                        <p>Votre nouveau mot de passe : <input type="password" name="mdp" value="" required></p>
+                        <p>Confirmation :<input type="password" name="mdp" value="" required/></p>
+                        <input type="submit" name="submit" value="Envoyer"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer>Matcha</footer>
+        <script src="/dom.js"></script>
+        <script type="text/javascript">mail_alert(); wrong();</script>
+    </body>
+</html>
