@@ -17,7 +17,7 @@ function menu1(){
     menu.innerHTML = '<div class="menu_head">Menu</div>'+ 
     '<div class="menu_elem"><a href="/"><i class="fas fa-home"></i>Accueil</a></div>'+
     '<div class="menu_elem"><a id="login" href="login"><i class="fas fa-power-off"></i>login</a></div>'+
-    '<div class="menu_elem" id="loginUser"><a id="loginUser2" href="profil"></a></div>'+
+    '<div class="menu_elem" id="loginUser"><a id="loginUser2" href="./profil"></a></div>'+
     '<div class="menu_elem"><a href="chat"><i class="far fa-comments"></i>Chat</a></div>'+
     '<div class="menu_elem"><a href="likes"><i class="far fa-heart"></i>Likes</a></div>'+
     '<div class="menu_elem"><a href="recherche"><i class="fas fa-search"></i>Recherche</a></div>';
@@ -193,20 +193,21 @@ function profil_other(){
     fetch("http://localhost:8080/profil/user_pref")
         .then(pref => pref.json())
         .then(pref => {
+            console.log("user pref = ", pref);
             if(pref[0].orientation == "homme")
             {
-                document.getElementById("atti").checked = true;
+                document.getElementById("orientation").innerHTML = "Attiré.e par : homme";
             }
             else if(pref[0].orientation == "femme")
             {
-                document.getElementById("atti2").checked = true;
+                document.getElementById("orientation").innerHTML = "Attiré.e par : femme";
             }
             else
             {
-                document.getElementById("atti3").checked = true;
+                document.getElementById("orientation").innerHTML = "Attiré.e par : homme et femme";
             }
-            document.getElementById("bio").value=pref[0].bio;
-            document.getElementById("tag").value=pref[0].tag;
+            document.getElementById("bio").innerHTML=pref[0].bio;
+            document.getElementById("tag").innerHTML=pref[0].tag;
         });
 
     fetch("http://localhost:8080/profil/user_photo")
