@@ -13,12 +13,10 @@ var con = mysql.createConnection(
 */
 var con = require('../db');
 
-
-
 router.get('/db', function(req, res)
 {
   console.log("first" + con + res);
-    console.log("Connected!");
+  console.log("Connected!");
 //si la db plante car une table est buger, utilise ca pour la table qui bug
 
   /*  var sql = "DROP TABLE `utilisateur`";
