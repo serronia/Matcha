@@ -32,42 +32,45 @@ router.get("/auto_compl", function(req, res) {
 
 router.post("/modif.html", function(req, res) {
     post = req.body;
-    console.log(post);
     rq_db.modif_user(req.session.login, post.login, post.mail, post.genre, post.nom, post.prenom, post.adr);
     if (post.mdp_old && post.mdp)
     {
         rq_db.get_mdp(req.session.login).then(ret => {
-            console.log("post.mdp_old = ", post.mdp_old, "mdp_db= ", mdp_db);
             mdp_db = ret[0]['mdp'];
             if(bcrypt.compareSync(post.mdp_old, mdp_db)) 
             {
-                if (mdp[0] == mdp[1])
+                if (post.mdp[0] == post.mdp[1])
                 {
                     var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");   
-                    if (regex.test(mdp[0])==true)
+                    if (regex.test(post.mdp[0])==true)
                     {
                         rq_db.updade_mdp(req.session.login, post.mdp[0]);
+                        res.redirect('/deco');
+                    }
+                    else
+                    {
+                        req.session.wrong = "Mot de passe insufisant.";
+                        res.redirect('/modif_user');
                     }
                 }
                 else 
                 {
-                    request.session.wrong = "Mots de passe differents";
+                    req.session.wrong = "Mots de passe differents";
                     res.redirect('/modif_user');
                 }
-                request.session.wrong = "";
+                //request.session.wrong = "";
             } 
             else 
             {
-                request.session.wrong = "Mauvais mot de passe";
+                req.session.wrong = "Mauvais mot de passe";
                 res.redirect('/modif_user');
             }
         })
     }
-    if (req.sessionlogin != post.login)
+    if (req.session.login != post.login)
     {
         res.redirect('/deco');
     }
-    res.redirect('/profil');
   });
 
 module.exports = router;

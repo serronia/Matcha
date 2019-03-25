@@ -187,6 +187,25 @@ module.exports={
             );
         });
     },
+
+    updade_mdp: function(login, mdp){
+        var selectQuery = 'UPDATE utilisateur SET mdp=? WHERE login=?';
+        var value = [mdp, login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
     
     
 };
