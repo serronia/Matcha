@@ -36,13 +36,13 @@ module.exports={
                         if (res[i].sexe == 0)
                         {
                             var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
-                                    res[i].city+"</span></div><img src=\"/default-user-image.png\"><div class=\"bd\"><span>"+
+                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\"/default-user-image.png\"></a><div class=\"bd\"><span>"+
                                     res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
                         }
                         else
                         {
                             var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
-                                    res[i].city+"</span></div><img src=\"/default-user-image.png\"><div class=\"bd\"><span>"+
+                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\"/default-user-image.png\"></a><div class=\"bd\"><span>"+
                                     res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
                         }
                         i--;

@@ -59,7 +59,6 @@ router.post("/modif.html", function(req, res) {
                     req.session.wrong = "Mots de passe differents";
                     res.redirect('/modif_user');
                 }
-                //request.session.wrong = "";
             } 
             else 
             {

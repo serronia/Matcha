@@ -44,7 +44,6 @@ router.get('/:p1/:p2', function(request, response){
 router.post('/env', function(request, response)
 {
     post = request.body;
-    console.log("post = ", post)
     rq_db.verif_mail(post.mail, post.login).then(ok => {
         if(ok)
         {
@@ -72,7 +71,6 @@ router.get('/new', function(request, response){
   router.post('/new.html', function(request, response)
   {
     post = request.body;
-    console.log("post = ", post);
     if (post.mdp[0] == post.mdp[1])
     {
         var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");   

@@ -163,3 +163,55 @@ function auto_compl(){
         });
 
 }
+
+function profil_other(){
+    var genre = document.getElementById("genre");
+    var age = document.getElementById("age");
+    var ville = document.getElementById("ville");
+    fetch("http://localhost:8080/profil/get_profil")
+        .then(profil => profil.json())
+        .then(profil => {
+            if(profil[0].sexe == 0)
+                genre.innerHTML="Genre : Homme"
+            else
+                genre.innerHTML="Genre : Femme"
+            age.innerHTML="Age : "+profil[0].age;
+            ville.innerHTML="Ville : "+profil[0].city;
+        });
+
+    fetch("http://localhost:8080/profil/user_pref")
+        .then(pref => pref.json())
+        .then(pref => {
+            if(pref[0].orientation == "homme")
+            {
+                document.getElementById("atti").checked = true;
+            }
+            else if(pref[0].orientation == "femme")
+            {
+                document.getElementById("atti2").checked = true;
+            }
+            else
+            {
+                document.getElementById("atti3").checked = true;
+            }
+            document.getElementById("bio").value=pref[0].bio;
+            document.getElementById("tag").value=pref[0].tag;
+        });
+
+    fetch("http://localhost:8080/profil/user_photo")
+        .then(photo => photo.json())
+        .then(photo => {
+            document.getElementById("photo_profil").src=photo[0].photo_1;
+            if(photo[0].photo_2)
+            {
+                document.getElementById("photo_2").src=photo[0].photo_2;
+                document.getElementById("photo_2").style.display="flex";
+            }
+            if(photo[0].photo_3)
+            {
+                document.getElementById("photo_3").src=photo[0].photo_3;
+                document.getElementById("photo_3").style.display="flex";
+            }
+        });
+    
+}
