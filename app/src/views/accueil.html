@@ -16,32 +16,35 @@
             </div>
             <div class="droite">
                 <div class="menu_head">Options</div>
-                <div class="search_elem"><i class="fas fa-pen"></i>Critères :</div>
-                    <div class="search_elem_intern">Attiré.e par :</div>
-                        <div class="search_elem_intern">
-                            <input type="radio" id="genre" name="drone" value="homme"><label for="homme">homme</label>
-                            <input type="radio" id="genre" name="drone" value="femme"><label for="femme">femme</label>
-                            <input type="radio" id="genre" name="drone" value="bi"><label for="bi">les 2</label>
-                        </div>
-                    <div class="search_elem_intern">Localisation :
-                        <input type="text">
-                    </div>
-                    <div class="search_elem_intern">Tags :
-                        <input type="text">
-                    </div>
-                    <div class="search_elem_intern">Popularité min:
-                        <input id="slideCol" type="range" value="30" max="100" min="0" step="5">
-                        <span id="f">30</span>
-                        <script>
-                            var y = document.getElementById("f");
-                            var slideCol = document.getElementById("slideCol");
-                            slideCol.oninput = function() {
-                                y.innerHTML = this.value;
-                            }
-                        </script>
-                    </div>
-                <div class="search_elem"><i class="fas fa-filter"></i>Filtres :</div>
                 <div class="search_elem"><i class="fas fa-exchange-alt fa-rotate-90"></i>Trier par :</div>
+                    <form method="POST" action="./trier.html">
+                        <div class="search_elem_intern"><input type="radio" id="tri_age" name="tri" value="tri_age"><label for="tri_age">Age</label></div>
+                        <div class="search_elem_intern"><input type="radio" id="tri_loc" name="tri" value="tri_loc"><label for="tri_loc">Localisation</label></div>
+                        <div class="search_elem_intern"><input type="radio" id="tri_pop" name="tri" value="tri_pop"><label for="tri_pop">Popularité</label></div>
+                        <div class="search_elem_intern"><input type="radio" id="tri_tag" name="tri" value="tri_tag"><label for="tri_tag">Nb de tag en commun</label></div>
+                        <div class="search_elem_intern"><input type="submit" name="submit" value="Trier"/></div>
+                    </form>
+                    
+                
+                    
+                <div class="search_elem"><i class="fas fa-filter"></i>Filtres :</div>
+                    <form method="POST" action="./filtrer.html">
+                        <div class="search_elem_intern">Age : de <input type="number" name="agemin" min=18> à <input type="number" name="agemax"  min=18> ans.</div>
+                        <div class="search_elem_intern">Distance : de <input type="number" name="kmmin" min=0> à <input type="number" name="kmmax"  min=0> km.</div>
+                        <div class="search_elem_intern">Popularité min:
+                            <input id="slideCol" type="range" value="30" max="100" min="0" step="5">
+                            <span id="f">30</span>
+                            <script>
+                                var y = document.getElementById("f");
+                                var slideCol = document.getElementById("slideCol");
+                                slideCol.oninput = function() {
+                                    y.innerHTML = this.value;
+                                }
+                            </script>
+                        </div>
+                        <div class="search_elem_intern">Tags : <input type="text" name="tag" >.</div>
+                        <div class="search_elem_intern"><input type="submit" name="submit" value="Filtrer"/></div>
+                    </form>
             </div>
         </div>
         <footer>Matcha</footer>

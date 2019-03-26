@@ -77,3 +77,19 @@
     display: none;
     align-items: center;
 }
+
+input[type=number]{
+    width: 30px;
+    background: #ffffff47;
+}
+
+.search_elem_intern > input[type=submit] {
+    border: 1px solid #77aade;
+    width: auto;
+    background: #f8fcff85;
+    border-radius: 10px;
+}
+
+.search_elem_intern > input[type=text] {
+    background: #ffffff47;
+}

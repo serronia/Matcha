@@ -21,18 +21,38 @@ module.exports={
         });
     },
 
-    users_tri : function(city_user, tag, sexe, login){
+    users_tri : function(city_user, tag, sexe, login, trier, filtrer){
         if(sexe!=3)
         {
-            var selectQuery = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND sexe=? AND login!=?';
+            var base = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND sexe=? AND login!=?';
             var val = [city_user,sexe, login];
         } 
         else
         {
-            var selectQuery = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND login!=?';
+            var base = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND login!=?';
             var val = [city_user, login];
         }
-        console.log("login = ",login, " tag = ",tag, "city_user = ",city_user, "sexe = ",sexe);
+        if (trier)
+        {
+            console.log("trier dans mini = ", trier);
+            switch (trier) {
+                case 'tri_age':
+                    base = base + " ORDER BY age DESC";
+                    break;
+                case 'tri_loc':
+                    base = base + " ORDER BY city DESC";
+                    break;
+                /*case 'tri_pop':
+                    base = base + "ORDER BY popularite";
+                    break;*/
+                case 'tri_tag':
+                    base = base + " ORDER BY tag DESC";
+                    break;
+                default:
+                    break;
+            }
+        }
+        selectQuery = base;
         return new Promise ((success, error) =>{
             con.query(selectQuery, val, (error, res, fields) => {
                 if (error) throw(error);
@@ -67,15 +87,15 @@ module.exports={
         });
     },
 
-    mini_user: function(login){
-        var selectQuery = 'SELECT city, tag, orientation  FROM (utilisateur INNER JOIN preference ON preference.id = utilisateur.id_preference) WHERE login=?';
+    mini_user: function(login, trier, filtrer){
+        var selectQuery = 'SELECT city, tag, orientation, age  FROM (utilisateur INNER JOIN preference ON preference.id = utilisateur.id_preference) WHERE login=?';
+        console.log("requete = ",selectQuery);
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
                 if (error) throw(error);
                 if (results.length == 1)
                 {
-                    console.log("profil user = ", results);
                     var ret ="";
                     if(results[0].orientation=="homme")
                         sexe=0;
@@ -83,7 +103,7 @@ module.exports={
                         sexe=1;
                     else
                         sexe=3;
-                    this.users_tri(results[0].city, results[0].tag, sexe, login).then(res => {
+                    this.users_tri(results[0].city, results[0].tag, sexe, login, trier, filtrer).then(res => {
                         if (res)
                         {
                           ret = ret + res;

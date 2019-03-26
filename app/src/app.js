@@ -34,7 +34,7 @@ app.get("/mail_alert", function(req, res) {
 
 
 app.get("/mini_user", function(req, res) {
-  rq_db.mini_user(req.session.login)
+  rq_db.mini_user(req.session.login, req.session.trier, req.session.filtrer)
     .then(tab => {
       if(tab)
       {
