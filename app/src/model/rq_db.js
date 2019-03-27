@@ -21,9 +21,37 @@ module.exports={
         });
     },
 
-    users_city : function(city_user, login){
-        var selectQuery = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND login!=?';
-        var val = [city_user, login];
+    users_tri : function(city_user, tag, sexe, login, trier, filtrer){
+        if(sexe!=3)
+        {
+            var base = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND sexe=? AND login!=?';
+            var val = [city_user,sexe, login];
+        } 
+        else
+        {
+            var base = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND login!=?';
+            var val = [city_user, login];
+        }
+        if (trier)
+        {
+            switch (trier) {
+                case 'tri_age':
+                    base = base + " ORDER BY age DESC";
+                    break;
+                case 'tri_loc':
+                    base = base + " ORDER BY city DESC";
+                    break;
+                /*case 'tri_pop':
+                    base = base + "ORDER BY popularite";
+                    break;*/
+                case 'tri_tag':
+                    base = base + " ORDER BY tag DESC";
+                    break;
+                default:
+                    break;
+            }
+        }
+        selectQuery = base;
         return new Promise ((success, error) =>{
             con.query(selectQuery, val, (error, res, fields) => {
                 if (error) throw(error);
@@ -47,7 +75,6 @@ module.exports={
                         }
                         i--;
                     }
-                    
                     success(mini);
                 } 
                 else
@@ -59,8 +86,8 @@ module.exports={
         });
     },
 
-    mini_user: function(login){
-        var selectQuery = 'SELECT * FROM utilisateur WHERE login=?';
+    mini_user: function(login, trier, filtrer){
+        var selectQuery = 'SELECT city, tag, orientation, age  FROM (utilisateur INNER JOIN preference ON preference.id = utilisateur.id_preference) WHERE login=?';
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
@@ -68,7 +95,13 @@ module.exports={
                 if (results.length == 1)
                 {
                     var ret ="";
-                    this.users_city(results[0].city, login).then(res => {
+                    if(results[0].orientation=="homme")
+                        sexe=0;
+                    else if(results[0].orientation=="femme")
+                        sexe=1;
+                    else
+                        sexe=3;
+                    this.users_tri(results[0].city, results[0].tag, sexe, login, trier, filtrer).then(res => {
                         if (res)
                         {
                           ret = ret + res;
@@ -87,7 +120,6 @@ module.exports={
             }
             );
         });
-
     },
 
     profil_user: function(login){
@@ -107,7 +139,6 @@ module.exports={
             }
             );
         });
-
     },
 
     pref_user: function(login){
@@ -213,7 +244,6 @@ module.exports={
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
                 if (error) throw(error);
-                console.log("res ans rq bd = ", results);
                 if (results.length != 0)
                 {
                     success(1);
@@ -225,6 +255,35 @@ module.exports={
             }
             );
         });
-    }
+    },
+
+    User_compl: function(login){
+        var selectQuery = 'SELECT bio, tag FROM (preference INNER JOIN utilisateur ON preference.id = utilisateur.id_photo) WHERE login=?';
+        var value = [login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length != 0)
+                {
+                    if(results[0].bio && results[0].tag)
+                    {
+                        success(1);
+                    }
+                    else
+                    {
+                        success(0);
+                    }
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+
+
 };
 

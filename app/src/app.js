@@ -34,7 +34,7 @@ app.get("/mail_alert", function(req, res) {
 
 
 app.get("/mini_user", function(req, res) {
-  rq_db.mini_user(req.session.login)
+  rq_db.mini_user(req.session.login, req.session.trier, req.session.filtrer)
     .then(tab => {
       if(tab)
       {
@@ -91,6 +91,21 @@ app.get("/user_photo", function(req, res) {
     })
 });
 
+app.get("/User_compl", function(req, res) {
+  rq_db.User_compl(req.session.login)
+    .then(comp => {
+      if(comp)
+      {
+        res.send("1");
+      }
+      else
+      {
+        res.send("0")
+      }
+    })
+});
+
+
 
 var HomeControllers = require('./controllers/home');
 var loginController = require('./controllers/login');
@@ -102,6 +117,8 @@ var ValidatorController = require('./controllers/valid');
 var DecoController = require('./controllers/deco');
 var Modif_UserController = require('./controllers/modif_user');
 var ResetController = require('./controllers/reset');
+var count = require('./controllers/count');
+var LikeController = require('./controllers/like');
 
 
 
@@ -115,5 +132,8 @@ app.use('/creer', CreerControllers);
 app.use('/deco', DecoController);
 app.use('/modif_user', Modif_UserController);
 app.use('/reset', ResetController);
+app.use('/count', count);
+app.use('/like', LikeController);
+
  
 app.listen(8080);

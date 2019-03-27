@@ -18,7 +18,6 @@ router.get('/', function(req, res) {
 router.post('/profil_modif.html', function(request, response)
 {
     post = request.body;
-    console.log("post = ", post)
     rq_db.update_pref(post.atti, post.bio, post.tag, request.session.login);
     request.session.mail = "Modifications enregistrées";
     response.redirect('/profil');
@@ -26,7 +25,6 @@ router.post('/profil_modif.html', function(request, response)
 });
 
 router.get('/login/:p1', function(request, response){
-    console.log("p1 = ", request.params.p1);
     request.session.other_user = request.params.p1; 
     response.sendFile('/usr/app/src/views/profil_other.html');
   });
