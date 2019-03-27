@@ -19,11 +19,9 @@ router.get('/', function(req, res) {
 
 router.post("/trier.html", function(req, res) {
     post = req.body;
-    console.log("post = ", post)
     if(post.submit == "Trier")
     {
         req.session.trier=post.tri;
-        console.log("tier --- ", req.session.trier);
         res.redirect('/');
         
     }

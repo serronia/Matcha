@@ -159,7 +159,6 @@ function auto_compl(){
         .then(profil => profil.json())
         .then(profil => {
             var date_split = profil[0].naissance.split('T')[0];
-            console.log("profil dans dom =" , profil[0])
             user.value = profil[0].login;
             mail.value = profil[0].mail;
             date.value = date_split;
@@ -179,6 +178,7 @@ function profil_other(){
     var genre = document.getElementById("genre");
     var age = document.getElementById("age");
     var ville = document.getElementById("ville");
+    var login = document.getElementById("Login_user");
     fetch("http://localhost:8080/profil/get_profil")
         .then(profil => profil.json())
         .then(profil => {
@@ -188,12 +188,12 @@ function profil_other(){
                 genre.innerHTML="Genre : Femme"
             age.innerHTML="Age : "+profil[0].age;
             ville.innerHTML="Ville : "+profil[0].city;
+            login.innerHTML="Login : "+profil[0].login+"  Prenom : "+profil[0].prenom+"  Nom : "+profil[0].nom;
         });
 
     fetch("http://localhost:8080/profil/user_pref")
         .then(pref => pref.json())
         .then(pref => {
-            console.log("user pref = ", pref);
             if(pref[0].orientation == "homme")
             {
                 document.getElementById("orientation").innerHTML = "Attiré.e par : homme";
@@ -224,6 +224,24 @@ function profil_other(){
                 document.getElementById("photo_3").src=photo[0].photo_3;
                 document.getElementById("photo_3").style.display="flex";
             }
+        });
+
+    fetch("http://localhost:8080/like/is_liked")
+        .then(liked => liked.json())
+        .then(liked => {
+            var like = document.getElementById("like");
+            console.log("liked = ", liked)
+            if(liked)
+            {
+                like.href="/like/unlike"
+                like.innerHTML = "Ne plus aimer ce profil";
+            }
+            else
+            {
+                like.href="/like"
+                like.innerHTML = "Aimer ce profil"; 
+            }
+            
         });
     
 }

@@ -118,6 +118,7 @@ var DecoController = require('./controllers/deco');
 var Modif_UserController = require('./controllers/modif_user');
 var ResetController = require('./controllers/reset');
 var count = require('./controllers/count');
+var LikeController = require('./controllers/like');
 
 
 
@@ -132,5 +133,7 @@ app.use('/deco', DecoController);
 app.use('/modif_user', Modif_UserController);
 app.use('/reset', ResetController);
 app.use('/count', count);
+app.use('/like', LikeController);
+
  
 app.listen(8080);

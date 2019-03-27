@@ -34,7 +34,6 @@ module.exports={
         }
         if (trier)
         {
-            console.log("trier dans mini = ", trier);
             switch (trier) {
                 case 'tri_age':
                     base = base + " ORDER BY age DESC";
@@ -89,7 +88,6 @@ module.exports={
 
     mini_user: function(login, trier, filtrer){
         var selectQuery = 'SELECT city, tag, orientation, age  FROM (utilisateur INNER JOIN preference ON preference.id = utilisateur.id_preference) WHERE login=?';
-        console.log("requete = ",selectQuery);
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
@@ -122,7 +120,6 @@ module.exports={
             }
             );
         });
-
     },
 
     profil_user: function(login){
@@ -142,7 +139,6 @@ module.exports={
             }
             );
         });
-
     },
 
     pref_user: function(login){
