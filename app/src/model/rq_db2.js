@@ -20,7 +20,6 @@ module.exports={
                         user_id2 = profil[0].id;
                         return new Promise ((success, error) =>{
                             var sql = "INSERT INTO likes (id_user_1, id_user_2) VALUE ?"
-                            console.log("user id = ",user_id1, user_id2);
                             var value = [user_id1, user_id2];
                             con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
                                 success(1);
@@ -45,7 +44,6 @@ module.exports={
         var value = [user_id1, user_id2];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
-                console.log("res liked = ", results);
                 if (error) throw(error);
                 if (results.length == 1)
                 {
@@ -63,10 +61,8 @@ module.exports={
     unlike: function(user_id1, user_id2){
         var selectQuery = 'DELETE FROM likes WHERE id_user_1=? AND id_user_2=?;';
         var value = [user_id1, user_id2];
-        console.log("id user 1 = ", user_id1, "id user 2 = ", user_id1)
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
-                console.log("res unliked = ", results);
                 if (error) throw(error);
                 success(1);
             }

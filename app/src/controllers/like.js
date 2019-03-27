@@ -30,7 +30,6 @@ router.get('/is_liked', function(request, response){
                 user_id2 = profil[0].id;
                 rq_db2.is_liked(user_id1, user_id2)
                     .then(is_liked => {
-                      console.log("is_liked = ", is_liked)
                       if(is_liked)
                       {
                         response.send("1");

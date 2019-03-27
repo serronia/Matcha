@@ -1,3 +1,4 @@
+
 var menu = document.getElementById("gauche");
 
 function menu1(){
@@ -194,20 +195,27 @@ function profil_other(){
     fetch("http://localhost:8080/profil/user_pref")
         .then(pref => pref.json())
         .then(pref => {
-            if(pref[0].orientation == "homme")
+            if (pref[0].bio=="" || pref[0].tag=="")
             {
-                document.getElementById("orientation").innerHTML = "Attiré.e par : homme";
-            }
-            else if(pref[0].orientation == "femme")
-            {
-                document.getElementById("orientation").innerHTML = "Attiré.e par : femme";
+                document.getElementsByClassName("profil_user")[0].innerHTML = "Cet utilisateur n'a pas rempli son profil étendu"
             }
             else
             {
-                document.getElementById("orientation").innerHTML = "Attiré.e par : homme et femme";
+                if(pref[0].orientation == "homme")
+                {
+                    document.getElementById("orientation").innerHTML = "Attiré.e par : homme";
+                }
+                else if(pref[0].orientation == "femme")
+                {
+                    document.getElementById("orientation").innerHTML = "Attiré.e par : femme";
+                }
+                else
+                {
+                    document.getElementById("orientation").innerHTML = "Attiré.e par : homme et femme";
+                }
+                document.getElementById("bio").innerHTML=pref[0].bio;
+                document.getElementById("tag").innerHTML=pref[0].tag;
             }
-            document.getElementById("bio").innerHTML=pref[0].bio;
-            document.getElementById("tag").innerHTML=pref[0].tag;
         });
 
     fetch("http://localhost:8080/profil/user_photo")
@@ -230,7 +238,6 @@ function profil_other(){
         .then(liked => liked.json())
         .then(liked => {
             var like = document.getElementById("like");
-            console.log("liked = ", liked)
             if(liked)
             {
                 like.href="/like/unlike"
