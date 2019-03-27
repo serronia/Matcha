@@ -26,6 +26,7 @@ module.exports={
                 var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, naissance, age, sexe) VALUE ?"
                 var value = [nom, prenom, mail, mdp, login, naissance, age, sexe];
                 con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+                this.add_pic_n_pref_table(login); 
                 console.log("create fake done (normalement)");
                 success (1);
             }
@@ -37,12 +38,92 @@ module.exports={
         });
     },
 
+    add_pic_n_pref_table: function(login){
+        var selectQuery = 'SELECT id FROM utilisateur WHERE login=?';
+        var value = [login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                        var sql = "INSERT INTO `photo` (id_user) VALUE ?"
+                        var value = [results[0].id];
+                        con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+
+                        var sql = "INSERT INTO `preference` (id_user) VALUE ?"
+                        var value = [results[0].id];
+                        con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+                }
+            })
+        })
+    },
+
+    add_picture: function(login, picture, nb_pic){
+        var selectQuery = 'SELECT id FROM utilisateur WHERE login=?';
+        var value = [login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length)
+                {
+                    if (nb_pic > 0)
+                    {
+                        var sql = "UPDATE `photo` SET photo_"+nb_pic+"=? WHERE id_user= ? ";
+                        var value = [picture, results[0].id];
+                        con.query(sql, value, (err, res) => {if(err) throw(err)});
+                    }
+                    
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+    nb_pic: function(login) {
+        var selectQuery = 'SELECT id FROM utilisateur WHERE login=?';
+        var value = [login];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                success(results);
+
+            })
+        })
+
+        .then (data => {
+            var i = 1;
+            if (data[0]) {
+                var sql = "SELECT * FROM photo WHERE id_user=?";
+                var value = [data[0].id];
+                return new Promise ((success, error) =>{
+                    con.query(sql, value, (error, results, fields) => {
+                        if (error) throw(error);
+                        var photo = "photo_" + i;
+                        while (results[0][photo] != null)
+                        {
+                            i++;
+                            photo = "photo_"+i;
+                            console.log ("coucou");
+                        }
+                    success(i);
+                    })
+                    
+                })
+            }
+        }); 
+    },
+
     add_city: function(city, login){
         return new Promise ((success, error) =>{
             var sql = "UPDATE `utilisateur` SET city=? WHERE login=?";
             var value = [city, login];
             con.query(sql, value, (err, res) => {if(err) throw(err)});
-            console.log("ville ok");
+            console.log("ville ok".login);
             success (1);
         });
     },
