@@ -6,7 +6,7 @@ var create = require('./user');
 
 router.get('/fake_user', function(req, res)
 {
-var j = 25;
+var j = 1;
 console.log("start");
 fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
 .then((res) => res.json())
@@ -26,9 +26,22 @@ fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
     if (age)
     {
         console.log(user)
+        console.log(user["picture"])
+
         if (create.user_exist(user["login"]["username"], user["email"]))
+        {
             create.create_user(user["name"]["last"], user["name"]["first"], user["login"]["sha256"], user_date[0], user["login"]["username"], user["email"], sexe);
         create.fake_localisation(user["login"]["username"], user["login"]["sha256"], loca[0], loca[2], loca[3])
+        create.add_picture(user["login"]["username"], user["picture"]["large"], 1);
+        create.add_picture(user["login"]["username"], user["picture"]["medium"], 2);
+        create.add_picture(user["login"]["username"], user["picture"]["thumbnail"], 3);        
+/*   create.nb_pic(user["login"]["username"]).then(
+            i => {
+                console.log("suite a la fonction, ivaut bien = ");
+                console.log(i);
+            });
+ */       
+        }
         //  console.log(user["dob"]["date"]);
         console.log("user a ete creer");
         i++;

@@ -26,26 +26,33 @@ router.get('/db', function(req, res)
       console.log("utilisateur deleted");
     });
   */  
-    var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, \
-              genre ENUM('hommme', 'femme') not null, orientation ENUM('homme', 'femme', 'bi') not null,\
-              bio VARCHAR(255) not null, tag VARCHAR(255) not null)";
+
+    var sql = "CREATE TABLE IF NOT EXISTS utilisateur (id INT(255) not null auto_increment primary key,\
+              nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null UNIQUE,\
+              mdp VARCHAR(255) not null, login VARCHAR(255) not null UNIQUE, naissance DATE,\
+              age INT(255) NOT NULL, sexe BOOLEAN NOT NULL DEFAULT 1,\
+              city VARCHAR(255), latitude DOUBLE(255, 25), longitude DOUBLE(255, 25),\
+              last_connection DATETIME, actif BOOLEAN NOT NULL DEFAULT FALSE, \
+              clef VARCHAR(64) NOT NULL DEFAULT '')";
+    con.query(sql, function (err, result) 
+    {
+    if (err) throw err;
+    console.log("[SQL][TABLE] \"utilsateur\" exist or created!");
+    });
+
+    var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, id_user INT(255) UNIQUE,\
+              genre ENUM('hommme', 'femme') not null, orientation ENUM('homme', 'femme', 'bi') not null default 'bi',\
+              bio VARCHAR(255), tag VARCHAR(255), FOREIGN KEY (id_user) REFERENCES utilisateur(id))";
     con.query(sql, function (err, result) 
     {
       if (err) throw err;
       console.log("[SQL][TABLE] \"preference\" exist or created!");
     });
 
-    var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, \
-              orientation ENUM('homme', 'femme', 'bi') not null,\
-              bio VARCHAR(255) not null, tag VARCHAR(255) not null)";
-    con.query(sql, function (err, result) 
-    {
-      if (err) throw err;
-      console.log("[SQL][TABLE] \"preference\" exist or created!");
-    });
-    var sql = "CREATE TABLE IF NOT EXISTS photo (id INT(255) not null auto_increment primary key, \
-              id_photo_profile INT(255) not null, photo_1 VARCHAR(255) not null, photo_2 VARCHAR(255),\
-              photo_3 VARCHAR(255), photo_4 VARCHAR(255), photo_5 VARCHAR(255))";
+    var sql = "CREATE TABLE IF NOT EXISTS photo (id INT(255) not null auto_increment primary key, id_user INT(255) UNIQUE,\
+              photo_1 VARCHAR(255), photo_2 VARCHAR(255),\
+              photo_3 VARCHAR(255), photo_4 VARCHAR(255), photo_5 VARCHAR(255),\
+              FOREIGN KEY (id_user) REFERENCES utilisateur(id))";
     con.query(sql, function (err, result) 
     {
       if (err) throw err;
@@ -79,20 +86,7 @@ router.get('/db', function(req, res)
       if (err) throw err;
       console.log("[SQL][TABLE] \"tags\" exist or created!");
     });
-    var sql = "CREATE TABLE IF NOT EXISTS utilisateur (id INT(255) not null auto_increment primary key,\
-              nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null UNIQUE,\
-              mdp VARCHAR(255) not null, id_photo INT(255), login VARCHAR(255) not null UNIQUE, naissance DATE,\
-              age INT(255) NOT NULL, sexe BOOLEAN NOT NULL DEFAULT 1,\
-              id_preference INT(255), city VARCHAR(255), latitude DOUBLE(255, 25), longitude DOUBLE(255, 25),\
-              last_connection DATETIME, actif BOOLEAN NOT NULL DEFAULT FALSE, \
-              clef VARCHAR(64) NOT NULL DEFAULT '',\
-              FOREIGN KEY (id_photo) REFERENCES photo(id),\
-              FOREIGN KEY (id_preference) REFERENCES preference(id))";
-    con.query(sql, function (err, result) 
-    {
-      if (err) throw err;
-      console.log("[SQL][TABLE] \"utilsateur\" exist or created!");
-    });
+
     res.redirect('localhost:8080');
 });
 
