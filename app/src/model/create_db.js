@@ -15,17 +15,17 @@ var con = require('../db');
 
 router.get('/db', function(req, res)
 {
-  console.log("first" + con + res);
-  console.log("Connected!");
-//si la db plante car une table est buger, utilise ca pour la table qui bug
+    console.log("first" + con + res);
+    console.log("Connected!");
+    //si la db plante car une table est buger, utilise ca pour la table qui bug
 
-  /*  var sql = "DROP TABLE `utilisateur`";
+    /*  var sql = "DROP TABLE `utilisateur`";
     con.query(sql, function (err, result) 
     {
-      if (err) throw err;
+    if (err) throw err;
       console.log("utilisateur deleted");
     });
-  */  
+    */  
 
     var sql = "CREATE TABLE IF NOT EXISTS utilisateur (id INT(255) not null auto_increment primary key,\
               nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null UNIQUE,\
@@ -36,8 +36,8 @@ router.get('/db', function(req, res)
               clef VARCHAR(64) NOT NULL DEFAULT '')";
     con.query(sql, function (err, result) 
     {
-    if (err) throw err;
-    console.log("[SQL][TABLE] \"utilsateur\" exist or created!");
+        if (err) throw err;
+       console.log("[SQL][TABLE] \"utilsateur\" exist or created!");
     });
 
     var sql = "CREATE TABLE IF NOT EXISTS preference (id INT(255) not null auto_increment primary key, id_user INT(255) UNIQUE,\
@@ -45,8 +45,8 @@ router.get('/db', function(req, res)
               bio VARCHAR(255), tag VARCHAR(255), FOREIGN KEY (id_user) REFERENCES utilisateur(id))";
     con.query(sql, function (err, result) 
     {
-      if (err) throw err;
-      console.log("[SQL][TABLE] \"preference\" exist or created!");
+        if (err) throw err;
+        console.log("[SQL][TABLE] \"preference\" exist or created!");
     });
 
     var sql = "CREATE TABLE IF NOT EXISTS photo (id INT(255) not null auto_increment primary key, id_user INT(255) UNIQUE,\
@@ -55,37 +55,50 @@ router.get('/db', function(req, res)
               FOREIGN KEY (id_user) REFERENCES utilisateur(id))";
     con.query(sql, function (err, result) 
     {
-      if (err) throw err;
-      console.log("[SQL][TABLE] \"photo\" exist or created!");
+       if (err) throw err;
+        console.log("[SQL][TABLE] \"photo\" exist or created!");
     });
+
     var sql = "CREATE TABLE IF NOT EXISTS likes (id INT(255) not null auto_increment primary key,\
                id_user_1 INT(255) not null, id_user_2 INT(255) not null)";
     con.query(sql, function (err, result) 
     {
-      if (err) throw err;
-      console.log("[SQL][TABLE] \"likes\" exist or created!");
+        if (err) throw err;
+        console.log("[SQL][TABLE] \"likes\" exist or created!");
     });
+
     var sql = "CREATE TABLE IF NOT EXISTS chat (id INT(255) not null auto_increment primary key,\
                id_user_1 INT(255) not null, id_user_2 INT(255) not null, id_echange INT(255) not null)";
     con.query(sql, function (err, result) 
     {
-      if (err) throw err;
-      console.log("[SQL][TABLE] \"chat\" exist or created!");
+       if (err) throw err;
+       console.log("[SQL][TABLE] \"chat\" exist or created!");
     });
+
     var sql = "CREATE TABLE IF NOT EXISTS echange (id INT(255) not null auto_increment primary key,\
                message VARCHAR(255) not null, date datetime not null, user_id INT(255) not null)";
     con.query(sql, function (err, result) 
     {
-      if (err) throw err;
-      console.log("[SQL][TABLE] \"echange\" exist or created!");
+       if (err) throw err;
+       console.log("[SQL][TABLE] \"echange\" exist or created!");
     });
+
     var sql = "CREATE TABLE IF NOT EXISTS tags (id INT(255) not null auto_increment primary key,\
                name VARCHAR(255) not null)";
     con.query(sql, function (err, result) 
     {
-      if (err) throw err;
-      console.log("[SQL][TABLE] \"tags\" exist or created!");
+        if (err) throw err;
+        console.log("[SQL][TABLE] \"tags\" exist or created!");
     });
+
+    var sql = "CREATE TABLE IF NOT EXISTS details (id INT(255) not null auto_increment primary key,\
+                nb_like INT(255), nb_vue INT(255), popularity INT(255), id_user INT(255) UNIQUE,\
+                FOREIGN KEY (id_user) REFERENCES utilisateur(id))";
+    con.query(sql, function (err, result) 
+    {
+        if (err) throw err;
+        console.log("[SQL][TABLE] \"tags\" exist or created!");
+});
 
     res.redirect('localhost:8080');
 });
