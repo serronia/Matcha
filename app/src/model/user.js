@@ -190,13 +190,14 @@ module.exports={
         con.query(sql, value, (err, res) => {if(err) throw(err)});
         return (0);
     },
+    
     geoloc:function(){
-        var geolocation = require('geolocation');
-        geolocation.getCurrentPosition(function (err, position) {
-        if (err) throw (err)
-        console.log(position);
-      })
-    },
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+          } else { 
+            x.innerHTML = "Geolocation is not supported by this browser.";
+          }
+        },
 
     get_cle_db: function(login)
     {
@@ -207,10 +208,10 @@ module.exports={
             con.query(selectQuery, value, (error, results, fields) => {
                 if (error) throw(error);
                 if ( results.length == 1)
-                { 
+                {
                     var firstResult = results[ 0 ];
                     success(results);
-                } 
+                }
                 else
                 {
                     console.log("Pas de données");
