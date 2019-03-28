@@ -251,5 +251,15 @@ function profil_other(){
             }
             
         });
+    fetch("http://localhost:8080/profil/user_detail")
+        .then(detail => detail.json())
+        .then(detail => {
+            var pop = document.getElementById("pop");
+            if(detail)
+            {
+                pop.innerHTML = detail.nb_vue + (detail.nb_like * 15);
+            }
+            
+        });
     
 }

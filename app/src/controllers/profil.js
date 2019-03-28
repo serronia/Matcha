@@ -3,6 +3,7 @@ var cookieSession = require('cookie-session');
 var router = express.Router();
 var bodyParser = require("body-parser");
 var rq_db = require('../model/rq_db');
+var rq_db2 = require('../model/rq_db2');
 
 router.use(cookieSession({
     name: 'session',
@@ -26,6 +27,7 @@ router.post('/profil_modif.html', function(request, response)
 
 router.get('/login/:p1', function(request, response){
     request.session.other_user = request.params.p1; 
+    rq_db2.add_view(request.session.login, request.session.other_user);
     response.sendFile('/usr/app/src/views/profil_other.html');
   });
 
@@ -65,6 +67,24 @@ router.get("/user_photo", function(req, res) {
         if(photo)
         {
           res.send(photo);
+        }
+        else
+        {
+          res.send("erreur")
+        }
+      })
+  });
+
+  router.get("/user_detail", function(req, res) {
+    console.log("login = ", req.session.other_user)
+    rq_db2.user_detail(req.session.other_user)
+      .then(detail => {
+        if(detail)
+        {
+          console.log("detail dans profil = ", detail[0]);
+          pop = detail[0].nb_vue + detail[0].nb_like*10;
+          rq_db2.add_pop(pop, detail[0].id_user);
+          res.send(detail[0]);
         }
         else
         {

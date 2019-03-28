@@ -60,7 +60,15 @@ router.get('/db', function(req, res)
     });
 
     var sql = "CREATE TABLE IF NOT EXISTS likes (id INT(255) not null auto_increment primary key,\
-               id_user_1 INT(255) not null, id_user_2 INT(255) not null)";
+               id_user_1 INT(255) not null, id_user_2 INT(255) not null, date DATE)";
+    con.query(sql, function (err, result) 
+    {
+        if (err) throw err;
+        console.log("[SQL][TABLE] \"likes\" exist or created!");
+    });
+
+    var sql = "CREATE TABLE IF NOT EXISTS vues (id INT(255) not null auto_increment primary key,\
+               id_user_1 INT(255) not null, id_user_2 INT(255) not null, date DATE)";
     con.query(sql, function (err, result) 
     {
         if (err) throw err;
@@ -92,7 +100,7 @@ router.get('/db', function(req, res)
     });
 
     var sql = "CREATE TABLE IF NOT EXISTS details (id INT(255) not null auto_increment primary key,\
-                nb_like INT(255), nb_vue INT(255), popularity INT(255), id_user INT(255) UNIQUE,\
+                nb_like INT(255) DEFAULT 0, nb_vue INT(255) DEFAULT 0, popularity INT(255), id_user INT(255) UNIQUE,\
                 FOREIGN KEY (id_user) REFERENCES utilisateur(id))";
     con.query(sql, function (err, result) 
     {

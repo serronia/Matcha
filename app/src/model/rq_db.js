@@ -24,12 +24,12 @@ module.exports={
     users_tri : function(city_user, tag, sexe, login, trier, filtrer){
         if(sexe!=3)
         {
-            var base = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND sexe=? AND login!=?';
+            var base = 'SELECT login, age, city, sexe, photo_1, popularity FROM ((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) WHERE city=? AND sexe=? AND login!=?';
             var val = [city_user,sexe, login];
         } 
         else
         {
-            var base = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND login!=?';
+            var base = 'SELECT login, age, city, sexe, photo_1, popularity FROM ((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) WHERE city=? AND login!=?';
             var val = [city_user, login];
         }
         if (trier)
@@ -41,9 +41,9 @@ module.exports={
                 case 'tri_loc':
                     base = base + " ORDER BY city DESC";
                     break;
-                /*case 'tri_pop':
-                    base = base + "ORDER BY popularite";
-                    break;*/
+                case 'tri_pop':
+                    base = base + "ORDER BY popularity ASC";
+                    break;
                 case 'tri_tag':
                     base = base + " ORDER BY tag DESC";
                     break;
@@ -61,17 +61,20 @@ module.exports={
                     var i = res.length-1;
                     while(i >=0)
                     {
-                        if (res[i].sexe == 0)
+                        if(res[i].photo_1)
                         {
-                            var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
-                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\"/default-user-image.png\"></a><div class=\"bd\"><span>"+
-                                    res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
-                        }
-                        else
-                        {
-                            var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
-                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\"/default-user-image.png\"></a><div class=\"bd\"><span>"+
-                                    res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            if (res[i].sexe == 0)
+                            {
+                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
+                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            }
+                            else
+                            {
+                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
+                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            }
                         }
                         i--;
                     }

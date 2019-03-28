@@ -166,6 +166,7 @@ input[type="range"]:after {
 }
 .user_mini>a >img{
     width: 100%;
+    border-radius: 50%;
 }
 .user_mini>.bd {
     display: flex;
