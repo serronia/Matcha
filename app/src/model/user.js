@@ -190,6 +190,13 @@ module.exports={
         con.query(sql, value, (err, res) => {if(err) throw(err)});
         return (0);
     },
+    geoloc:function(){
+        var geolocation = require('geolocation');
+        geolocation.getCurrentPosition(function (err, position) {
+        if (err) throw (err)
+        console.log(position);
+      })
+    },
 
     get_cle_db: function(login)
     {
