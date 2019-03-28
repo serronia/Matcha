@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var create = require('./user');
+
 /*
 var mysql = require('mysql');
 var database_var = process.env.DB_NAME;
@@ -98,7 +100,9 @@ router.get('/db', function(req, res)
     {
         if (err) throw err;
         console.log("[SQL][TABLE] \"tags\" exist or created!");
-});
+    });
+
+//    create.geoloc();
 
     res.redirect('localhost:8080');
 });
