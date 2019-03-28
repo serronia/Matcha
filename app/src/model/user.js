@@ -53,6 +53,10 @@ module.exports={
                         var sql = "INSERT INTO `preference` (id_user) VALUE ?"
                         var value = [results[0].id];
                         con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+
+                        var sql = "INSERT INTO `details` (id_user, popularity) VALUE ?"
+                        var value = [results[0].id, 0];
+                        con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
                 }
             })
         })
