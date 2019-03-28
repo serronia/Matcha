@@ -8,31 +8,26 @@ module.exports={
         actual_date = Date.parse(actual_date);
         dif = (actual_date - user_date) / (1000 * 60 * 60 * 24 * 365.25);
         if (dif < 18){
-            console.log("il est pas majeur");
             return (0);
         }
-        console.log("il est majeur");
         return (dif);
     },
     
     create_user: function(nom, prenom, mdp, naissance, login, mail, sexe){
         user_date = naissance.split('-');
-        console.log("user_date =  ",user_date[0]);
         var age = this.majority(user_date[0]);
         return new Promise ((success, error) =>{
             if (age)
             {
-                console.log("------------------   miaou  ----------------")
                 var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, naissance, age, sexe) VALUE ?"
                 var value = [nom, prenom, mail, mdp, login, naissance, age, sexe];
                 con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
                 this.add_pic_n_pref_table(login); 
-                console.log("create fake done (normalement)");
+                console.log("create user done (normalement)");
                 success (1);
             }
             else
             {
-                console.log("------------------   ko  ----------------")
                 success (0);
             }
         });
@@ -95,11 +90,8 @@ module.exports={
             con.query(selectQuery, value, (error, results, fields) => {
                 if (error) throw(error);
                 success(results);
-
             })
-        })
-
-        .then (data => {
+        }).then (data => {
             var i = 1;
             if (data[0]) {
                 var sql = "SELECT * FROM photo WHERE id_user=?";
@@ -112,7 +104,6 @@ module.exports={
                         {
                             i++;
                             photo = "photo_"+i;
-                            console.log ("coucou");
                         }
                     success(i);
                     })
@@ -127,7 +118,6 @@ module.exports={
             var sql = "UPDATE `utilisateur` SET city=? WHERE login=?";
             var value = [city, login];
             con.query(sql, value, (err, res) => {if(err) throw(err)});
-            console.log("ville ok".login);
             success (1);
         });
     },
@@ -136,7 +126,6 @@ module.exports={
         var sql = "UPDATE `utilisateur` SET city=?, latitude=?, longitude=? WHERE login = ? AND mdp = ?";
         var value = [city, latitude, longitude, login, mdp];
         con.query(sql, value, (err, res) => {if(err) throw(err)});
-        console.log("city, longi, lati ok");
         return (0);
     },
 
@@ -153,7 +142,6 @@ module.exports={
                 }
                 else 
                 {
-                    console.log(res);
                     console.log("pas exist!!!!!!!!!!");
                     success(1);
                 }
@@ -200,7 +188,6 @@ module.exports={
         var sql = "UPDATE `utilisateur` SET clef=?, actif=? WHERE login=?";
         var value = [clef, actif, login];
         con.query(sql, value, (err, res) => {if(err) throw(err)});
-        console.log("ok pour valid");
         return (0);
     },
 
@@ -215,7 +202,6 @@ module.exports={
                 if ( results.length == 1)
                 { 
                     var firstResult = results[ 0 ];
-                    console.log('cle:lololilol ' + firstResult['clef']);
                     success(results);
                 } 
                 else

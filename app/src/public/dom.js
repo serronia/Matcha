@@ -132,7 +132,6 @@ function profil_user(){
     fetch("http://localhost:8080/user_photo")
         .then(photo => photo.json())
         .then(photo => {
-            console.log("photo dans user = ", photo);
             document.getElementById("photo_profil").src=photo[0].photo_1;
             if(photo[0].photo_2)
             {

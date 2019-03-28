@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require("body-parser");
 const fs = require('fs');
-var rq_db2 = require('../model/rq_db2');
+var rq_db3 = require('../model/user');
 var formidable = require('formidable');
 
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -18,19 +18,31 @@ router.get('/', function(req, res) {
 });
 
 router.post('/modif.html',function(req, res) {
-    console.log("body = ",req.body);
     var form = new formidable.IncomingForm();
+    var sizeLimitBytes = 2999999;
     form.parse(req, function (err, fields, files) {
-        var oldpath = files.filetoupload.path;
-        console.log("old path = ", oldpath);
-        var photo = fs.readFileSync(oldpath);
-        var img = [["data:image/png;base64," +  Buffer.from(photo).toString('base64')]];
-        console.log("photo -- 64 = ", img);
-    });
-    /*var photo = fs.readFileSync(path);
-    var img = [["data:image/png;base64," +  Buffer.from(photo).toString('base64')]];
-    console.log("hpoto -- 64 = ", img);
-    //user.add_image; + penser nb pic !!*/
+        if (form.bytesReceived > sizeLimitBytes)
+        {
+            req.session.wrong = "L'image est trop grosse, veuillez en choisir une autre";
+            res.redirect('/modif_photo');
+        }
+        else
+        {
+            var oldpath = files.filetoupload.path;
+            var photo = fs.readFileSync(oldpath);
+            var img = "data:image/png;base64," +  Buffer.from(photo).toString('base64');
+            rq_db3.nb_pic(req.session.login).then(
+                nb_photo =>{
+                    rq_db3.add_picture(req.session.login, img, nb_photo).then(
+                        ret => {
+                            req.session.wrong = "";
+                            res.redirect('/modif_photo');
+                        }
+                    )
+                }
+            )
+        }
+    })
 });
 
 module.exports = router;
