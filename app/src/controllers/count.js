@@ -18,7 +18,6 @@ router.get('/', function (req, res, next) {
   res.end(req.session.views + ' views')
   console.log("loliol");
 })
-console.log("baofna'");
 
 
 module.exports = router;

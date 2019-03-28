@@ -119,6 +119,7 @@ var Modif_UserController = require('./controllers/modif_user');
 var ResetController = require('./controllers/reset');
 var count = require('./controllers/count');
 var LikeController = require('./controllers/like');
+var PhotoController = require('./controllers/modif_photo');
 
 
 
@@ -134,6 +135,7 @@ app.use('/modif_user', Modif_UserController);
 app.use('/reset', ResetController);
 app.use('/count', count);
 app.use('/like', LikeController);
+app.use('/modif_photo', PhotoController);
 
  
 app.listen(8080);
