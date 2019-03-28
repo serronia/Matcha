@@ -68,7 +68,7 @@ router.get("/user_photo", function(req, res) {
         }
         else
         {
-          res.send("/default-user-image.png")
+          res.send("erreur")
         }
       })
   });

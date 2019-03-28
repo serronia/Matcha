@@ -18,7 +18,7 @@ function menu1(){
     menu.innerHTML = '<div class="menu_head">Menu</div>'+ 
     '<div class="menu_elem"><a href="/"><i class="fas fa-home"></i>Accueil</a></div>'+
     '<div class="menu_elem"><a id="login" href="login"><i class="fas fa-power-off"></i>login</a></div>'+
-    '<div class="menu_elem" id="loginUser"><a id="loginUser2" href="./profil"></a></div>'+
+    '<div class="menu_elem" id="loginUser"><a id="loginUser2" href="/profil"></a></div>'+
     '<div class="menu_elem"><a href="chat"><i class="far fa-comments"></i>Chat</a></div>'+
     '<div class="menu_elem"><a href="likes"><i class="far fa-heart"></i>Likes</a></div>'+
     '<div class="menu_elem"><a href="recherche"><i class="fas fa-search"></i>Recherche</a></div>';
@@ -132,6 +132,7 @@ function profil_user(){
     fetch("http://localhost:8080/user_photo")
         .then(photo => photo.json())
         .then(photo => {
+            console.log("photo dans user = ", photo);
             document.getElementById("photo_profil").src=photo[0].photo_1;
             if(photo[0].photo_2)
             {
@@ -221,6 +222,7 @@ function profil_other(){
     fetch("http://localhost:8080/profil/user_photo")
         .then(photo => photo.json())
         .then(photo => {
+            console.log("photo dans user other = ", photo);
             document.getElementById("photo_profil").src=photo[0].photo_1;
             if(photo[0].photo_2)
             {

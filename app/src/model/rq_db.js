@@ -87,7 +87,7 @@ module.exports={
     },
 
     mini_user: function(login, trier, filtrer){
-        var selectQuery = 'SELECT city, tag, orientation, age  FROM (utilisateur INNER JOIN preference ON preference.id = utilisateur.id_preference) WHERE login=?';
+        var selectQuery = 'SELECT city, tag, orientation, age  FROM (utilisateur INNER JOIN preference ON preference.id_user = utilisateur.id) WHERE login=?';
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
@@ -108,7 +108,7 @@ module.exports={
                         }
                         else
                         {
-                          ret = "erreur";
+                          ret = "Il n'y a pas de profils correspondants à vos critères";
                         }
                         success(ret);
                       })
@@ -142,7 +142,7 @@ module.exports={
     },
 
     pref_user: function(login){
-        var selectQuery = 'SELECT orientation, bio, tag FROM (preference INNER JOIN utilisateur ON preference.id = utilisateur.id_preference) WHERE utilisateur.login=?';
+        var selectQuery = 'SELECT orientation, bio, tag FROM (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) WHERE utilisateur.login=?';
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
@@ -162,18 +162,18 @@ module.exports={
     },
 
     photo_user: function(login){
-        var selectQuery = 'SELECT id_photo_profile, photo_1, photo_2, photo_3, photo_4, photo_5 FROM (photo INNER JOIN utilisateur ON photo.id = utilisateur.id_photo) WHERE utilisateur.login=?';
+        var selectQuery = 'SELECT photo_1, photo_2, photo_3, photo_4, photo_5 FROM (photo INNER JOIN utilisateur ON photo.id_user = utilisateur.id) WHERE utilisateur.login=?';
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
                 if (error) throw(error);
-                if (results.length)
+                if (results[0].photo_1)
                 {
                     success(results);
                 } 
                 else
                 {
-                    success(0);
+                    success({0:{photo_1:"/default-user-image.png"}});
                 }
             }
             );
@@ -182,7 +182,7 @@ module.exports={
     },
 
     update_pref: function(atti, bio, tag, login){
-        var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id = utilisateur.id_preference) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
+        var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
         var value = [atti, bio, tag, login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
@@ -258,7 +258,7 @@ module.exports={
     },
 
     User_compl: function(login){
-        var selectQuery = 'SELECT bio, tag FROM (preference INNER JOIN utilisateur ON preference.id = utilisateur.id_photo) WHERE login=?';
+        var selectQuery = 'SELECT bio, tag FROM (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) WHERE login=?';
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
