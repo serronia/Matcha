@@ -82,9 +82,7 @@ module.exports={
         var value = [user_id1, user_id2];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
-                console.log("res dans is new = ", results);
                 if (error) throw(error);
-                console.log("res.length = ", results.length);
                 if(results.length != 0)
                     success(0);
                 else
@@ -141,7 +139,6 @@ module.exports={
                 if (error) throw(error);
                 if (results.length == 1)
                 {
-                    console.log("result =  = ", results);
                     success(results);
                 } 
                 else
@@ -161,4 +158,106 @@ module.exports={
             success(1);
         });
     },
+
+
+    users_vue : function(login){
+        var base = 'SELECT login, sexe, city, age, utilisateur.id, photo_1 \
+                    FROM (utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) \
+                    WHERE utilisateur.id IN \
+                        (SELECT id_user_1 FROM (vues INNER JOIN utilisateur ON vues.id_user_2=utilisateur.id ) \
+                        WHERE login=? ORDER BY date DESC)';
+        var val = [login]
+        selectQuery = base;
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, val, (error, res, fields) => {
+                if (error) throw(error);
+                if (res.length)
+                { 
+                    var mini = "";
+                    if(res.length >5)
+                        j = 5;
+                    else
+                        j = res.length;
+                    var i = 0;
+                    while(i < j)
+                    {
+                        if(res[i].photo_1)
+                        {
+                            if (res[i].sexe == 0)
+                            {
+                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
+                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            }
+                            else
+                            {
+                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
+                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            }
+                        }
+                        i++;
+                    }
+                    success(mini);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+    users_liked : function(login){
+        var base = 'SELECT login, sexe, city, age, utilisateur.id, photo_1 \
+        FROM (utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) \
+        WHERE utilisateur.id IN \
+            (SELECT id_user_1 FROM (likes INNER JOIN utilisateur ON likes.id_user_2=utilisateur.id ) \
+            WHERE login=? ORDER BY date DESC)';
+        var val = [login]
+        selectQuery = base;
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, val, (error, res, fields) => {
+                if (error) throw(error);
+                if (res.length)
+                { 
+                    var mini = "";
+                    if(res.length >5)
+                        j = 5;
+                    else
+                        j = res.length;
+                    var i = 0;
+                    while(i < j)
+                    {
+                        if(res[i].photo_1)
+                        {
+                            if (res[i].sexe == 0)
+                            {
+                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
+                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            }
+                            else
+                            {
+                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
+                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            }
+                        }
+                        i++;
+                    }
+                    success(mini);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+
+
 };

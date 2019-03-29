@@ -76,12 +76,10 @@ router.get("/user_photo", function(req, res) {
   });
 
   router.get("/user_detail", function(req, res) {
-    console.log("login = ", req.session.other_user)
     rq_db2.user_detail(req.session.other_user)
       .then(detail => {
         if(detail)
         {
-          console.log("detail dans profil = ", detail[0]);
           pop = detail[0].nb_vue + detail[0].nb_like*10;
           rq_db2.add_pop(pop, detail[0].id_user);
           res.send(detail[0]);
@@ -92,5 +90,35 @@ router.get("/user_photo", function(req, res) {
         }
       })
   });
+
+  router.get("/users_vue", function(req, res) {
+    rq_db2.users_vue(req.session.login)
+      .then(vues => {
+        if(vues)
+        {
+          res.send(vues);
+        }
+        else
+        {
+          res.send("")
+        }
+      })
+  });
+
+  router.get("/users_like", function(req, res) {
+    rq_db2.users_liked(req.session.login)
+      .then(like => {
+        if(like)
+        {
+          res.send(like);
+        }
+        else
+        {
+          res.send("")
+        }
+      })
+  });
+  
+  
 
 module.exports = router;

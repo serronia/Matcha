@@ -39,12 +39,14 @@
     padding: 10px;
 }
 
-.view{
+.view {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .liker{
     display: flex;
+    flex-wrap: wrap;
 }
 
 .popularité {

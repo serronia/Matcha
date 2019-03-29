@@ -144,6 +144,25 @@ function profil_user(){
                 document.getElementById("photo_3").style.display="flex";
             }
         });
+        
+    fetch("http://localhost:8080/profil/users_vue")
+        .then(vues => vues.text())
+        .then(vues => {
+            if(vues)
+                document.getElementById("view").innerHTML=vues;
+            else
+                document.getElementById("view").innerHTML="Pas de dernieres vues.";
+        });
+
+    fetch("http://localhost:8080/profil/users_like")
+        .then(like => like.text())
+        .then(like => {
+            if(like)
+                document.getElementById("liker").innerHTML=like;
+            else
+                document.getElementById("liker").innerHTML="Pas de derniers like.";
+        });
+        
     
 }
 
@@ -221,7 +240,6 @@ function profil_other(){
     fetch("http://localhost:8080/profil/user_photo")
         .then(photo => photo.json())
         .then(photo => {
-            console.log("photo dans user other = ", photo);
             document.getElementById("photo_profil").src=photo[0].photo_1;
             if(photo[0].photo_2)
             {
