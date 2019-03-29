@@ -32,6 +32,8 @@ router.post('/logintest.html', function(request, response)
                 {
                     request.session.login = post.login;
                     request.session.wrong = "";
+                    request.session.trier="";
+                    request.session.filtrer="";
                     response.redirect('/');
                 } 
                 else 

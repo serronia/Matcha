@@ -80,7 +80,7 @@ router.get("/user_photo", function(req, res) {
       .then(detail => {
         if(detail)
         {
-          pop = detail[0].nb_vue + detail[0].nb_like*10;
+          pop = detail[0].nb_vue + detail[0].nb_like*15;
           rq_db2.add_pop(pop, detail[0].id_user);
           res.send(detail[0]);
         }
@@ -111,6 +111,22 @@ router.get("/user_photo", function(req, res) {
         if(like)
         {
           res.send(like);
+        }
+        else
+        {
+          res.send("")
+        }
+      })
+  });
+  
+  router.get("/current_user_detail", function(req, res) {
+    rq_db2.user_detail(req.session.login)
+      .then(detail => {
+        if(detail)
+        {
+          pop = detail[0].nb_vue + detail[0].nb_like*15;
+          rq_db2.add_pop(pop, detail[0].id_user);
+          res.send(detail[0]);
         }
         else
         {

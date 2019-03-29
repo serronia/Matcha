@@ -25,6 +25,7 @@
     "node-fetch": "^2.3.0",
     "nodemailer": "^4.7.0",
     "nodemon": "^1.14.7",
+    "safe-buffer": "^5.1.2",
     "smtp-server": "^3.4.7",
     "socket.io": "^2.2.0",
     "uuid": "^3.3.2"

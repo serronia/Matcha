@@ -24,7 +24,7 @@ router.post('/create.html', function(request, response)
     post =request.body;
     if (mdp[0] == mdp[1])
     {
-      var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");   
+      var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
       if (regex.test(mdp[0])==true)
       {
         request.session.wrong = "";

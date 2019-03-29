@@ -42,11 +42,13 @@
 .view {
     display: flex;
     flex-wrap: wrap;
+    padding-bottom: 10px;
 }
 
 .liker{
     display: flex;
     flex-wrap: wrap;
+    padding-bottom: 10px;
 }
 
 .popularité {
@@ -56,6 +58,7 @@
     background: #49909061;
     border-radius: 60px;
     width: 18%;
+    padding-bottom: 10px;
 }
 .conteneur_horizontal {
     display: flex;

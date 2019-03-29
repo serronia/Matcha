@@ -22,16 +22,36 @@ module.exports={
     },
 
     users_tri : function(city_user, tag, sexe, login, trier, filtrer){
+        var table = "(((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) INNER JOIN preference ON preference.id_user=utilisateur.id)"
         if(sexe!=3)
         {
-            var base = 'SELECT login, age, city, sexe, photo_1, popularity FROM ((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) WHERE city=? AND sexe=? AND login!=?';
+            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND sexe=? AND login!=?';
             var val = [city_user,sexe, login];
         } 
         else
         {
-            var base = 'SELECT login, age, city, sexe, photo_1, popularity FROM ((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) WHERE city=? AND login!=?';
+            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND login!=?';
             var val = [city_user, login];
         }
+        console.log("base AVNT filtres = ", base);
+        if (filtrer)
+        {
+            var filtres = " ";
+            if(filtrer.agemin)
+                filtres= filtres + " AND age > "+ filtrer.agemin;
+            if(filtrer.agemax)
+                filtres=filtres+" AND age < "+ filtrer.agemax;
+            /*if(filtrer.kmmin)
+                filtres=filtres+" AND dist > "+ filtrer.kmmin;
+            if(filtrer.kmmax)
+                filtres=filtres+" AND dist < "+ filtrer.kmmax;*/
+            if(filtrer.tag)
+                filtres=filtres+" AND tag  LIKE '%"+ filtrer.tag+"%'";
+            console.log("filtre = ", filtres);
+            base = base + filtres;
+        }
+        
+        console.log("base apres filtres = ", base);
         if (trier)
         {
             switch (trier) {
@@ -42,15 +62,17 @@ module.exports={
                     base = base + " ORDER BY city DESC";
                     break;
                 case 'tri_pop':
-                    base = base + "ORDER BY popularity ASC";
+                    base = base + " ORDER BY popularity ASC";
                     break;
                 case 'tri_tag':
                     base = base + " ORDER BY tag DESC";
                     break;
                 default:
+                    base = base + " ";
                     break;
             }
         }
+        console.log("base apres tri = ", base);
         selectQuery = base;
         return new Promise ((success, error) =>{
             con.query(selectQuery, val, (error, res, fields) => {

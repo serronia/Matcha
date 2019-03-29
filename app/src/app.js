@@ -120,6 +120,7 @@ var ResetController = require('./controllers/reset');
 var count = require('./controllers/count');
 var LikeController = require('./controllers/like');
 var PhotoController = require('./controllers/modif_photo');
+var RechercheController = require('./controllers/recherche');
 
 
 
@@ -136,6 +137,7 @@ app.use('/reset', ResetController);
 app.use('/count', count);
 app.use('/like', LikeController);
 app.use('/modif_photo', PhotoController);
+app.use('/recherche', RechercheController);
 
  
 app.listen(8080);

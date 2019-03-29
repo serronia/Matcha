@@ -70,10 +70,8 @@ function affiche_profil(){
                                 .then(res => {
                                     if (res.length)
                                     {
-                                        var lol = "";
                                         var princ = document.getElementById("principale");
-                                        lol = res;
-                                        princ.innerHTML = lol;
+                                        princ.innerHTML = res;
                                     }
                                     else
                                     {
@@ -95,6 +93,7 @@ function affiche_profil(){
             }
         });
 }
+
 function profil_user(){
     var genre = document.getElementById("genre");
     var age = document.getElementById("age");
@@ -161,6 +160,16 @@ function profil_user(){
                 document.getElementById("liker").innerHTML=like;
             else
                 document.getElementById("liker").innerHTML="Pas de derniers like.";
+        });
+    fetch("http://localhost:8080/profil/current_user_detail")
+        .then(detail => detail.json())
+        .then(detail => {
+            var pop = document.getElementById("pop");
+            if(detail)
+            {
+                pop.innerHTML = detail.nb_vue + (detail.nb_like * 15);
+            }
+            
         });
         
     
