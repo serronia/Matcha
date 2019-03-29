@@ -4,7 +4,6 @@ module.exports={
         var table = "(((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) INNER JOIN preference ON preference.id_user=utilisateur.id)"
         var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE login!=?';
         var val = [login];
-        console.log("base AVNT filtres = ", base);
         if (filtrer)
         {
             var filtres = " ";
@@ -25,8 +24,6 @@ module.exports={
             console.log("filtre = ", filtres);
             base = base + filtres;
         }
-        
-        console.log("base apres filtres = ", base);
         if (trier)
         {
             switch (trier) {
@@ -47,7 +44,6 @@ module.exports={
                     break;
             }
         }
-        console.log("base apres tri = ", base);
         selectQuery = base;
         return new Promise ((success, error) =>{
             con.query(selectQuery, val, (error, res, fields) => {

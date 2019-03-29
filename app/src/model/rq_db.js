@@ -52,8 +52,6 @@ module.exports={
             console.log("filtre = ", filtres);
             base = base + filtres;
         }
-        
-        console.log("base apres filtres = ", base);
         if (trier)
         {
             switch (trier) {
@@ -74,7 +72,6 @@ module.exports={
                     break;
             }
         }
-        console.log("base apres tri = ", base);
         selectQuery = base;
         return new Promise ((success, error) =>{
             con.query(selectQuery, val, (error, res, fields) => {

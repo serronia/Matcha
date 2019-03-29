@@ -1,5 +1,8 @@
 
 var menu = document.getElementById("gauche");
+let liked_by = false;
+let i_like = false;
+
 
 function menu1(){
     fetch("http://localhost:8080/user")
@@ -262,12 +265,37 @@ function profil_other(){
             }
         });
 
+    fetch("http://localhost:8080/like/other_like_me")
+        .then(liked => liked.json())
+        .then(liked => {
+            var other_like_me = document.getElementById("other_like_me");
+            console.log("liked = ", liked)
+            console.log("miaou ----------------------------------")
+            if(liked)
+            {
+                liked_by = true;
+                other_like_me.innerHTML = "<i class=\"fas fa-heartbeat\"></i>Cet utilisateur vous aime";
+            }
+            else
+            {
+                other_like_me.style.display = 'none'; 
+            }
+            
+        }).then(liked => {
+            if(i_like && liked_by)
+            {
+                document.getElementById("other_like_me").style.display = 'none';
+                document.getElementById("we_match").innerHTML = "<i class=\"fas fa-heartbeat\"></i> MATCH !!"
+            }
+        });
+        
     fetch("http://localhost:8080/like/is_liked")
         .then(liked => liked.json())
         .then(liked => {
             var like = document.getElementById("like");
             if(liked)
             {
+                i_like = true;
                 like.href="/like/unlike"
                 like.innerHTML = "Ne plus aimer ce profil";
             }
@@ -276,8 +304,15 @@ function profil_other(){
                 like.href="/like"
                 like.innerHTML = "Aimer ce profil"; 
             }
-            
+        })
+        .then(liked => {
+            if(i_like && liked_by)
+            {
+                document.getElementById("we_match").innerHTML = " <i class=\"fas fa-heartbeat\"></i> MATCH !!"
+                document.getElementById("other_like_me").style.display = 'none';
+            }
         });
+
     fetch("http://localhost:8080/profil/user_detail")
         .then(detail => detail.json())
         .then(detail => {

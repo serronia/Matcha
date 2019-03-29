@@ -64,6 +64,27 @@ module.exports={
         });
     },
 
+
+    other_like_me:function(user_id1, user_id2){
+        var selectQuery = 'SELECT * FROM likes WHERE id_user_1=? AND id_user_2=?';
+        var value = [user_id2, user_id1];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if (results.length == 1)
+                {
+                    success(1);
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+
     unlike: function(user_id1, user_id2){
         return new Promise ((success, error) =>{
             var selectQuery = 'DELETE FROM likes WHERE id_user_1=? AND id_user_2=?;';
