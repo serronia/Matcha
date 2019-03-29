@@ -33,9 +33,9 @@ module.exports={
             var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND login!=?';
             var val = [city_user, login];
         }
-        console.log("base AVNT filtres = ", base);
         if (filtrer)
         {
+            console.log("filtres = -----------------", filtrer)
             var filtres = " ";
             if(filtrer.agemin)
                 filtres= filtres + " AND age > "+ filtrer.agemin;
@@ -47,6 +47,8 @@ module.exports={
                 filtres=filtres+" AND dist < "+ filtrer.kmmax;*/
             if(filtrer.tag)
                 filtres=filtres+" AND tag  LIKE '%"+ filtrer.tag+"%'";
+            if(filtrer.pop)
+                filtres=filtres+" AND popularity >= "+ filtrer.pop;
             console.log("filtre = ", filtres);
             base = base + filtres;
         }

@@ -17,7 +17,7 @@
             <div class="droite">
                 <div class="menu_head">Options</div>
                 <div class="search_elem"><i class="fas fa-exchange-alt fa-rotate-90"></i>Trier par :</div>
-                    <form method="POST" action="./trier.html">
+                    <form method="POST" action="./recherche/trier.html">
                         <div class="search_elem_intern"><input type="radio" id="tri_age" name="tri" value="tri_age"><label for="tri_age">Age</label></div>
                         <div class="search_elem_intern"><input type="radio" id="tri_loc" name="tri" value="tri_loc"><label for="tri_loc">Localisation</label></div>
                         <div class="search_elem_intern"><input type="radio" id="tri_pop" name="tri" value="tri_pop"><label for="tri_pop">Popularité</label></div>
@@ -28,12 +28,16 @@
                 
                     
                 <div class="search_elem"><i class="fas fa-filter"></i>Filtres :</div>
-                    <form method="POST" action="./filtrer.html">
+                    <form method="POST" action="./recherche/filtrer.html">
+                        <div class="search_elem_intern"><input type="radio" id="genre_femme" name="genre" value="genre_femme"><label for="tri_age">Femme</label>
+                            <input type="radio" id="genre_homme" name="genre" value="genre_homme"><label for="tri_loc">Homme</label>
+                            <input type="radio" id="genre_bi" name="genre" value="genre_bi"><label for="tri_pop">Les 2</label>
+                        </div>
                         <div class="search_elem_intern">Age : de <input type="number" name="agemin" min=18> à <input type="number" name="agemax"  min=18> ans.</div>
                         <div class="search_elem_intern">Distance : de <input type="number" name="kmmin" min=0> à <input type="number" name="kmmax"  min=0> km.</div>
                         <div class="search_elem_intern">Popularité min:
-                            <input id="slideCol" type="range" value="30" max="100" min="0" step="5">
-                            <span id="f">30</span>
+                            <input id="slideCol" type="range" name="pop" value="0" max="100" min="0" step="5">
+                            <span id="f">0</span>
                             <script>
                                 var y = document.getElementById("f");
                                 var slideCol = document.getElementById("slideCol");

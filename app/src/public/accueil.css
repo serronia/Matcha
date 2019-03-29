@@ -15,7 +15,6 @@ header {
 
 body {
     background-image: url(back1.jpg);
-    background-size: cover;
     background-repeat: repeat-x;
     background-color: black;
 }

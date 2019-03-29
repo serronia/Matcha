@@ -2,16 +2,8 @@ var con = require('../db');
 module.exports={
     users_tri : function(city_user, tag, sexe, login, trier, filtrer){
         var table = "(((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) INNER JOIN preference ON preference.id_user=utilisateur.id)"
-        if(sexe!=3)
-        {
-            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND sexe=? AND login!=?';
-            var val = [city_user,sexe, login];
-        } 
-        else
-        {
-            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND login!=?';
-            var val = [city_user, login];
-        }
+        var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE login!=?';
+        var val = [login];
         console.log("base AVNT filtres = ", base);
         if (filtrer)
         {
@@ -26,6 +18,10 @@ module.exports={
                 filtres=filtres+" AND dist < "+ filtrer.kmmax;*/
             if(filtrer.tag)
                 filtres=filtres+" AND tag  LIKE '%"+ filtrer.tag+"%'";
+            if(filtrer.pop)
+                filtres=filtres+" AND popularity >= "+ filtrer.pop;
+            if((filtrer.sexe==0 || filtrer.sexe ==1) && filtrer.sexe != 3)
+                filtres=filtres+" AND sexe = "+ filtrer.sexe;
             console.log("filtre = ", filtres);
             base = base + filtres;
         }

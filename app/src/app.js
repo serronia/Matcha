@@ -121,6 +121,7 @@ var count = require('./controllers/count');
 var LikeController = require('./controllers/like');
 var PhotoController = require('./controllers/modif_photo');
 var RechercheController = require('./controllers/recherche');
+var ChatController = require('./controllers/chat');
 
 
 
@@ -138,6 +139,8 @@ app.use('/count', count);
 app.use('/like', LikeController);
 app.use('/modif_photo', PhotoController);
 app.use('/recherche', RechercheController);
+app.use('/chat', ChatController);
+
 
  
 app.listen(8080);

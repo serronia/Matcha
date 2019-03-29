@@ -32,4 +32,42 @@ router.get('/mini_user', function(req, res) {
     })
 });
 
+router.post("/trier.html", function(req, res) {
+  post = req.body;
+  if(post.submit == "Trier")
+  {
+      req.session.trier=post.tri;
+      res.redirect('/recherche');
+      
+  }
+  else
+  {
+      req.session.trier="";
+      res.redirect('/recherche');
+  }
+});
+
+router.post("/filtrer.html", function(req, res) {
+  post = req.body;
+  console.log("post = ", post)
+  if(post.submit == "Filtrer")
+  {
+    if(post.genre == "genre_femme")
+      sexe = 1;
+    else if(post.genre == "genre_homme")
+      sexe = 0;
+    else
+      sexe = 3;
+
+      req.session.filtrer={"agemin" :post.agemin, "agemax" : post.agemax, "kmmin" :post.kmmin, "kmmax" : post.kmmax, "tag" : post.tag, "pop":post.pop, "sexe":sexe};
+      console.log("filter ---  = ", req.session.filtrer);
+      res.redirect('/recherche');
+  }
+  else
+  {
+      req.session.filtrer="";
+      res.redirect('/recherche');
+  }
+});
+
 module.exports = router;
