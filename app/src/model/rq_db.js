@@ -22,16 +22,37 @@ module.exports={
     },
 
     users_tri : function(city_user, tag, sexe, login, trier, filtrer){
+        var ban = "(SELECT id_user_2 FROM (ban INNER JOIN utilisateur ON utilisateur.id=ban.id_user_1) "
+        var table = "(((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) INNER JOIN preference ON preference.id_user=utilisateur.id)"
         if(sexe!=3)
         {
-            var base = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND sexe=? AND login!=?';
-            var val = [city_user,sexe, login];
+            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND sexe=? AND login!=? AND utilisateur.id NOT IN '+ban+'WHERE login=?)';
+            var val = [city_user, sexe, login, login];
         } 
         else
         {
-            var base = 'SELECT login, age, city, sexe FROM utilisateur WHERE city=? AND login!=?';
+            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND login!=?';
             var val = [city_user, login];
         }
+        if (filtrer)
+        {
+            var filtres = " ";
+            if(filtrer.agemin)
+                filtres= filtres + " AND age > "+ filtrer.agemin;
+            if(filtrer.agemax)
+                filtres=filtres+" AND age < "+ filtrer.agemax;
+            /*if(filtrer.kmmin)
+                filtres=filtres+" AND dist > "+ filtrer.kmmin;
+            if(filtrer.kmmax)
+                filtres=filtres+" AND dist < "+ filtrer.kmmax;*/
+            if(filtrer.tag)
+                filtres=filtres+" AND tag  LIKE '%"+ filtrer.tag+"%'";
+            if(filtrer.pop)
+                filtres=filtres+" AND popularity >= "+ filtrer.pop;
+            base = base + filtres;
+        }
+        else
+            base = base + "AND popularity >= 0";
         if (trier)
         {
             switch (trier) {
@@ -41,13 +62,14 @@ module.exports={
                 case 'tri_loc':
                     base = base + " ORDER BY city DESC";
                     break;
-                /*case 'tri_pop':
-                    base = base + "ORDER BY popularite";
-                    break;*/
+                case 'tri_pop':
+                    base = base + " ORDER BY popularity ASC";
+                    break;
                 case 'tri_tag':
                     base = base + " ORDER BY tag DESC";
                     break;
                 default:
+                    base = base + " ";
                     break;
             }
         }
@@ -61,17 +83,20 @@ module.exports={
                     var i = res.length-1;
                     while(i >=0)
                     {
-                        if (res[i].sexe == 0)
+                        if(res[i].photo_1)
                         {
-                            var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
-                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\"/default-user-image.png\"></a><div class=\"bd\"><span>"+
-                                    res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
-                        }
-                        else
-                        {
-                            var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
-                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\"/default-user-image.png\"></a><div class=\"bd\"><span>"+
-                                    res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            if (res[i].sexe == 0)
+                            {
+                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
+                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            }
+                            else
+                            {
+                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
+                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                            }
                         }
                         i--;
                     }
@@ -182,21 +207,19 @@ module.exports={
     },
 
     update_pref: function(atti, bio, tag, login){
-        var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
-        var value = [atti, bio, tag, login];
+        
         return new Promise ((success, error) =>{
+            var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
+            var value = [atti, bio, tag, login];
             con.query(selectQuery, value, (error, results, fields) => {
-                if (error) throw(error);
-                if (results.length)
-                {
-                    success(1);
-                } 
-                else
-                {
-                    success(0);
-                }
-            }
+                if (error) throw(error);}
             );
+
+            /*var selectQuery = 'INSERT INTO ';
+            var value = [atti, bio, tag, login];
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);}
+            );*/
         });
     },
 
@@ -258,14 +281,14 @@ module.exports={
     },
 
     User_compl: function(login){
-        var selectQuery = 'SELECT bio, tag FROM (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) WHERE login=?';
+        var selectQuery = 'SELECT bio, tag, photo_1 FROM ((preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) INNER JOIN photo ON photo.id_user=utilisateur.id) WHERE login=?';
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
                 if (error) throw(error);
                 if (results.length != 0)
                 {
-                    if(results[0].bio && results[0].tag)
+                    if(results[0].bio && results[0].tag && results[0].photo_1)
                     {
                         success(1);
                     }

@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var router = express.Router();
 const bcrypt = require('bcrypt');
 var db = require('../model/rq_db');
+var rq_db2 = require('../model/rq_db2');
 
 
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -32,7 +33,13 @@ router.post('/logintest.html', function(request, response)
                 {
                     request.session.login = post.login;
                     request.session.wrong = "";
-                    response.redirect('/');
+                    request.session.trier="";
+                    request.session.filtrer="";
+                    rq_db2.add_date_deco(request.session.login, false)
+                        .then(
+                            res => {
+                                response.redirect('/');
+                            });
                 } 
                 else 
                 {

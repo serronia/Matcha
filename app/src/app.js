@@ -117,9 +117,13 @@ var ValidatorController = require('./controllers/valid');
 var DecoController = require('./controllers/deco');
 var Modif_UserController = require('./controllers/modif_user');
 var ResetController = require('./controllers/reset');
-var count = require('./controllers/count');
 var LikeController = require('./controllers/like');
 var PhotoController = require('./controllers/modif_photo');
+var RechercheController = require('./controllers/recherche');
+var ChatController = require('./controllers/chat');
+var MatchController = require('./controllers/matchs');
+var BanController = require('./controllers/ban');
+
 
 
 
@@ -133,9 +137,14 @@ app.use('/creer', CreerControllers);
 app.use('/deco', DecoController);
 app.use('/modif_user', Modif_UserController);
 app.use('/reset', ResetController);
-app.use('/count', count);
 app.use('/like', LikeController);
 app.use('/modif_photo', PhotoController);
+app.use('/recherche', RechercheController);
+app.use('/chat', ChatController);
+app.use('/matchs', MatchController);
+app.use('/ban', BanController);
+
+
 
  
 app.listen(8080);

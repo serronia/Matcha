@@ -19,6 +19,7 @@
                         <img class="photo" id="photo_2" src="" style="display:none"/>
                         <img class="photo" id="photo_3" src="" style="display:none"/>
                     </div>
+                    <p id="Status"></p>
                     <p id="Login_user">Login : </p>
                     <p id="genre">Genre : </p>
                     <p id="age">Age : </p>
@@ -27,7 +28,7 @@
                         <p>Biography : <span id="bio">entrez votre bio ici (max 200char)<span></p>
                         <p>Centres d'interets : <span id="tag"> ecrivez vos centre d'interet sous la forme #interet1, #interet2</span></p>
                         <p id="ville">Ville :</p>
-                        <div >Popularité :<div class="popularité">78</div>
+                        <div >Popularité :<div class="popularité" id="pop">78</div>
                     </div>
                 </div>
             </div>
@@ -36,7 +37,11 @@
                     <div class="search_elem_intern"><i class="far fa-heart"></i>
                         <a href="/like" id="like" style="padding:10px">Aimer ce profil</a></div>
                     <div class="search_elem_intern"><i class="fas fa-ban"></i>
-                        <a href="ban" style="padding:10px">Bannir ce profil</a></div>
+                        <a href="/ban" style="padding:10px">Bannir ce profil</a></div>
+                    <div class="search_elem_intern"><i class="fas fa-exclamation-circle"></i>
+                        <a href="/ban/fake" style="padding:10px">Faux compte</a></div>
+                    <div class="search_elem_intern" id="other_like_me"></div>
+                    <div class="search_elem_intern" id="we_match"></div>
             </div>
         </div>
         <footer>Matcha</footer>

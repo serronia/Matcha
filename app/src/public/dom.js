@@ -1,5 +1,8 @@
 
 var menu = document.getElementById("gauche");
+let liked_by = false;
+let i_like = false;
+
 
 function menu1(){
     fetch("http://localhost:8080/user")
@@ -19,9 +22,9 @@ function menu1(){
     '<div class="menu_elem"><a href="/"><i class="fas fa-home"></i>Accueil</a></div>'+
     '<div class="menu_elem"><a id="login" href="login"><i class="fas fa-power-off"></i>login</a></div>'+
     '<div class="menu_elem" id="loginUser"><a id="loginUser2" href="/profil"></a></div>'+
-    '<div class="menu_elem"><a href="chat"><i class="far fa-comments"></i>Chat</a></div>'+
-    '<div class="menu_elem"><a href="likes"><i class="far fa-heart"></i>Likes</a></div>'+
-    '<div class="menu_elem"><a href="recherche"><i class="fas fa-search"></i>Recherche</a></div>';
+    '<div class="menu_elem"><a href="/chat"><i class="far fa-comments"></i>Chat</a></div>'+
+    '<div class="menu_elem"><a href="/matchs"><i class="far fa-heart"></i>Matchs</a></div>'+
+    '<div class="menu_elem"><a href="/recherche"><i class="fas fa-search"></i>Recherche</a></div>';
 };
 
 function wrong(){
@@ -70,10 +73,8 @@ function affiche_profil(){
                                 .then(res => {
                                     if (res.length)
                                     {
-                                        var lol = "";
                                         var princ = document.getElementById("principale");
-                                        lol = res;
-                                        princ.innerHTML = lol;
+                                        princ.innerHTML = res;
                                     }
                                     else
                                     {
@@ -84,7 +85,7 @@ function affiche_profil(){
                         }
                         else
                         {
-                            var princ = document.getElementById("principale").innerHTML = "<h1 style=\"color: #fffdff;\">pas de suggestion pour l'instant, veuillez completer votre profil.</h1>";
+                            var princ = document.getElementById("principale").innerHTML = "<h1 style=\"color: #fffdff;\">Pas de suggestion pour l'instant, veuillez completer votre profil.</h1>";
                         }
                     });
             }
@@ -95,6 +96,7 @@ function affiche_profil(){
             }
         });
 }
+
 function profil_user(){
     var genre = document.getElementById("genre");
     var age = document.getElementById("age");
@@ -144,6 +146,35 @@ function profil_user(){
                 document.getElementById("photo_3").style.display="flex";
             }
         });
+        
+    fetch("http://localhost:8080/profil/users_vue")
+        .then(vues => vues.text())
+        .then(vues => {
+            if(vues)
+                document.getElementById("view").innerHTML=vues;
+            else
+                document.getElementById("view").innerHTML="Pas de dernieres vues.";
+        });
+
+    fetch("http://localhost:8080/profil/users_like")
+        .then(like => like.text())
+        .then(like => {
+            if(like)
+                document.getElementById("liker").innerHTML=like;
+            else
+                document.getElementById("liker").innerHTML="Pas de derniers like.";
+        });
+    fetch("http://localhost:8080/profil/current_user_detail")
+        .then(detail => detail.json())
+        .then(detail => {
+            var pop = document.getElementById("pop");
+            if(detail)
+            {
+                pop.innerHTML = detail.nb_vue + (detail.nb_like * 15);
+            }
+            
+        });
+        
     
 }
 
@@ -180,6 +211,7 @@ function profil_other(){
     var age = document.getElementById("age");
     var ville = document.getElementById("ville");
     var login = document.getElementById("Login_user");
+    var status = document.getElementById("Status");
     fetch("http://localhost:8080/profil/get_profil")
         .then(profil => profil.json())
         .then(profil => {
@@ -190,6 +222,11 @@ function profil_other(){
             age.innerHTML="Age : "+profil[0].age;
             ville.innerHTML="Ville : "+profil[0].city;
             login.innerHTML="Login : "+profil[0].login+"  Prenom : "+profil[0].prenom+"  Nom : "+profil[0].nom;
+            if(profil[0].last_connection != null)
+                status.innerHTML = "Dernière connection : "+profil[0].last_connection.split('T')[0];
+            else
+                status.innerHTML = "<i class=\"fas fa-circle\" style=\"color: green;\"></i> En ligne";
+
         });
 
     fetch("http://localhost:8080/profil/user_pref")
@@ -221,7 +258,6 @@ function profil_other(){
     fetch("http://localhost:8080/profil/user_photo")
         .then(photo => photo.json())
         .then(photo => {
-            console.log("photo dans user other = ", photo);
             document.getElementById("photo_profil").src=photo[0].photo_1;
             if(photo[0].photo_2)
             {
@@ -235,12 +271,35 @@ function profil_other(){
             }
         });
 
+    fetch("http://localhost:8080/like/other_like_me")
+        .then(liked => liked.json())
+        .then(liked => {
+            var other_like_me = document.getElementById("other_like_me");
+            if(liked)
+            {
+                liked_by = true;
+                other_like_me.innerHTML = "<i class=\"fas fa-heartbeat\"></i>Cet utilisateur vous aime";
+            }
+            else
+            {
+                other_like_me.style.display = 'none'; 
+            }
+            
+        }).then(liked => {
+            if(i_like && liked_by)
+            {
+                document.getElementById("other_like_me").style.display = 'none';
+                document.getElementById("we_match").innerHTML = "<i class=\"fas fa-heartbeat\" style=\"color: #820000;\"></i> MATCH !!"
+            }
+        });
+        
     fetch("http://localhost:8080/like/is_liked")
         .then(liked => liked.json())
         .then(liked => {
             var like = document.getElementById("like");
             if(liked)
             {
+                i_like = true;
                 like.href="/like/unlike"
                 like.innerHTML = "Ne plus aimer ce profil";
             }
@@ -248,6 +307,23 @@ function profil_other(){
             {
                 like.href="/like"
                 like.innerHTML = "Aimer ce profil"; 
+            }
+        })
+        .then(liked => {
+            if(i_like && liked_by)
+            {
+                document.getElementById("we_match").innerHTML = " <i class=\"fas fa-heartbeat\" style=\"color: #820000;\"></i> MATCH !!"
+                document.getElementById("other_like_me").style.display = 'none';
+            }
+        });
+
+    fetch("http://localhost:8080/profil/user_detail")
+        .then(detail => detail.json())
+        .then(detail => {
+            var pop = document.getElementById("pop");
+            if(detail)
+            {
+                pop.innerHTML = detail.nb_vue + (detail.nb_like * 15);
             }
             
         });

@@ -82,4 +82,44 @@ router.get('/is_liked', function(request, response){
           }
       });
     });
+
+  router.get('/other_like_me', function(request, response){
+    rq_db.profil_user(request.session.login)
+    .then(profil =>
+      {
+        if(profil)
+        {
+            user_id1 = profil[0].id;
+            rq_db.profil_user(request.session.other_user)
+            .then(profil =>
+            {
+                if(profil)
+                {
+                  user_id2 = profil[0].id;
+                  rq_db2.other_like_me(user_id1, user_id2)
+                    .then(is_liked => {
+                      if(is_liked)
+                      {
+                        response.send("1");
+                      }
+                      else
+                      {
+                        response.send("0")
+                      }
+                    });
+                  }
+                  else
+                  {
+                    response.send("Une erreur s'est produite, veuillez contactez l'admin")
+                  }
+              })
+          }
+          else
+          {
+              response.send("Une erreur s'est produite, veuillez contactez l'admin")
+          }
+      });
+    });
+
+    
 module.exports = router;

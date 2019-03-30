@@ -3,6 +3,7 @@ var cookieSession = require('cookie-session');
 var router = express.Router();
 var bodyParser = require("body-parser");
 var rq_db = require('../model/rq_db');
+var rq_db2 = require('../model/rq_db2');
 
 router.use(cookieSession({
     name: 'session',
@@ -26,6 +27,7 @@ router.post('/profil_modif.html', function(request, response)
 
 router.get('/login/:p1', function(request, response){
     request.session.other_user = request.params.p1; 
+    rq_db2.add_view(request.session.login, request.session.other_user);
     response.sendFile('/usr/app/src/views/profil_other.html');
   });
 
@@ -72,5 +74,67 @@ router.get("/user_photo", function(req, res) {
         }
       })
   });
+
+  router.get("/user_detail", function(req, res) {
+    rq_db2.user_detail(req.session.other_user)
+      .then(detail => {
+        if(detail)
+        {
+          pop = detail[0].nb_vue + detail[0].nb_like*15;
+          rq_db2.add_pop(pop, detail[0].id_user);
+          res.send(detail[0]);
+        }
+        else
+        {
+          res.send("erreur")
+        }
+      })
+  });
+
+  router.get("/users_vue", function(req, res) {
+    rq_db2.users_vue(req.session.login)
+      .then(vues => {
+        if(vues)
+        {
+          res.send(vues);
+        }
+        else
+        {
+          res.send("")
+        }
+      })
+  });
+
+  router.get("/users_like", function(req, res) {
+    rq_db2.users_liked(req.session.login)
+      .then(like => {
+        if(like)
+        {
+          res.send(like);
+        }
+        else
+        {
+          res.send("")
+        }
+      })
+  });
+  
+  router.get("/current_user_detail", function(req, res) {
+    rq_db2.user_detail(req.session.login)
+      .then(detail => {
+        if(detail)
+        {
+          pop = detail[0].nb_vue + detail[0].nb_like*15;
+          rq_db2.add_pop(pop, detail[0].id_user);
+          res.send(detail[0]);
+        }
+        else
+        {
+          res.send("")
+        }
+      })
+  });
+  
+  
 
 module.exports = router;
