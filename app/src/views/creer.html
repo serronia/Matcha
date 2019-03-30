@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="/style2.css"  type="text/css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     </head>
-    <body>
+    <body onload = "getLocation()">
         <header> Creation </header>
         <div class="conteneur">
             <div id="gauche" class="gauche"></div>
@@ -34,7 +34,9 @@
                         <p style="text-decoration: underline";>Mes coordonneées :</p>
                         <p style="display: inline-flex;">Nom : <input type="text" name="nom" value="" required>
                         Prénom :<input type="text" name="prenom" value="" required></p>
-                        <p>Ville (à l'arrondissement prêt) : <input type="text" name="adr" value="" required></p>
+                        <p id="allow">Ville : <input type="text" name="adr" value="" required> arrondissement : <input type="number" name="arr" min="1" max="20" required></p>
+                        <input type="hidden" name="latitude" id="latitude" value="" />
+                        <input type="hidden" name="longitude" id="longitude" value="" />
                         <input type="submit" name="submit" value="OK" />
                     </form>
                 </div>
@@ -50,5 +52,37 @@
         <footer>Matcha</footer>
         <script src="/dom.js"></script>
         <script type="text/javascript">menu1();wrong();</script>
+        <script>
+            function getLocation() {
+                console.log("start getLocation");
+              if (navigator.geolocation) {
+                //navigator.geolocation.getCurrentPosition(showPosition);
+                //var nav = navigator.geolocation.getCurrentPosition();
+                navigator.geolocation.getCurrentPosition(function showPosition(position) {
+                    var lol = "Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude;
+                    console.log("coucou");
+                    console.log(lol);
+                    console.log(position);
+                    document.getElementById("longitude").value = position.coords.longitude;
+                    document.getElementById("latitude").value = position.coords.latitude;
+                    if(position.coords.longitude != "")
+                    {
+                        document.getElementById("allow").style.display = "none";
+                    }
+                    } );
+              } else { 
+                x.innerHTML = "Geolocation is not supported by this browser.";
+              }
+            }
+            
+            /*function showPosition(position) {
+              var lol = "Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude;
+              console.log("coucou");
+              console.log(lol);
+              console.log(position);
+              document.getElementById("longitude").value = position.coords.longitude;
+              document.getElementById("latitude").value = position.coords.latitude;
+            }  */                  
+        </script>
     </body>
 </html>

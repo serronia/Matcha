@@ -73,7 +73,7 @@ router.get('/new', function(request, response){
     post = request.body;
     if (post.mdp[0] == post.mdp[1])
     {
-        var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");   
+        var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W || '_').*$", "g");   
         if (regex.test(post.mdp[0])==true)
         {
             request.session.wrong = "";

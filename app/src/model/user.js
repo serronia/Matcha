@@ -1,4 +1,6 @@
 var con = require('../db');
+var fetch = require('node-fetch');
+
 
 module.exports={
     majority: function(user_date){
@@ -113,10 +115,47 @@ module.exports={
         }); 
     },
 
-    add_city: function(city, login){
+
+    coordonate_to_city:function(lat, long){
+        return new Promise((succes, error) =>{
+            fetch('http://www.mapquestapi.com/geocoding/v1/reverse?key=35fgkEqAPweOWLLCo1akTH1TFCbTOeIz&location='+lat+','+long)
+            .then((res) => res.json())
+            .then((async data =>{
+                /*console.log("debut de api geoloc");
+                console.log(data.results[0].locations[0].adminArea5);*/
+                var city = data.results[0].locations[0].adminArea5;
+                //console.log(data.results[0].locations[0].postalCode[4]);
+                var codepostal = data.results[0].locations[0].postalCode[4];
+                //console.log("fin de l'api geoloc");
+                loc = {0:{city:city, code_postal:codepostal}}
+                succes(loc);
+            }))
+
+        });
+    },
+
+    city_to_coordinate:function(city){
+        return new Promise((succes, error) =>{
+            fetch('http://www.mapquestapi.com/geocoding/v1/address?key=35fgkEqAPweOWLLCo1akTH1TFCbTOeIz&location='+city)
+            .then((res) => res.json())
+            .then((async data =>{
+                /*console.log("------------------  data et data latlng = ")
+                console.log(data["results"][0]["locations"][0]["latLng"]);
+                console.log("lat = ", data.results[0].locations[0].latLng.lat);
+                console.log("lng = ", data.results[0].locations[0].latLng.lng);*/
+                var lat = data.results[0].locations[0].latLng.lat;
+                var lng = data.results[0].locations[0].latLng.lng;
+                loc = {0:{lat:lat, lng:lng}}
+                succes(loc);
+            }))
+
+        });
+    },
+
+    add_city: function(city, arr, lat, lng, login){
         return new Promise ((success, error) =>{
-            var sql = "UPDATE `utilisateur` SET city=? WHERE login=?";
-            var value = [city, login];
+            var sql = "UPDATE `utilisateur` SET city=?, arr=?, latitude=?,longitude=?  WHERE login=?";
+            var value = [city, arr, lat, lng, login];
             con.query(sql, value, (err, res) => {if(err) throw(err)});
             success (1);
         });

@@ -33,7 +33,7 @@ router.get('/db', function(req, res)
               nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null UNIQUE,\
               mdp VARCHAR(255) not null, login VARCHAR(255) not null UNIQUE, naissance DATE,\
               age INT(255) NOT NULL, sexe BOOLEAN NOT NULL DEFAULT 1,\
-              city VARCHAR(255), latitude DOUBLE(255, 25), longitude DOUBLE(255, 25),\
+              city VARCHAR(255), arr int(2), latitude DOUBLE(255, 25), longitude DOUBLE(255, 25),\
               last_connection DATETIME, actif BOOLEAN NOT NULL DEFAULT FALSE, \
               clef VARCHAR(64) NOT NULL DEFAULT '')";
     con.query(sql, function (err, result) 
