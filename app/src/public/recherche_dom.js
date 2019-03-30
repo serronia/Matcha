@@ -51,7 +51,7 @@ function affiche_profil(){
                         }
                         else
                         {
-                            var princ = document.getElementById("principale").innerHTML = "<h1 style=\"color: #fffdff;\">pas de suggestion pour l'instant, veuillez completer votre profil.</h1>";
+                            var princ = document.getElementById("principale").innerHTML = "<h1 style=\"color: #fffdff;\">Veuillez completer votre profil pour pouvoir rechercher d'autres profils.</h1>";
                         }
                     });
             }

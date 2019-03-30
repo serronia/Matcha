@@ -278,6 +278,20 @@ module.exports={
             );
         });
     },
+    add_date_deco: function(login, deco)
+    {
+        return new Promise ((success, error) =>{
+            
+            if (deco)
+                var date = new Date(Date.now());
+            else
+                var date = null;
+            var sql = "UPDATE utilisateur SET last_connection=? WHERE login=?"
+            var value = [date, login];
+            con.query(sql, value, (err, res) => {if(err) throw(err)});
+            success(1);
+        });
+    }
 
 
 

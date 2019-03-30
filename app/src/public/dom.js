@@ -22,9 +22,9 @@ function menu1(){
     '<div class="menu_elem"><a href="/"><i class="fas fa-home"></i>Accueil</a></div>'+
     '<div class="menu_elem"><a id="login" href="login"><i class="fas fa-power-off"></i>login</a></div>'+
     '<div class="menu_elem" id="loginUser"><a id="loginUser2" href="/profil"></a></div>'+
-    '<div class="menu_elem"><a href="chat"><i class="far fa-comments"></i>Chat</a></div>'+
-    '<div class="menu_elem"><a href="likes"><i class="far fa-heart"></i>Matchs</a></div>'+
-    '<div class="menu_elem"><a href="recherche"><i class="fas fa-search"></i>Recherche</a></div>';
+    '<div class="menu_elem"><a href="/chat"><i class="far fa-comments"></i>Chat</a></div>'+
+    '<div class="menu_elem"><a href="/likes"><i class="far fa-heart"></i>Matchs</a></div>'+
+    '<div class="menu_elem"><a href="/recherche"><i class="fas fa-search"></i>Recherche</a></div>';
 };
 
 function wrong(){
@@ -85,7 +85,7 @@ function affiche_profil(){
                         }
                         else
                         {
-                            var princ = document.getElementById("principale").innerHTML = "<h1 style=\"color: #fffdff;\">pas de suggestion pour l'instant, veuillez completer votre profil.</h1>";
+                            var princ = document.getElementById("principale").innerHTML = "<h1 style=\"color: #fffdff;\">Pas de suggestion pour l'instant, veuillez completer votre profil.</h1>";
                         }
                     });
             }
@@ -211,9 +211,11 @@ function profil_other(){
     var age = document.getElementById("age");
     var ville = document.getElementById("ville");
     var login = document.getElementById("Login_user");
+    var status = document.getElementById("Status");
     fetch("http://localhost:8080/profil/get_profil")
         .then(profil => profil.json())
         .then(profil => {
+            console.log("profil dans  dom = ", profil);
             if(profil[0].sexe == 0)
                 genre.innerHTML="Genre : Homme"
             else
@@ -221,6 +223,11 @@ function profil_other(){
             age.innerHTML="Age : "+profil[0].age;
             ville.innerHTML="Ville : "+profil[0].city;
             login.innerHTML="Login : "+profil[0].login+"  Prenom : "+profil[0].prenom+"  Nom : "+profil[0].nom;
+            if(profil[0].last_connection != null)
+                status.innerHTML = "Dernière connection : "+profil[0].last_connection.split('T')[0];
+            else
+                status.innerHTML = "<i class=\"fas fa-circle\" style=\"color: green;\"></i> En ligne";
+
         });
 
     fetch("http://localhost:8080/profil/user_pref")
@@ -285,7 +292,7 @@ function profil_other(){
             if(i_like && liked_by)
             {
                 document.getElementById("other_like_me").style.display = 'none';
-                document.getElementById("we_match").innerHTML = "<i class=\"fas fa-heartbeat\"></i> MATCH !!"
+                document.getElementById("we_match").innerHTML = "<i class=\"fas fa-heartbeat\" style=\"color: #820000;\"></i> MATCH !!"
             }
         });
         
@@ -308,7 +315,7 @@ function profil_other(){
         .then(liked => {
             if(i_like && liked_by)
             {
-                document.getElementById("we_match").innerHTML = " <i class=\"fas fa-heartbeat\"></i> MATCH !!"
+                document.getElementById("we_match").innerHTML = " <i class=\"fas fa-heartbeat\" style=\"color: #820000;\"></i> MATCH !!"
                 document.getElementById("other_like_me").style.display = 'none';
             }
         });

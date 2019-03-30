@@ -282,14 +282,14 @@ module.exports={
     },
 
     User_compl: function(login){
-        var selectQuery = 'SELECT bio, tag FROM (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) WHERE login=?';
+        var selectQuery = 'SELECT bio, tag, photo_1 FROM ((preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) INNER JOIN photo ON photo.id_user=utilisateur.id) WHERE login=?';
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
                 if (error) throw(error);
                 if (results.length != 0)
                 {
-                    if(results[0].bio && results[0].tag)
+                    if(results[0].bio && results[0].tag && results[0].photo_1)
                     {
                         success(1);
                     }
