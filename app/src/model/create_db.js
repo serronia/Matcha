@@ -115,6 +115,14 @@ router.get('/db', function(req, res)
         console.log("[SQL][TABLE] \"tags\" exist or created!");
     });
 
+    var sql = "CREATE TABLE IF NOT EXISTS tags_user (id INT(255) not null auto_increment primary key,\
+                id_user INT(255) not null, id_tag INT(255) not null)";
+    con.query(sql, function (err, result) 
+    {
+        if (err) throw err;
+        console.log("[SQL][TABLE] \"tags_user\" exist or created!");
+    });
+
     var sql = "CREATE TABLE IF NOT EXISTS details (id INT(255) not null auto_increment primary key,\
                 nb_like INT(255) DEFAULT 0, nb_vue INT(255) DEFAULT 0, popularity INT(255), id_user INT(255) UNIQUE,\
                 FOREIGN KEY (id_user) REFERENCES utilisateur(id))";

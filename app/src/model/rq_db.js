@@ -51,6 +51,8 @@ module.exports={
                 filtres=filtres+" AND popularity >= "+ filtrer.pop;
             base = base + filtres;
         }
+        else
+            base = base + "AND popularity >= 0";
         if (trier)
         {
             switch (trier) {
@@ -205,21 +207,19 @@ module.exports={
     },
 
     update_pref: function(atti, bio, tag, login){
-        var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
-        var value = [atti, bio, tag, login];
+        
         return new Promise ((success, error) =>{
+            var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
+            var value = [atti, bio, tag, login];
             con.query(selectQuery, value, (error, results, fields) => {
-                if (error) throw(error);
-                if (results.length)
-                {
-                    success(1);
-                } 
-                else
-                {
-                    success(0);
-                }
-            }
+                if (error) throw(error);}
             );
+
+            /*var selectQuery = 'INSERT INTO ';
+            var value = [atti, bio, tag, login];
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);}
+            );*/
         });
     },
 
