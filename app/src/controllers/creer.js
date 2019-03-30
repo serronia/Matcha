@@ -22,9 +22,10 @@ router.post('/create.html', function(request, response)
     var mdp = request.body.mdp;
     let hash = bcrypt.hashSync(mdp[0], 10);
     post =request.body;
+    console.log("post = ", post)
     if (mdp[0] == mdp[1])
     {
-      var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+      var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W  || '_').*$", "g");   
       if (regex.test(mdp[0])==true)
       {
         request.session.wrong = "";
@@ -37,12 +38,31 @@ router.post('/create.html', function(request, response)
             .then(res => {
               if (res == 1)
               {
-                create.add_city(post.adr, post.login).then(res => {
-                  mail.send('activation', post.mail, post.login);
-                  request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
-                  response.redirect('/login');
-                })
-                
+                //console.log(post)
+                if (post.latitude != "")
+                {
+                  create.coordonate_to_city(post.latitude, post.longitude)
+                    .then( city => {
+                      console.log("city in creer.js = ", city[0]);
+                      create.add_city(city[0].city, city[0].code_postal,post.latitude,post.longitude, post.login).then(res => {
+                        mail.send('activation', post.mail, post.login);
+                        request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
+                        response.redirect('/login');
+                      })
+                    })
+                }
+                else
+                {
+                  create.city_to_coordinate(post.adr)
+                    .then( latlong => {
+                      console.log("latlong in creer.js = ", latlong[0]);
+                      create.add_city(post.adr,post.arr,latlong[0].lat, latlong[0].lng, post.login).then(res => {
+                        mail.send('activation', post.mail, post.login);
+                        request.session.mail = "Un mail de confirmation vient de vous etre envoyé";
+                        response.redirect('/login');
+                      })
+                    })
+                }             
               }
               else
               {
