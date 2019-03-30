@@ -122,6 +122,7 @@ var LikeController = require('./controllers/like');
 var PhotoController = require('./controllers/modif_photo');
 var RechercheController = require('./controllers/recherche');
 var ChatController = require('./controllers/chat');
+var MatchController = require('./controllers/matchs');
 
 
 
@@ -140,6 +141,7 @@ app.use('/like', LikeController);
 app.use('/modif_photo', PhotoController);
 app.use('/recherche', RechercheController);
 app.use('/chat', ChatController);
+app.use('/matchs', MatchController);
 
 
  

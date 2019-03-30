@@ -23,7 +23,7 @@ function menu1(){
     '<div class="menu_elem"><a id="login" href="login"><i class="fas fa-power-off"></i>login</a></div>'+
     '<div class="menu_elem" id="loginUser"><a id="loginUser2" href="/profil"></a></div>'+
     '<div class="menu_elem"><a href="/chat"><i class="far fa-comments"></i>Chat</a></div>'+
-    '<div class="menu_elem"><a href="/likes"><i class="far fa-heart"></i>Matchs</a></div>'+
+    '<div class="menu_elem"><a href="/matchs"><i class="far fa-heart"></i>Matchs</a></div>'+
     '<div class="menu_elem"><a href="/recherche"><i class="fas fa-search"></i>Recherche</a></div>';
 };
 
@@ -215,7 +215,6 @@ function profil_other(){
     fetch("http://localhost:8080/profil/get_profil")
         .then(profil => profil.json())
         .then(profil => {
-            console.log("profil dans  dom = ", profil);
             if(profil[0].sexe == 0)
                 genre.innerHTML="Genre : Homme"
             else
@@ -276,8 +275,6 @@ function profil_other(){
         .then(liked => liked.json())
         .then(liked => {
             var other_like_me = document.getElementById("other_like_me");
-            console.log("liked = ", liked)
-            console.log("miaou ----------------------------------")
             if(liked)
             {
                 liked_by = true;

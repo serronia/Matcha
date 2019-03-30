@@ -34,11 +34,9 @@ router.post("/trier.html", function(req, res) {
 
 router.post("/filtrer.html", function(req, res) {
     post = req.body;
-    console.log("post = ", post)
     if(post.submit == "Filtrer")
     {
         req.session.filtrer={"agemin" :post.agemin, "agemax" : post.agemax, "kmmin" :post.kmmin, "kmmax" : post.kmmax, "tag" : post.tag, "pop":post.pop};
-        console.log("filter ---  = ", req.session.filtrer);
         res.redirect('/');
     }
     else

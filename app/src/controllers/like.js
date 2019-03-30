@@ -96,7 +96,6 @@ router.get('/is_liked', function(request, response){
                 if(profil)
                 {
                   user_id2 = profil[0].id;
-                  console.log("user_id1, = ", user_id1, "user_id2, = ", user_id2)
                   rq_db2.other_like_me(user_id1, user_id2)
                     .then(is_liked => {
                       if(is_liked)

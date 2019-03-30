@@ -21,7 +21,6 @@ module.exports={
                 filtres=filtres+" AND popularity >= "+ filtrer.pop;
             if((filtrer.sexe==0 || filtrer.sexe ==1) && filtrer.sexe != 3)
                 filtres=filtres+" AND sexe = "+ filtrer.sexe;
-            console.log("filtre = ", filtres);
             base = base + filtres;
         }
         if (trier)
@@ -100,14 +99,53 @@ module.exports={
                     this.users_tri(results[0].city, results[0].tag, sexe, login, trier, filtrer).then(res => {
                         if (res)
                         {
-                        ret = ret + res;
+                            ret = ret + res;
                         }
                         else
                         {
-                        ret = "Il n'y a pas de profils correspondants à vos critères";
+                            ret = "Il n'y a pas de profils correspondants à vos critères";
                         }
                         success(ret);
                     })
+                } 
+                else
+                {
+                    success(0);
+                }
+            }
+            );
+        });
+    },
+
+    matchs_with_me: function(id_user){
+        var selectQuery = 'SELECT sexe, login, city, age, photo_1 \
+                            FROM ((likes INNER JOIN utilisateur ON likes.id_user_1=utilisateur.id) INNER JOIN photo ON utilisateur.id=photo.id_user) \
+                            WHERE id_user_2=? AND id_user_1 IN (SELECT id_user_2 FROM likes WHERE id_user_1=?)';
+        var value = [id_user,id_user];
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, res, fields) => {
+                if (error) throw(error);
+                if (res.length)
+                {
+                    var mini = "";
+                    var i = res.length-1;
+                    while(i >=0)
+                    {
+                        if (res[i].sexe == 0)
+                        {
+                            var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
+                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                    res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                        }
+                        else
+                        {
+                            var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
+                                    res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                    res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                        }
+                        i--;
+                    }
+                    success(mini);
                 } 
                 else
                 {

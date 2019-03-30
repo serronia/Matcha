@@ -35,7 +35,6 @@ module.exports={
         }
         if (filtrer)
         {
-            console.log("filtres = -----------------", filtrer)
             var filtres = " ";
             if(filtrer.agemin)
                 filtres= filtres + " AND age > "+ filtrer.agemin;
@@ -49,7 +48,6 @@ module.exports={
                 filtres=filtres+" AND tag  LIKE '%"+ filtrer.tag+"%'";
             if(filtrer.pop)
                 filtres=filtres+" AND popularity >= "+ filtrer.pop;
-            console.log("filtre = ", filtres);
             base = base + filtres;
         }
         if (trier)

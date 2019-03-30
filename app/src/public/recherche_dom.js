@@ -19,7 +19,7 @@ function menu1(){
     '<div class="menu_elem"><a id="login" href="login"><i class="fas fa-power-off"></i>login</a></div>'+
     '<div class="menu_elem" id="loginUser"><a id="loginUser2" href="/profil"></a></div>'+
     '<div class="menu_elem"><a href="chat"><i class="far fa-comments"></i>Chat</a></div>'+
-    '<div class="menu_elem"><a href="likes"><i class="far fa-heart"></i>Likes</a></div>'+
+    '<div class="menu_elem"><a href="/matchs"><i class="far fa-heart"></i>Matchs</a></div>'+
     '<div class="menu_elem"><a href="recherche"><i class="fas fa-search"></i>Recherche</a></div>';
 };
 
@@ -61,4 +61,21 @@ function affiche_profil(){
                 princ.innerHTML="<h1 style=\"color: #fffdff;\">Bienvenu sur matcha. Vous devez être connecté pour voir les suggestions.</h1>";
             }
         });
+}
+
+
+function affiche_match(){
+    var princ = document.getElementById("principale");
+    fetch("http://localhost:8080/matchs/matchs_with_me")
+    .then(match => match.text())
+    .then(match => {
+        if (match)
+        {
+            princ.innerHTML = match;
+        }
+        else
+        {
+            princ.innerHTML = "Vous n'avez aucuns Matchs pour l'instant";
+        }
+    });
 }
