@@ -1,9 +1,12 @@
 var con = require('../db');
+var rq_db = require('./rq_db');
+
 module.exports={
     users_tri : function(city_user, tag, sexe, login, trier, filtrer){
+        var ban = "(SELECT id_user_2 FROM (ban INNER JOIN utilisateur ON utilisateur.id=ban.id_user_1) "
         var table = "(((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) INNER JOIN preference ON preference.id_user=utilisateur.id)"
-        var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE login!=?';
-        var val = [login];
+        var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE login!=? AND utilisateur.id NOT IN'+ban+'WHERE login=?)';
+        var val = [login, login];
         if (filtrer)
         {
             var filtres = " ";
@@ -154,5 +157,75 @@ module.exports={
             }
             );
         });
+    },
+
+    ban: function(login, login_ban){
+        var user_id1="";
+        var user_id2="";
+        rq_db.profil_user(login)
+        .then(profil =>
+        {
+            if(profil)
+            {
+                user_id1 = profil[0].id;
+                rq_db.profil_user(login_ban)
+                .then(profil =>
+                {
+                    if(profil)
+                    {
+                        user_id2 = profil[0].id;
+                        return new Promise ((success, error) =>{
+                            var sql = "INSERT INTO ban (id_user_1, id_user_2) VALUE ?"
+                            var value = [user_id1, user_id2];
+                            con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+                            success(1);
+                        });
+                    }
+                    else
+                    {
+                        success("Une erreur s'est produite, veuillez contactez l'admin")
+                    }
+                })
+            }
+            else
+            {
+                success("Une erreur s'est produite, veuillez contactez l'admin")
+            }
+        })
+    },
+
+    fake: function(login, login_ban){
+        var user_id1="";
+        var user_id2="";
+        rq_db.profil_user(login)
+        .then(profil =>
+        {
+            if(profil)
+            {
+                user_id1 = profil[0].id;
+                rq_db.profil_user(login_ban)
+                .then(profil =>
+                {
+                    if(profil)
+                    {
+                        user_id2 = profil[0].id;
+                        return new Promise ((success, error) =>{
+                            var sql = "INSERT INTO fake (id_user_1, id_user_2) VALUE ?"
+                            var value = [user_id1, user_id2];
+                            con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+                            success(1);
+                        });
+                    }
+                    else
+                    {
+                        success("Une erreur s'est produite, veuillez contactez l'admin")
+                    }
+                })
+            }
+            else
+            {
+                success("Une erreur s'est produite, veuillez contactez l'admin")
+            }
+        })
     }
 };

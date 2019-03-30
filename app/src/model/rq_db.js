@@ -22,11 +22,12 @@ module.exports={
     },
 
     users_tri : function(city_user, tag, sexe, login, trier, filtrer){
+        var ban = "(SELECT id_user_2 FROM (ban INNER JOIN utilisateur ON utilisateur.id=ban.id_user_1) "
         var table = "(((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) INNER JOIN preference ON preference.id_user=utilisateur.id)"
         if(sexe!=3)
         {
-            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND sexe=? AND login!=?';
-            var val = [city_user,sexe, login];
+            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND sexe=? AND login!=? AND utilisateur.id NOT IN '+ban+'WHERE login=?)';
+            var val = [city_user, sexe, login, login];
         } 
         else
         {

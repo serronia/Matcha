@@ -72,7 +72,23 @@ router.get('/db', function(req, res)
     con.query(sql, function (err, result) 
     {
         if (err) throw err;
-        console.log("[SQL][TABLE] \"likes\" exist or created!");
+        console.log("[SQL][TABLE] \"vues\" exist or created!");
+    });
+
+    var sql = "CREATE TABLE IF NOT EXISTS ban (id INT(255) not null auto_increment primary key,\
+                id_user_1 INT(255) not null, id_user_2 INT(255) not null)";
+    con.query(sql, function (err, result) 
+    {
+    if (err) throw err;
+    console.log("[SQL][TABLE] \"ban\" exist or created!");
+    });
+
+    var sql = "CREATE TABLE IF NOT EXISTS fake (id INT(255) not null auto_increment primary key,\
+                id_user_1 INT(255) not null, id_user_2 INT(255) not null)";
+    con.query(sql, function (err, result) 
+    {
+    if (err) throw err;
+    console.log("[SQL][TABLE] \"fake\" exist or created!");
     });
 
     var sql = "CREATE TABLE IF NOT EXISTS chat (id INT(255) not null auto_increment primary key,\
@@ -105,7 +121,7 @@ router.get('/db', function(req, res)
     con.query(sql, function (err, result) 
     {
         if (err) throw err;
-        console.log("[SQL][TABLE] \"tags\" exist or created!");
+        console.log("[SQL][TABLE] \"details\" exist or created!");
 });
 
     res.redirect('localhost:8080');
