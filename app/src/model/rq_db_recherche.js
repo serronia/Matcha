@@ -35,7 +35,13 @@ module.exports={
                     base = base + " ORDER BY popularity ASC";
                     break;
                 case 'tri_tag':
-                    base = base + " ORDER BY tag DESC";
+                    //base = base + " ORDER BY tag DESC";
+                    base = "SELECT utilisateur.id, login, login_user, city, age,sexe, photo_1,latitude, longitude, tag,popularity, COUNT(*) as nb_tag \
+                            FROM ((((tags_user INNER JOIN utilisateur ON utilisateur.login=tags_user.login_user)INNER JOIN photo ON utilisateur.id=photo.id_user) \
+                            INNER JOIN preference ON utilisateur.id=preference.id_user) INNER JOIN details ON utilisateur.id=details.id_user) \
+                            WHERE login_user!=? AND id_tag IN (SELECT id_tag FROM tags_user WHERE login_user=?) \
+                            GROUP BY utilisateur.id, photo_1, tag,popularity ORDER BY nb_tag ASC"
+                    val = [login, login];
                     break;
                 default:
                     base = base + " ";
@@ -236,5 +242,124 @@ module.exports={
                 success("Une erreur s'est produite, veuillez contactez l'admin")
             }
         })
+    },
+
+    is_exist: function(tag)
+    {
+        return new Promise ((success, error) =>{
+            var sql = "SELECT * FROM tags WHERE name like ?"
+            var value = [tag];
+            con.query(sql, [[value]], (err, res) => {
+                if(err) throw(err);
+                if (res.length)
+                    success(1);
+                else
+                    success(0);
+            });
+            
+        });
+    },
+
+    add_tag2: function(tag)
+    {
+        return new Promise ((success, error) =>{
+            var sql = "INSERT INTO tags (name) VALUE ?"
+            var value = [tag];
+            con.query(sql, [[value]], (err, res) => {
+                if(err) throw(err);
+                success(1);
+            });
+            
+        });
+    },
+
+    get_tag_id: function(tag)
+    {
+        return new Promise ((success, error) =>{
+            var sql = "select id FROM tags WHERE name like ?"
+            var value = [tag];
+            con.query(sql, [[value]], (err, res) => {
+                if(err) throw(err);
+                success(res);
+            });
+            
+        });
+    },
+
+    is_exist_tag_user: function(id_tag, login)
+    {
+        return new Promise ((success, error) =>{
+            var sql = "select id FROM tags_user WHERE id_tag =? AND login =?"
+            var value = [tag];
+            con.query(sql, [value], (err, res) => {
+                if(err) throw(err);
+                if(res.length)
+                    success(1);
+                else
+                    success(0);
+            });
+        });
+    },
+
+    add_user_tag: function(login, tag)
+    {
+        var id_tag="";
+        this.get_tag_id(tag)
+        .then(tag =>
+        {
+            if(tag)
+            {
+                id_tag = tag[0].id;
+                this.is_exist_tag_user(id_tag, login)
+                .then(
+                    exist =>{
+                        if(!exist)
+                        {
+                            return new Promise ((success, error) =>{
+                                var sql = "INSERT INTO tags_user (id_tag, login_user) VALUE ?"
+                                var value = [id_tag, login];
+                                con.query(sql, [[value]], (err, res) => {
+                                    if(err) throw(err);
+                                    success(1);
+                                });
+                            });
+                        }
+                    })
+            }
+            else
+            {
+                return("Une erreur s'est produite, veuillez contactez l'admin")
+            }
+        })
+    },
+
+    add_tag: async function(tag, login)
+    {
+        var tab = tag.split(',');
+        len = tab.length;
+        var i = 0;
+        while (i < len)
+        {
+            try{
+                await this.is_exist(tab[i].trim()).then(
+                    res =>{
+                        if (res){
+                            this.add_user_tag(login, tab[i].trim());
+                        }  
+                        else{
+                            this.add_tag2(tab[i].trim()).catch((err) => console.log('caught it'));
+                            this.add_user_tag(login, tab[i].trim());
+                        }
+                })
+            }
+            catch(e)
+            {
+                console.log("erreur");
+            }
+           
+            i++;
+        }
     }
+
+
 };

@@ -67,6 +67,8 @@ module.exports={
                 if (error) throw(error);
                 if (results.length)
                 {
+                    nb_pic = nb_pic > 5 ? 5 : nb_pic;
+                    console.log("nb_pic = ", nb_pic);
                     if (nb_pic > 0)
                     {
                         var sql = "UPDATE `photo` SET photo_"+nb_pic+"=? WHERE id_user= ? ";

@@ -118,7 +118,7 @@ router.get('/db', function(req, res)
     });
 
     var sql = "CREATE TABLE IF NOT EXISTS tags_user (id INT(255) not null auto_increment primary key,\
-                id_user INT(255) not null, id_tag INT(255) not null)";
+                id_tag INT(255) not null, login_user VARCHAR(255) not null)";
     con.query(sql, function (err, result) 
     {
         if (err) throw err;

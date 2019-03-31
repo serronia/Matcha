@@ -166,6 +166,16 @@ function profil_user(){
                 document.getElementById("photo_3").src=photo[0].photo_3;
                 document.getElementById("photo_3").style.display="flex";
             }
+            if(photo[0].photo_4)
+            {
+                document.getElementById("photo_4").src=photo[0].photo_4;
+                document.getElementById("photo_4").style.display="flex";
+            }
+            if(photo[0].photo_5)
+            {
+                document.getElementById("photo_5").src=photo[0].photo_5;
+                document.getElementById("photo_5").style.display="flex";
+            }
         });
         
     fetch("http://localhost:8080/profil/users_vue")

@@ -10,7 +10,7 @@ var j = 200;
 console.log("start");
 fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
 .then((res) => res.json())
-.then((async data => {
+.then(async data => {
    
     var i = 0;
     while (i < j)
@@ -46,7 +46,7 @@ fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
         }
         
     }
-}))
+})
 res.redirect('localhost:8080');
 });
 
