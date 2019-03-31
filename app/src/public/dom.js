@@ -81,6 +81,22 @@ function affiche_profil(){
                                         var princ = document.getElementById("principale");
                                         princ.innerHTML="<h1 style=\"color: #fffdff;\">pas de suggestion pour l'instant</h1>";
                                     }
+                                })
+                                .then(res =>{
+                                    fetch("http://localhost:8080/tri")
+                                    .then(res => res.text())
+                                    .then(res => {
+                                        if(res == "tri_loc")
+                                        {
+                                            var tab = document.getElementsByClassName("user_mini");
+                                            for(var i = 0; i < tab.length-1; i++)
+                                            {
+                                                var regex2 = /(id="dist">)([\d]+)/g;
+                                                tab[i].style.order=regex2.exec(tab[i].innerHTML)[2];
+                                            }
+                                        }
+                                        
+                                    });
                                 });
                         }
                         else

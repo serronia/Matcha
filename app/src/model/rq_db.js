@@ -1,4 +1,5 @@
 var con = require('../db');
+var rq_db_re = require('./rq_db_recherche');
 
 module.exports={
     get_mdp: function(login){
@@ -21,17 +22,17 @@ module.exports={
         });
     },
 
-    users_tri : function(city_user, tag, sexe, login, trier, filtrer){
+    users_tri : function(city_user, tag, sexe, login, trier, filtrer, lat, lng){
         var ban = "(SELECT id_user_2 FROM (ban INNER JOIN utilisateur ON utilisateur.id=ban.id_user_1) "
         var table = "(((utilisateur INNER JOIN photo ON photo.id_user=utilisateur.id) INNER JOIN details ON details.id_user=utilisateur.id) INNER JOIN preference ON preference.id_user=utilisateur.id)"
         if(sexe!=3)
         {
-            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND sexe=? AND login!=? AND utilisateur.id NOT IN '+ban+'WHERE login=?)';
+            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity, latitude, longitude FROM '+table+' WHERE city=? AND sexe=? AND login!=? AND utilisateur.id NOT IN '+ban+'WHERE login=?)';
             var val = [city_user, sexe, login, login];
         } 
         else
         {
-            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity FROM '+table+' WHERE city=? AND login!=?';
+            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity, latitude, longitude FROM '+table+' WHERE city=? AND login!=?';
             var val = [city_user, login];
         }
         if (filtrer)
@@ -41,10 +42,6 @@ module.exports={
                 filtres= filtres + " AND age > "+ filtrer.agemin;
             if(filtrer.agemax)
                 filtres=filtres+" AND age < "+ filtrer.agemax;
-            /*if(filtrer.kmmin)
-                filtres=filtres+" AND dist > "+ filtrer.kmmin;
-            if(filtrer.kmmax)
-                filtres=filtres+" AND dist < "+ filtrer.kmmax;*/
             if(filtrer.tag)
                 filtres=filtres+" AND tag  LIKE '%"+ filtrer.tag+"%'";
             if(filtrer.pop)
@@ -85,17 +82,21 @@ module.exports={
                     {
                         if(res[i].photo_1)
                         {
-                            if (res[i].sexe == 0)
+                            var dist = rq_db_re.dist(lat, lng, res[i].latitude, res[i].longitude);
+                            if(dist >= filtrer.kmmin && dist <= filtrer.kmmax)
                             {
-                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span>"+
-                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
-                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
-                            }
-                            else
-                            {
-                                var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span>"+
-                                        res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
-                                        res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                                if (res[i].sexe == 0)
+                                {
+                                    var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span id=\"dist\">"+dist+" km</span><span>"+
+                                            res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                            res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                                }
+                                else
+                                {
+                                    var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span id=\"dist\">"+dist+" km</span><span>"+
+                                            res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                            res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                                }
                             }
                         }
                         i--;
@@ -112,7 +113,7 @@ module.exports={
     },
 
     mini_user: function(login, trier, filtrer){
-        var selectQuery = 'SELECT city, tag, orientation, age  FROM (utilisateur INNER JOIN preference ON preference.id_user = utilisateur.id) WHERE login=?';
+        var selectQuery = 'SELECT city, tag, orientation, age, latitude, longitude  FROM (utilisateur INNER JOIN preference ON preference.id_user = utilisateur.id) WHERE login=?';
         var value = [login];
         return new Promise ((success, error) =>{
             con.query(selectQuery, value, (error, results, fields) => {
@@ -126,7 +127,7 @@ module.exports={
                         sexe=1;
                     else
                         sexe=3;
-                    this.users_tri(results[0].city, results[0].tag, sexe, login, trier, filtrer).then(res => {
+                    this.users_tri(results[0].city, results[0].tag, sexe, login, trier, filtrer, results[0].latitude, results[0].longitude).then(res => {
                         if (res)
                         {
                           ret = ret + res;

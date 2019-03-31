@@ -9,16 +9,11 @@ module.exports={
         var val = [login, login];
         if (filtrer)
         {
-            //var dist = this.dist(lat, lng, )
             var filtres = " ";
             if(filtrer.agemin)
                 filtres= filtres + " AND age > "+ filtrer.agemin;
             if(filtrer.agemax)
                 filtres=filtres+" AND age < "+ filtrer.agemax;
-            /*if(filtrer.kmmin)
-                filtres=filtres+" AND dist > "+ filtrer.kmmin;
-            if(filtrer.kmmax)
-                filtres=filtres+" AND dist < "+ filtrer.kmmax;*/
             if(filtrer.tag)
                 filtres=filtres+" AND tag  LIKE '%"+ filtrer.tag+"%'";
             if(filtrer.pop)
@@ -48,7 +43,6 @@ module.exports={
             }
         }
         selectQuery = base;
-        console.log("base = ", selectQuery)
         return new Promise ((success, error) =>{
             con.query(selectQuery, val, (error, res, fields) => {
                 if (error) throw(error);
@@ -61,19 +55,17 @@ module.exports={
                         if(res[i].photo_1)
                         {
                             var dist = this.dist(lat, lng, res[i].latitude, res[i].longitude);
-                            console.log("dist = ", dist)
-                            console.log("filtres = ", filtrer);
                             if(dist >= filtrer.kmmin && dist <= filtrer.kmmax)
                             {
                                 if (res[i].sexe == 0)
                                 {
-                                    var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i>"+dist+"<span>"+
+                                    var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span id=\"dist\">"+dist+" km</span><span>"+
                                             res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
                                             res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
                                 }
                                 else
                                 {
-                                    var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i>"+dist+"<span>"+
+                                    var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span id=\"dist\">"+dist+" km</span><span>"+
                                             res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
                                             res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
                                 }
@@ -208,7 +200,6 @@ module.exports={
         var from = {lat: lat_1, lon: long_1};
         var to = {lat: lat_2, lon: long_2};
         var dist = geodist(from, to, {unit: 'km'})
-        console.log("il y a "+dist+" kilometre entre les deux users");
         return (dist);
     },
 

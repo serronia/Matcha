@@ -56,18 +56,12 @@
             function getLocation() {
                 console.log("start getLocation");
               if (navigator.geolocation) {
-                //navigator.geolocation.getCurrentPosition(showPosition);
-                //var nav = navigator.geolocation.getCurrentPosition();
                 navigator.geolocation.getCurrentPosition(function showPosition(position) {
                     var lol = "Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude;
-                    console.log("coucou");
-                    console.log(lol);
-                    console.log(position);
                     document.getElementById("longitude").value = position.coords.longitude;
                     document.getElementById("latitude").value = position.coords.latitude;
                     if(position.coords.longitude != "")
                     {
-                        //document.getElementById("allow").required = false;
                         document.getElementById("adr").removeAttribute("required");
                         document.getElementById("arr").removeAttribute("required");
                         document.getElementById("allow").style.display = "none";
@@ -76,16 +70,7 @@
               } else { 
                 x.innerHTML = "Geolocation is not supported by this browser.";
               }
-            }
-            
-            /*function showPosition(position) {
-              var lol = "Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude;
-              console.log("coucou");
-              console.log(lol);
-              console.log(position);
-              document.getElementById("longitude").value = position.coords.longitude;
-              document.getElementById("latitude").value = position.coords.latitude;
-            }  */                  
+            }             
         </script>
     </body>
 </html>

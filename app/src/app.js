@@ -31,6 +31,9 @@ app.get("/wrong", function(req, res) {
 app.get("/mail_alert", function(req, res) {
   res.send(req.session.mail);
 });
+app.get("/tri", function(req, res) {
+  res.send(req.session.trier);
+});
 
 
 app.get("/mini_user", function(req, res) {
