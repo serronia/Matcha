@@ -30,7 +30,7 @@
                 <div class="search_elem"><i class="fas fa-filter"></i>Filtres :</div>
                     <form method="POST" action="./filtrer.html">
                         <div class="search_elem_intern">Age : de <input type="number" name="agemin" min=18> à <input type="number" name="agemax"  min=18> ans.</div>
-                        <div class="search_elem_intern">Distance : de <input type="number" name="kmmin" min=0> à <input type="number" name="kmmax"  min=0> km.</div>
+                        <div class="search_elem_intern">Distance : de <input type="number" name="kmmin" min=0 value=0> à <input type="number" name="kmmax"  min=0 value=2000> km.</div>
                         <div class="search_elem_intern">Popularité min:
                             <input id="slideCol" type="range" name="pop" value="0" max="100" min="0" step="5">
                             <span id="f">0</span>
@@ -42,7 +42,7 @@
                                 }
                             </script>
                         </div>
-                        <div class="search_elem_intern">Tag : <input type="text" name="tag" >.</div> (un seul à la fois).
+                        <div class="search_elem_intern">Tag : <input type="text" name="tag" >(un seul à la fois)</div> 
                         <div class="search_elem_intern"><input type="submit" name="submit" value="Filtrer"/></div>
                     </form>
             </div>

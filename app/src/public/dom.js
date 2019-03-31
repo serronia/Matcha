@@ -8,11 +8,16 @@ function menu1(){
     fetch("http://localhost:8080/user")
         .then(response => response.text())
         .then(response => {
-            if (response != "NomUser")
+            console.log("response = ", response)
+            if (response)
+                login=response;
+            else
+                login="NomUser";
+            if (login != "NomUser")
             {document.getElementById("login").innerHTML = "<i class=\"fas fa-power-off\"></i>Deconnection";
             document.getElementById("login").href = "/deco";
             document.getElementById("loginUser").style.display="flex";
-            document.getElementById("loginUser2").innerHTML = "<i class=\"fas fa-user\"></i>"+response;}
+            document.getElementById("loginUser2").innerHTML = "<i class=\"fas fa-user\"></i>"+login;}
             else{
                 document.getElementById("loginUser").style.display="none";
             }
@@ -81,6 +86,22 @@ function affiche_profil(){
                                         var princ = document.getElementById("principale");
                                         princ.innerHTML="<h1 style=\"color: #fffdff;\">pas de suggestion pour l'instant</h1>";
                                     }
+                                })
+                                .then(res =>{
+                                    fetch("http://localhost:8080/tri")
+                                    .then(res => res.text())
+                                    .then(res => {
+                                        if(res == "tri_loc")
+                                        {
+                                            var tab = document.getElementsByClassName("user_mini");
+                                            for(var i = 0; i < tab.length-1; i++)
+                                            {
+                                                var regex2 = /(id="dist">)([\d]+)/g;
+                                                tab[i].style.order=regex2.exec(tab[i].innerHTML)[2];
+                                            }
+                                        }
+                                        
+                                    });
                                 });
                         }
                         else
