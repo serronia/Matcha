@@ -52,8 +52,8 @@ router.get('/db', function(req, res)
     });
 
     var sql = "CREATE TABLE IF NOT EXISTS photo (id INT(255) not null auto_increment primary key, id_user INT(255) UNIQUE,\
-              photo_1 VARCHAR(255), photo_2 VARCHAR(255),\
-              photo_3 VARCHAR(255), photo_4 VARCHAR(255), photo_5 VARCHAR(255),\
+                photo_1 TEXT(200000), photo_2 TEXT(200000),\
+                photo_3 TEXT(200000), photo_4 TEXT(200000), photo_5 TEXT(200000),\
               FOREIGN KEY (id_user) REFERENCES utilisateur(id))";
     con.query(sql, function (err, result) 
     {
@@ -133,9 +133,6 @@ router.get('/db', function(req, res)
         if (err) throw err;
         console.log("[SQL][TABLE] \"details\" exist or created!");
 });
-
-    create.geoloc();
-
     res.redirect('localhost:8080');
 });
 

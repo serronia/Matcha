@@ -34,7 +34,7 @@
                         <p style="text-decoration: underline";>Mes coordonneées :</p>
                         <p style="display: inline-flex;">Nom : <input type="text" name="nom" value="" required>
                         Prénom :<input type="text" name="prenom" value="" required></p>
-                        <p id="allow">Ville : <input type="text" name="adr" value="" required> arrondissement : <input type="number" name="arr" min="1" max="20" required></p>
+                        <p id="allow">Ville : <input type="text" name="adr" id="adr" value="" required> arrondissement : <input type="number" name="arr" id="arr" min="1" max="20" required></p>
                         <input type="hidden" name="latitude" id="latitude" value="" />
                         <input type="hidden" name="longitude" id="longitude" value="" />
                         <input type="submit" name="submit" value="OK" />
@@ -67,6 +67,9 @@
                     document.getElementById("latitude").value = position.coords.latitude;
                     if(position.coords.longitude != "")
                     {
+                        //document.getElementById("allow").required = false;
+                        document.getElementById("adr").removeAttribute("required");
+                        document.getElementById("arr").removeAttribute("required");
                         document.getElementById("allow").style.display = "none";
                     }
                     } );
