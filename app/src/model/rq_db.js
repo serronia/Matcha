@@ -32,8 +32,8 @@ module.exports={
         } 
         else
         {
-            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity, latitude, longitude FROM '+table+' WHERE city=? AND login!=?';
-            var val = [city_user, login];
+            var base = 'SELECT login, age, city, sexe, photo_1, tag, popularity, latitude, longitude FROM '+table+' WHERE city=? AND login!=? AND utilisateur.id NOT IN '+ban+'WHERE login=?)';
+            var val = [city_user, login, login];
         }
         if (filtrer)
         {
@@ -63,7 +63,14 @@ module.exports={
                     base = base + " ORDER BY popularity ASC";
                     break;
                 case 'tri_tag':
-                    base = base + " ORDER BY tag DESC";
+                    //base = base + " ORDER BY tag DESC";
+                    //SELECT login_user, COUNT(*) FROM tags_user WHERE login_user!='otterqueen' AND id_tag IN (SELECT id_tag FROM tags_user WHERE login_user='otterqueen') GROUP BY login_user
+                    base = "SELECT utilisateur.id, login, login_user, city, age,sexe, photo_1,latitude, longitude, tag,popularity, COUNT(*) as nb_tag \
+                            FROM ((((tags_user INNER JOIN utilisateur ON utilisateur.login=tags_user.login_user)INNER JOIN photo ON utilisateur.id=photo.id_user) \
+                            INNER JOIN preference ON utilisateur.id=preference.id_user) INNER JOIN details ON utilisateur.id=details.id_user) \
+                            WHERE login_user!=? AND city=? AND id_tag IN (SELECT id_tag FROM tags_user WHERE login_user=?) \
+                            GROUP BY utilisateur.id, photo_1, tag,popularity ORDER BY nb_tag DESC"
+                    val = [login, city_user, login];
                     break;
                 default:
                     base = base + " ";
@@ -207,21 +214,17 @@ module.exports={
 
     },
 
-    update_pref: function(atti, bio, tag, login){
-        
-        return new Promise ((success, error) =>{
-            var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
-            var value = [atti, bio, tag, login];
-            con.query(selectQuery, value, (error, results, fields) => {
-                if (error) throw(error);}
-            );
-
-            /*var selectQuery = 'INSERT INTO ';
-            var value = [atti, bio, tag, login];
-            con.query(selectQuery, value, (error, results, fields) => {
-                if (error) throw(error);}
-            );*/
-        });
+    update_pref: async function(atti, bio, tag, login){
+        rq_db_re.add_tag(tag, login).then(
+            res=>{
+                return new Promise ((success, error) =>{
+                    var selectQuery = 'UPDATE (preference INNER JOIN utilisateur ON preference.id_user = utilisateur.id) SET orientation=?, bio=?, tag=? WHERE utilisateur.login=?';
+                    var value = [atti, bio, tag, login];
+                    con.query(selectQuery, value, (error, results, fields) => {
+                        if (error) throw(error);}
+                    );
+                });
+            })
     },
 
     modif_user: function(oldlogin, login, mail, genre, nom, prenom, adr){
