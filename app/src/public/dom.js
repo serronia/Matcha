@@ -8,11 +8,16 @@ function menu1(){
     fetch("http://localhost:8080/user")
         .then(response => response.text())
         .then(response => {
-            if (response != "NomUser")
+            console.log("response = ", response)
+            if (response)
+                login=response;
+            else
+                login="NomUser";
+            if (login != "NomUser")
             {document.getElementById("login").innerHTML = "<i class=\"fas fa-power-off\"></i>Deconnection";
             document.getElementById("login").href = "/deco";
             document.getElementById("loginUser").style.display="flex";
-            document.getElementById("loginUser2").innerHTML = "<i class=\"fas fa-user\"></i>"+response;}
+            document.getElementById("loginUser2").innerHTML = "<i class=\"fas fa-user\"></i>"+login;}
             else{
                 document.getElementById("loginUser").style.display="none";
             }

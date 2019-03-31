@@ -14,7 +14,10 @@ router.use(cookieSession({
   }))
 
 router.get('/', function(req, res) {
-    res.sendFile('/usr/app/src/views/modif_photo.html');
+    if((req.session.login == "NomUser") || (!req.session.login))
+      res.redirect('/login');
+    else
+      res.sendFile('/usr/app/src/views/modif_photo.html');
 });
 
 router.post('/modif.html',function(req, res) {

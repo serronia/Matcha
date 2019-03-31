@@ -11,7 +11,10 @@ router.use(cookieSession({
   }))
 
 router.get('/', function(req, res) {
-    res.sendFile('/usr/app/src/views/matchs.html');
+    if((req.session.login == "NomUser") || (!req.session.login))
+      res.redirect('/login');
+    else
+      res.sendFile('/usr/app/src/views/matchs.html');
 });
 
 router.get('/matchs_with_me', function(req, res) {

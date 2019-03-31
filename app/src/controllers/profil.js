@@ -13,6 +13,9 @@ router.use(cookieSession({
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/', function(req, res) {
+  if((req.session.login == "NomUser") || (!req.session.login))
+    res.redirect('/login');
+  else
     res.sendFile('/usr/app/src/views/profil.html');
 });
 

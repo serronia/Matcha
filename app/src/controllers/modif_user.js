@@ -13,8 +13,11 @@ router.use(cookieSession({
   }))
 
 router.get('/', function(req, res) {
-    res.sendFile('/usr/app/src/views/modif_user.html');
-});
+    if((req.session.login == "NomUser") || (!req.session.login))
+      res.redirect('/login');
+    else
+      res.sendFile('/usr/app/src/views/modif_user.html');
+  });
 
 router.get("/auto_compl", function(req, res) {
     rq_db.profil_user(req.session.login)

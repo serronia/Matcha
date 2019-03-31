@@ -15,6 +15,7 @@ router.get('/', function(req, res) {
     res.sendFile('/usr/app/src/views/accueil.html');
     req.session.wrong = "";
     req.session.mail = "";
+    console.log("login = ", req.session.login)
 });
 
 router.post("/trier.html", function(req, res) {
