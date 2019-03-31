@@ -133,9 +133,6 @@ router.get('/db', function(req, res)
         if (err) throw err;
         console.log("[SQL][TABLE] \"details\" exist or created!");
 });
-
-    create.geoloc();
-
     res.redirect('localhost:8080');
 });
 
