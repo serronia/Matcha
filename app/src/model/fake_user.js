@@ -3,6 +3,8 @@ var router = express.Router();
 var fetch = require('node-fetch');
 const util = require('util');
 var create = require('./user');
+const request = require('request');
+
 
 router.get('/fake_user', function(req, res)
 {
@@ -38,10 +40,7 @@ fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
                                     console.log(i);
                                 });
                                 
-                    */       
-                        var lol = create.ip_is();
-                        console.log("l'ip = ");
-                        console.log(lol);
+                    */ 
                     }
                     console.log("user a ete creer");
                     i++;

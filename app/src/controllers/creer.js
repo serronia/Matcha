@@ -39,6 +39,10 @@ router.post('/create.html', function(request, response)
               {
                 if (post.latitude != "")
                 {
+                  console.log("latitude = ");
+                  console.log(post.latitude);
+                  console.log("longitude = ");
+                  console.log(post.longitude);
                   create.coordonate_to_city(post.latitude, post.longitude)
                     .then( city => {
                       create.add_city(city[0].city, city[0].code_postal,post.latitude,post.longitude, post.login).then(res => {

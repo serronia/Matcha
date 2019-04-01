@@ -241,11 +241,18 @@ module.exports={
           }
     },
 
-     ip_is:function(){
-       var ip = request.connection.remoteAddress;
-       return (ip);
+    ip_loc: function()
+    {
+        fetch('http://ip-api.com/json')
+        .then((res) => res.json())
+        .then(async data =>{
+    console.log("latitude de user par ip = ");
+    console.log(data.lat);
+    console.log("longitude de user par ip = ");
+    console.log(data.lon);
+        })
     },
-    
+
     get_cle_db: function(login)
     {
         var selectQuery = 'SELECT clef FROM utilisateur where login=?';

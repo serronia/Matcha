@@ -53,11 +53,55 @@
         <script src="/dom.js"></script>
         <script type="text/javascript">menu1();wrong();</script>
         <script>
+            var options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+            };
+
+            function success(pos) {
+            var crd = pos.coords;
+
+    /*        console.log('Votre position actuelle est :');
+            console.log(`Latitude : ${crd.latitude}`);
+            console.log(`Longitude : ${crd.longitude}`);
+            console.log(`La précision est de ${crd.accuracy} mètres.`);
+            */            }
+
+            function error(err) {
+            //console.warn(`ERREUR (${err.code}): ${err.message}`); 
+            fetch('http://ip-api.com/json')
+                .then((res) => res.json())
+                .then(async data =>{
+           console.log("latitude de user par ip = ");
+            console.log(data.lat);
+            console.log("longitude de user par ip = ");
+            console.log(data.lon);
+            document.getElementById("longitude").value = data.lon;
+            document.getElementById("latitude").value = data.lat;           
+            if(data.lat != "")
+                    {
+                        document.getElementById("adr").removeAttribute("required");
+                        document.getElementById("arr").removeAttribute("required");
+                        document.getElementById("allow").style.display = "none";
+                    }
+                      })
+            }
+
+            navigator.geolocation.getCurrentPosition(success, error, options);
             function getLocation() {
-                console.log("start getLocation");
+                console.log('location1');
+                console.log(navigator);
+                console.log(navigator.geolocation)
+                console.log('---------------------------')
               if (navigator.geolocation) {
+                //   console.log('locatation2');
+                //   console.log(navigator.geolocation.getCurrentPosition(function showPosition(position) {}));
                 navigator.geolocation.getCurrentPosition(function showPosition(position) {
+                    console.log('yo');
                     var lol = "Latitude: " + position.coords.latitude +  "<br>Longitude: " + position.coords.longitude;
+                    console.log('lol');
+                    console.log(lol);
                     document.getElementById("longitude").value = position.coords.longitude;
                     document.getElementById("latitude").value = position.coords.latitude;
                     if(position.coords.longitude != "")
@@ -67,10 +111,11 @@
                         document.getElementById("allow").style.display = "none";
                     }
                     } );
-              } else { 
-                x.innerHTML = "Geolocation is not supported by this browser.";
+              } else{
+                  console.log("time out entre dans le else");
               }
-            }             
+             
+        }             
         </script>
     </body>
 </html>
