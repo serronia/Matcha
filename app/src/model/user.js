@@ -1,6 +1,6 @@
 var con = require('../db');
 var fetch = require('node-fetch');
-
+var request = require('request');
 
 module.exports={
     majority: function(user_date){
@@ -163,9 +163,9 @@ module.exports={
         });
     },
 
-    fake_localisation: function(login, mdp, city, latitude, longitude){
-        var sql = "UPDATE `utilisateur` SET city=?, latitude=?, longitude=? WHERE login = ? AND mdp = ?";
-        var value = [city, latitude, longitude, login, mdp];
+    fake_localisation: function(login, mdp, city, latitude, longitude, arr){
+        var sql = "UPDATE `utilisateur` SET city=?, arr=?, latitude=?, longitude=? WHERE login = ? AND mdp = ?";
+        var value = [city, arr, latitude, longitude, login, mdp];
         con.query(sql, value, (err, res) => {if(err) throw(err)});
         return (0);
     },
@@ -199,28 +199,28 @@ module.exports={
 
     random_city: function(){
         var city = [
-            ["Paris", "75001", "48.84495494047618", "2.376084880952381"],
-            ["Saint-Ay", "45130", "47.860911", "1.752895"],
-            ["Orleans", "45000", "47.903914", "1.902856"],
-            ["Orleans", "45000", "47.901519", "1.907513"],
-            ["Paris", "75009", "48.878500", "2.348276"],
-            ["Paris", "75005", "48.843674", "2.353916"],
-            ["Paris", "75017", "48.888758", "2.310995"],
-            ["Lyon", "69002", "45.739428", "4.818012"],
-            ["Lyon", "69005", "45.751808", "45.751808"],
-            ["lyon", "69401", "45.760756", "4.852178"],
-            ["Marseille", "13008", "43.276430", "5.378462"],
-            ["Marseille", "13003", "43.309650", "5.384995"],
-            ["Toulon", "83000", "43.123331", "5.930767"],
-            ["Rennes", "35000", "48.115595", "-1.675276"],
-            ["Nancy", "54000", "48.693798", "6.186916"],
-            ["Toulouse", "31000", "43.605553", "1.435772"],
-            ["Caen", "14000", "49.179240", "-0.373033"],
-            ["Nice", "06300", "43.695197", "7.269949"],
-            ["Tours", "37000", "47.377760", "0.675022"],
-            ["Blois", "41000", "47.590098", "1.321244"],
-            ["Giens", "45500", "47.695641", "2.639129"],
-            ["Saint-Etienne", "42000", "45.430198", "4.401099"]]
+            ["Paris", "75001", "48.84495494047618", "2.376084880952381", "1"],
+            ["Saint-Ay", "45130", "47.860911", "1.752895", "0"],
+            ["Orleans", "45000", "47.903914", "1.902856", "0"],
+            ["Orleans", "45000", "47.901519", "1.907513", "0"],
+            ["Paris", "75009", "48.878500", "2.348276", "9"],
+            ["Paris", "75005", "48.843674", "2.353916", "5"],
+            ["Paris", "75017", "48.888758", "2.310995", "17"],
+            ["Lyon", "69002", "45.739428", "4.818012", "2"],
+            ["Lyon", "69005", "45.751808", "45.751808", "5"],
+            ["Lyon", "69401", "45.760756", "4.852178", "0"],
+            ["Marseille", "13008", "43.276430", "5.378462", "8"],
+            ["Marseille", "13003", "43.309650", "5.384995", "3"],
+            ["Toulon", "83000", "43.123331", "5.930767", "0"],
+            ["Rennes", "35000", "48.115595", "-1.675276", "0"],
+            ["Nancy", "54000", "48.693798", "6.186916", "0"],
+            ["Toulouse", "31000", "43.605553", "1.435772", "0"],
+            ["Caen", "14000", "49.179240", "-0.373033", "0"],
+            ["Nice", "06300", "43.695197", "7.269949", "0"],
+            ["Tours", "37000", "47.377760", "0.675022", "0"],
+            ["Blois", "41000", "47.590098", "1.321244", "0"],
+            ["Giens", "45500", "47.695641", "2.639129", "0"],
+            ["Saint-Etienne", "42000", "45.430198", "4.401099"], "0"]
             var int = Math.random() * 22;
 	        int = Math.floor(int);
         return (city[int]);
@@ -239,8 +239,13 @@ module.exports={
           } else { 
             x.innerHTML = "Geolocation is not supported by this browser.";
           }
-        },
+    },
 
+     ip_is:function(){
+       var ip = request.connection.remoteAddress;
+       return (ip);
+    },
+    
     get_cle_db: function(login)
     {
         var selectQuery = 'SELECT clef FROM utilisateur where login=?';
