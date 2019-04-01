@@ -291,7 +291,77 @@ module.exports={
             con.query(sql, value, (err, res) => {if(err) throw(err)});
             success(1);
         });
-    }
+    },
+
+    ban: function(login, login_ban){
+        var user_id1="";
+        var user_id2="";
+        rq_db.profil_user(login)
+        .then(profil =>
+        {
+            if(profil)
+            {
+                user_id1 = profil[0].id;
+                rq_db.profil_user(login_ban)
+                .then(profil =>
+                {
+                    if(profil)
+                    {
+                        user_id2 = profil[0].id;
+                        return new Promise ((success, error) =>{
+                            var sql = "INSERT INTO ban (id_user_1, id_user_2) VALUE ?"
+                            var value = [user_id1, user_id2];
+                            con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+                            success(1);
+                        });
+                    }
+                    else
+                    {
+                        return("Une erreur s'est produite, veuillez contactez l'admin")
+                    }
+                })
+            }
+            else
+            {
+                return("Une erreur s'est produite, veuillez contactez l'admin")
+            }
+        })
+    },
+    fake: function(login, login_ban){
+        var user_id1="";
+        var user_id2="";
+        rq_db.profil_user(login)
+        .then(profil =>
+        {
+            if(profil)
+            {
+                user_id1 = profil[0].id;
+                rq_db.profil_user(login_ban)
+                .then(profil =>
+                {
+                    if(profil)
+                    {
+                        user_id2 = profil[0].id;
+                        return new Promise ((success, error) =>{
+                            var sql = "INSERT INTO fake (id_user_1, id_user_2) VALUE ?"
+                            var value = [user_id1, user_id2];
+                            con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
+                            success(1);
+                        });
+                    }
+                    else
+                    {
+                        success("Une erreur s'est produite, veuillez contactez l'admin")
+                    }
+                })
+            }
+            else
+            {
+                success("Une erreur s'est produite, veuillez contactez l'admin")
+            }
+        })
+    },
+
 
 
 

@@ -8,7 +8,6 @@ function menu1(){
     fetch("http://localhost:8080/user")
         .then(response => response.text())
         .then(response => {
-            console.log("response = ", response)
             if (response)
                 login=response;
             else

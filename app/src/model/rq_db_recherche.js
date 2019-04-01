@@ -165,41 +165,6 @@ module.exports={
         });
     },
 
-    ban: function(login, login_ban){
-        var user_id1="";
-        var user_id2="";
-        rq_db.profil_user(login)
-        .then(profil =>
-        {
-            if(profil)
-            {
-                user_id1 = profil[0].id;
-                rq_db.profil_user(login_ban)
-                .then(profil =>
-                {
-                    if(profil)
-                    {
-                        user_id2 = profil[0].id;
-                        return new Promise ((success, error) =>{
-                            var sql = "INSERT INTO ban (id_user_1, id_user_2) VALUE ?"
-                            var value = [user_id1, user_id2];
-                            con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
-                            success(1);
-                        });
-                    }
-                    else
-                    {
-                        success("Une erreur s'est produite, veuillez contactez l'admin")
-                    }
-                })
-            }
-            else
-            {
-                success("Une erreur s'est produite, veuillez contactez l'admin")
-            }
-        })
-    },
-
     dist:function(lat_1, long_1, lat_2, long_2){
         var geodist = require('geodist');
 
@@ -207,41 +172,6 @@ module.exports={
         var to = {lat: lat_2, lon: long_2};
         var dist = geodist(from, to, {unit: 'km'})
         return (dist);
-    },
-
-    fake: function(login, login_ban){
-        var user_id1="";
-        var user_id2="";
-        rq_db.profil_user(login)
-        .then(profil =>
-        {
-            if(profil)
-            {
-                user_id1 = profil[0].id;
-                rq_db.profil_user(login_ban)
-                .then(profil =>
-                {
-                    if(profil)
-                    {
-                        user_id2 = profil[0].id;
-                        return new Promise ((success, error) =>{
-                            var sql = "INSERT INTO fake (id_user_1, id_user_2) VALUE ?"
-                            var value = [user_id1, user_id2];
-                            con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
-                            success(1);
-                        });
-                    }
-                    else
-                    {
-                        success("Une erreur s'est produite, veuillez contactez l'admin")
-                    }
-                })
-            }
-            else
-            {
-                success("Une erreur s'est produite, veuillez contactez l'admin")
-            }
-        })
     },
 
     is_exist: function(tag)
