@@ -69,7 +69,6 @@ module.exports={
                 if (results.length)
                 {
                     nb_pic = nb_pic > 5 ? 5 : nb_pic;
-                    console.log("nb_pic = ", nb_pic);
                     if (nb_pic > 0)
                     {
                         var sql = "UPDATE `photo` SET photo_"+nb_pic+"=? WHERE id_user= ? ";
@@ -124,12 +123,8 @@ module.exports={
             fetch('http://www.mapquestapi.com/geocoding/v1/reverse?key=35fgkEqAPweOWLLCo1akTH1TFCbTOeIz&location='+lat+','+long)
             .then((res) => res.json())
             .then((async data =>{
-                /*console.log("debut de api geoloc");
-                console.log(data.results[0].locations[0].adminArea5);*/
                 var city = data.results[0].locations[0].adminArea5;
-                //console.log(data.results[0].locations[0].postalCode[4]);
                 var codepostal = data.results[0].locations[0].postalCode[4];
-                //console.log("fin de l'api geoloc");
                 loc = {0:{city:city, code_postal:codepostal}}
                 succes(loc);
             }))
@@ -142,10 +137,6 @@ module.exports={
             fetch('http://www.mapquestapi.com/geocoding/v1/address?key=35fgkEqAPweOWLLCo1akTH1TFCbTOeIz&location='+city)
             .then((res) => res.json())
             .then((async data =>{
-                /*console.log("------------------  data et data latlng = ")
-                console.log(data["results"][0]["locations"][0]["latLng"]);
-                console.log("lat = ", data.results[0].locations[0].latLng.lat);
-                console.log("lng = ", data.results[0].locations[0].latLng.lng);*/
                 var lat = data.results[0].locations[0].latLng.lat;
                 var lng = data.results[0].locations[0].latLng.lng;
                 loc = {0:{lat:lat, lng:lng}}
@@ -247,9 +238,7 @@ module.exports={
         fetch('http://ip-api.com/json')
         .then((res) => res.json())
         .then(async data =>{
-    console.log("latitude de user par ip = ");
     console.log(data.lat);
-    console.log("longitude de user par ip = ");
     console.log(data.lon);
         })
     },
