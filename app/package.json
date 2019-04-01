@@ -33,6 +33,8 @@
     "nodemailer": "^4.7.0",
     "nodemon": "^1.14.7",
     "on-headers": "^1.0.2",
+    "request": "^2.88.0",
+    "request-ip": "^2.1.3",
     "safe-buffer": "^5.1.2",
     "smtp-server": "^3.4.7",
     "socket.io": "^2.2.0",
