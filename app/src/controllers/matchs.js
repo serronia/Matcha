@@ -29,7 +29,7 @@ router.get('/matchs_with_me', function(req, res) {
                 rq_db3.matchs_with_me(user_id1).then(
                     match =>{
                         res.send(match);
-                        res.redirect('/matchs');
+                        //res.redirect('/matchs');
                     });
             }
             else

@@ -1,6 +1,7 @@
 var con = require('../db');
 var fetch = require('node-fetch');
 var request = require('request');
+var rq_db = require('./rq_db');
 
 module.exports={
     majority: function(user_date){
@@ -270,6 +271,36 @@ module.exports={
                 {
                     console.log("Pas de données");
                     success(0);
+                }
+            }
+            );
+        });
+    },
+
+    user_exist_modif: function(old_login, login, mail)
+    {
+        if (login == old_login)
+        {
+            var selectQuery = 'SELECT * FROM `utilisateur` WHERE (mail=? AND login!=?)';
+            var value = [mail, old_login];
+        }
+        else
+        {
+            var selectQuery = 'SELECT * FROM `utilisateur` WHERE (mail=? AND login!=?) OR (login =?)';
+            var value = [mail, old_login, login];
+        }
+        return new Promise ((success, error) =>{
+            con.query(selectQuery, value, (error, results, fields) => {
+                if (error) throw(error);
+                if ( results.length != 0)
+                {
+                    console.log("---------  exist  -------------");
+                    success(0);
+                }
+                else
+                {
+                    console.log("---------  Not exist   -------------");
+                    success(1);
                 }
             }
             );

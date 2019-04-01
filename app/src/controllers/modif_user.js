@@ -4,6 +4,7 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 var rq_db = require('../model/rq_db');
+var create = require('../model/user');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -35,45 +36,67 @@ router.get("/auto_compl", function(req, res) {
 
 router.post("/modif.html", function(req, res) {
     post = req.body;
-    rq_db.modif_user(req.session.login, post.login, post.mail, post.genre, post.nom, post.prenom, post.adr);
-    if (post.mdp_old && post.mdp)
-    {
-        rq_db.get_mdp(req.session.login).then(ret => {
-            mdp_db = ret[0]['mdp'];
-            if(bcrypt.compareSync(post.mdp_old, mdp_db)) 
-            {
-                if (post.mdp[0] == post.mdp[1])
+    create.user_exist_modif(req.session.login, post.login, post.mail)
+    .then (ret => {
+      console.log("ret = ", ret);
+      if (ret == 1)
+      {console.log("maiou = ", ret);
+        rq_db.modif_user(req.session.login, post.login, post.mail, post.genre, post.nom, post.prenom, post.adr, post.arr);
+        console.log("modif user fait");
+        if (post.mdp_old && post.mdp)
+        {
+          console.log("ret = ", ret);
+            rq_db.get_mdp(req.session.login).then(ret => {
+                mdp_db = ret[0]['mdp'];
+                if(bcrypt.compareSync(post.mdp_old, mdp_db)) 
                 {
-                    var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W || '_').*$", "g");   
-                    if (regex.test(post.mdp[0])==true)
+                    if (post.mdp[0] == post.mdp[1])
                     {
-                        let hash = bcrypt.hashSync(post.mdp[0], 10);
-                        rq_db.updade_mdp(req.session.login, hash);
-                        res.redirect('/deco');
+                        var regex =  new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W || '_').*$", "g");   
+                        if (regex.test(post.mdp[0])==true)
+                        {
+                            let hash = bcrypt.hashSync(post.mdp[0], 10);
+                            rq_db.updade_mdp(req.session.login, hash);
+                            req.session.wrong = "";
+                            req.session.mail="Modification enregistrés. Veuillez vous re-connecter";
+                            res.redirect('/deco');
+                        }
+                        else
+                        {
+                            req.session.wrong = "Mot de passe insufisant.";
+                            res.redirect('/modif_user');
+                        }
                     }
-                    else
+                    else 
                     {
-                        req.session.wrong = "Mot de passe insufisant.";
+                        req.session.wrong = "Mots de passe differents";
                         res.redirect('/modif_user');
                     }
-                }
+                } 
                 else 
                 {
-                    req.session.wrong = "Mots de passe differents";
+                    req.session.wrong = "Mauvais mot de passe";
                     res.redirect('/modif_user');
                 }
-            } 
-            else 
-            {
-                req.session.wrong = "Mauvais mot de passe";
-                res.redirect('/modif_user');
-            }
-        })
-    }
-    if (req.session.login != post.login)
-    {
-        res.redirect('/deco');
-    }
+            })
+        }
+        else
+        {
+          req.session.wrong = "";
+          req.session.mail="Modification enregistrés.";
+          res.redirect('/profil');
+        }
+        if (req.session.login != post.login)
+        {
+            res.redirect('/deco');
+        }
+      }
+      else
+      {
+        req.session.wrong = "l'adresse e-mail ou le login existe deja.";
+        res.redirect('/modif_user');
+      }
+    });
   });
 
 module.exports = router;

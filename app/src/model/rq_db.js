@@ -1,5 +1,6 @@
 var con = require('../db');
 var rq_db_re = require('./rq_db_recherche');
+var create = require('./user');
 
 module.exports={
     get_mdp: function(login){
@@ -90,21 +91,39 @@ module.exports={
                         if(res[i].photo_1)
                         {
                             var dist = rq_db_re.dist(lat, lng, res[i].latitude, res[i].longitude);
-                            if(dist >= filtrer.kmmin && dist <= filtrer.kmmax)
+                            if(filtrer)
                             {
-                                if (res[i].sexe == 0)
+                                if(dist >= filtrer.kmmin && dist <= filtrer.kmmax)
                                 {
-                                    var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span id=\"dist\">"+dist+" km</span><span>"+
-                                            res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
-                                            res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
-                                }
-                                else
-                                {
-                                    var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span id=\"dist\">"+dist+" km</span><span>"+
-                                            res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
-                                            res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                                    if (res[i].sexe == 0)
+                                    {
+                                        var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span id=\"dist\">"+dist+" km</span><span>"+
+                                                res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                                res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                                    }
+                                    else
+                                    {
+                                        var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span id=\"dist\">"+dist+" km</span><span>"+
+                                                res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                                res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                                    }
                                 }
                             }
+                            else{
+                                if (res[i].sexe == 0)
+                                    {
+                                        var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-mars\"></i><span id=\"dist\">"+dist+" km</span><span>"+
+                                                res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                                res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                                    }
+                                    else
+                                    {
+                                        var mini = mini + "<div class=\"user_mini\"><div class=\"bd\"><i class=\"fas fa-venus\"></i><span id=\"dist\">"+dist+" km</span><span>"+
+                                                res[i].city+"</span></div><a href=\"/profil/login/"+res[i].login+"\"><img src=\""+res[i].photo_1+"\"></a><div class=\"bd\"><span>"+
+                                                res[i].login+"</span><span>"+res[i].age+"</span></div></div>";
+                                    }
+                            }
+                            
                         }
                         i--;
                     }
@@ -167,7 +186,7 @@ module.exports={
                 } 
                 else
                 {
-                    success(0);
+                    success("0");
                 }
             }
             );
@@ -227,23 +246,27 @@ module.exports={
             })
     },
 
-    modif_user: function(oldlogin, login, mail, genre, nom, prenom, adr){
-        var selectQuery = 'UPDATE utilisateur SET login=?, mail=?, sexe=?, nom=?, prenom=?, city=? WHERE login=?';
-        var value = [login, mail, genre, nom, prenom, adr, oldlogin];
-        return new Promise ((success, error) =>{
-            con.query(selectQuery, value, (error, results, fields) => {
-                if (error) throw(error);
-                if (results.length)
-                {
-                    success(1);
-                } 
-                else
-                {
-                    success(0);
+    modif_user: function(oldlogin, login, mail, genre, nom, prenom, adr, arr){
+        create.city_to_coordinate(post.adr)
+        .then( latlong => {
+            var selectQuery = 'UPDATE utilisateur SET login=?, mail=?, sexe=?, nom=?, prenom=?, city=?, arr=?, latitude=?,longitude=?  WHERE login=?';
+            var value = [login, mail, genre, nom, prenom, adr, arr, latlong[0].lat, latlong[0].lng, oldlogin];
+            return new Promise ((success, error) =>{
+                con.query(selectQuery, value, (error, results, fields) => {
+                    if (error) throw(error);
+                    if (results.length)
+                    {
+                        success(1);
+                    } 
+                    else
+                    {
+                        success(0);
+                    }
                 }
-            }
-            );
+                );
+            });
         });
+        
     },
 
     updade_mdp: function(login, mdp){
