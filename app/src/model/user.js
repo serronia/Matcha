@@ -25,8 +25,7 @@ module.exports={
                 var sql = "INSERT INTO `utilisateur` (nom, prenom, mail, mdp, login, naissance, age, sexe) VALUE ?"
                 var value = [nom, prenom, mail, mdp, login, naissance, age, sexe];
                 con.query(sql, [[value]], (err, res) => {if(err) throw(err)});
-                this.add_pic_n_pref_table(login); 
-                console.log("create user done (normalement)");
+                this.add_pic_n_pref_table(login);
                 success (1);
             }
             else
@@ -169,13 +168,11 @@ module.exports={
         return new Promise ((success, error) =>{
             con.query(sql, value, (err, res) => {if (err) throw(err);
                 if (res[0])
-                { 
-                    console.log("exist!!!!!");
+                {
                     success(0);
                 }
                 else 
                 {
-                    console.log("pas exist!!!!!!!!!!");
                     success(1);
                 }
             });
@@ -199,7 +196,7 @@ module.exports={
             ["Paris", "75005", "48.843674", "2.353916", "5"],
             ["Paris", "75017", "48.888758", "2.310995", "17"],
             ["Lyon", "69002", "45.739428", "4.818012", "2"],
-            ["Lyon", "69005", "45.751808", "45.751808", "5"],
+            ["Lyon", "69005", "45.751808", "4.751808", "5"],
             ["Lyon", "69401", "45.760756", "4.852178", "0"],
             ["Marseille", "13008", "43.276430", "5.378462", "8"],
             ["Marseille", "13003", "43.309650", "5.384995", "3"],
@@ -238,8 +235,8 @@ module.exports={
         fetch('http://ip-api.com/json')
         .then((res) => res.json())
         .then(async data =>{
-    console.log(data.lat);
-    console.log(data.lon);
+            console.log(data.lat);
+            console.log(data.lon);
         })
     },
 
@@ -258,7 +255,6 @@ module.exports={
                 }
                 else
                 {
-                    console.log("Pas de données");
                     success(0);
                 }
             }
@@ -283,12 +279,10 @@ module.exports={
                 if (error) throw(error);
                 if ( results.length != 0)
                 {
-                    console.log("---------  exist  -------------");
                     success(0);
                 }
                 else
                 {
-                    console.log("---------  Not exist   -------------");
                     success(1);
                 }
             }

@@ -38,15 +38,14 @@ router.post("/modif.html", function(req, res) {
     post = req.body;
     create.user_exist_modif(req.session.login, post.login, post.mail)
     .then (ret => {
-      console.log("ret = ", ret);
       if (ret == 1)
-      {console.log("maiou = ", ret);
+      {
         rq_db.modif_user(req.session.login, post.login, post.mail, post.genre, post.nom, post.prenom, post.adr, post.arr);
-        console.log("modif user fait");
+        rq_db.modif_user_tag(req.session.login, post.login);
         if (post.mdp_old && post.mdp)
         {
-          console.log("ret = ", ret);
-            rq_db.get_mdp(req.session.login).then(ret => {
+            rq_db.get_mdp(req.session.login)
+            .then(ret => {
                 mdp_db = ret[0]['mdp'];
                 if(bcrypt.compareSync(post.mdp_old, mdp_db)) 
                 {
@@ -82,13 +81,16 @@ router.post("/modif.html", function(req, res) {
         }
         else
         {
-          req.session.wrong = "";
-          req.session.mail="Modification enregistrés.";
-          res.redirect('/profil');
-        }
-        if (req.session.login != post.login)
-        {
-            res.redirect('/deco');
+          if (req.session.login != post.login)
+          {
+              res.redirect('/deco');
+          }
+          else
+          {
+            req.session.wrong = "";
+            req.session.mail="Modification enregistrés.";
+            res.redirect('/profil');
+          }
         }
       }
       else

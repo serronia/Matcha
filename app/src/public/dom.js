@@ -121,6 +121,7 @@ function profil_user(){
     var genre = document.getElementById("genre");
     var age = document.getElementById("age");
     var ville = document.getElementById("ville");
+    var arr = document.getElementById("arr");
     fetch("http://localhost:8080/user_profil")
         .then(profil => profil.json())
         .then(profil => {
@@ -130,6 +131,8 @@ function profil_user(){
                 genre.innerHTML="Genre : Femme"
             age.innerHTML="Age : "+profil[0].age;
             ville.innerHTML="Ville : "+profil[0].city;
+            ville.innerHTML="Ville : "+profil[0].city;
+            arr.innerHTML="Arrondissement : "+profil[0].arr;
         });
 
     fetch("http://localhost:8080/user_pref")
@@ -215,6 +218,7 @@ function auto_compl(){
     var nom = document.getElementById("nom");
     var prenom = document.getElementById("prenom");
     var ville = document.getElementById("ville");
+    var arr = document.getElementById("arr");
     
 
     fetch("http://localhost:8080/modif_user/auto_compl")
@@ -227,6 +231,7 @@ function auto_compl(){
             nom.value = profil[0].nom;
             prenom.value = profil[0].prenom;
             ville.value = profil[0].city;
+            arr.value = profil[0].arr;
             if(profil[0].sexe == 1)
                 document.getElementById("femme").checked = true;
             else
@@ -242,6 +247,7 @@ function profil_other(){
     var ville = document.getElementById("ville");
     var login = document.getElementById("Login_user");
     var status = document.getElementById("Status");
+    var arr = document.getElementById("arr");
     fetch("http://localhost:8080/profil/get_profil")
         .then(profil => profil.json())
         .then(profil => {
@@ -251,6 +257,8 @@ function profil_other(){
                 genre.innerHTML="Genre : Femme"
             age.innerHTML="Age : "+profil[0].age;
             ville.innerHTML="Ville : "+profil[0].city;
+            if(profil[0].arr)
+                arr.innerHTML="Arrondissement : "+profil[0].arr;
             login.innerHTML="Login : "+profil[0].login+"  Prenom : "+profil[0].prenom+"  Nom : "+profil[0].nom;
             if(profil[0].last_connection != null)
                 status.innerHTML = "Dernière connection : "+profil[0].last_connection.split('T')[0];
