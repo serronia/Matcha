@@ -8,8 +8,7 @@ const request = require('request');
 
 router.get('/fake_user', function(req, res)
 {
-var j = 2;
-console.log("start");
+var j = 600;
 fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
 .then((res) => res.json())
 .then(async data => {
@@ -33,14 +32,7 @@ fetch('https://randomuser.me/api/?results='+j+'&nat=fr')
                         create.fake_localisation(user["login"]["username"], user["login"]["sha256"], loca[0], loca[2], loca[3], loca[4])
                         create.add_picture(user["login"]["username"], user["picture"]["large"], 1);
                         create.add_picture(user["login"]["username"], user["picture"]["medium"], 2);
-                        create.add_picture(user["login"]["username"], user["picture"]["thumbnail"], 3);        
-                    /*   create.nb_pic(user["login"]["username"]).then(
-                                i => {
-                                    console.log("suite a la fonction, ivaut bien = ");
-                                    console.log(i);
-                                });
-                                
-                    */ 
+                        create.add_picture(user["login"]["username"], user["picture"]["thumbnail"], 3);
                     }
                     console.log("user a ete creer");
                     i++;

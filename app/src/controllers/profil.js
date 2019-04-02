@@ -22,10 +22,12 @@ router.get('/', function(req, res) {
 router.post('/profil_modif.html', function(request, response)
 {
     post = request.body;
-    rq_db.update_pref(post.atti, post.bio, post.tag, request.session.login);
-    request.session.mail = "Modifications enregistrées";
-    response.redirect('/profil');
-
+    rq_db.update_pref(post.atti, post.bio, post.tag, request.session.login)
+    .then(res=>
+      {
+        request.session.mail = "Modifications enregistrées";
+        response.redirect('/profil');
+      })
 });
 
 router.get('/login/:p1', function(request, response){

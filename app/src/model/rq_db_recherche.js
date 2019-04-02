@@ -15,7 +15,12 @@ module.exports={
             if(filtrer.agemax)
                 filtres=filtres+" AND age < "+ filtrer.agemax;
             if(filtrer.tag)
-                filtres=filtres+" AND tag  LIKE '%"+ filtrer.tag+"%'";
+            {
+                var regex1 = /^(#[\w]+)$/;
+                var miou = regex1.test(filtrer.tag.trim())
+                if(miou)
+                    filtres=filtres+" AND tag  LIKE '%"+ filtrer.tag+"%'";
+            }
             if(filtrer.pop)
                 filtres=filtres+" AND popularity >= "+ filtrer.pop;
             if((filtrer.sexe==0 || filtrer.sexe ==1) && filtrer.sexe != 3)
@@ -35,7 +40,6 @@ module.exports={
                     base = base + " ORDER BY popularity ASC";
                     break;
                 case 'tri_tag':
-                    //base = base + " ORDER BY tag DESC";
                     base = "SELECT utilisateur.id, login, login_user, city, age,sexe, photo_1,latitude, longitude, tag,popularity, COUNT(*) as nb_tag \
                             FROM ((((tags_user INNER JOIN utilisateur ON utilisateur.login=tags_user.login_user)INNER JOIN photo ON utilisateur.id=photo.id_user) \
                             INNER JOIN preference ON utilisateur.id=preference.id_user) INNER JOIN details ON utilisateur.id=details.id_user) \
@@ -219,9 +223,9 @@ module.exports={
     is_exist_tag_user: function(id_tag, login)
     {
         return new Promise ((success, error) =>{
-            var sql = "select id FROM tags_user WHERE id_tag =? AND login =?"
-            var value = [tag];
-            con.query(sql, [value], (err, res) => {
+            var sql = "select id FROM tags_user WHERE id_tag =? AND login_user =?"
+            var value = [id_tag, login];
+            con.query(sql, value, (err, res) => {
                 if(err) throw(err);
                 if(res.length)
                     success(1);
@@ -270,25 +274,35 @@ module.exports={
         var i = 0;
         while (i < len)
         {
-            try{
-                await this.is_exist(tab[i].trim()).then(
-                    res =>{
-                        if (res){
-                            this.add_user_tag(login, tab[i].trim());
-                        }  
-                        else{
-                            this.add_tag2(tab[i].trim()).catch((err) => console.log('caught it'));
-                            this.add_user_tag(login, tab[i].trim());
-                        }
-                })
-            }
-            catch(e)
+            var regex1 = /^(#[\w]+)$/;
+            var miou = regex1.test(tab[i].trim())
+            if(!miou)
             {
-                console.log("erreur");
+                return(0);
             }
-           
+            else
+            {
+               try{
+                    await this.is_exist(tab[i].trim()).then(
+                        res =>{
+                            if (res){
+                                this.add_user_tag(login, tab[i].trim());
+                            }  
+                            else{
+                                this.add_tag2(tab[i].trim()).catch((err) => console.log('caught it'));
+                                this.add_user_tag(login, tab[i].trim());
+                            }
+                    })
+                }
+                catch(e)
+                {
+                    console.log("erreur");
+                }
+                    ret = 1;
+            }
             i++;
         }
+        return(ret);
     }
 
 

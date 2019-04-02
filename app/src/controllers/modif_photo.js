@@ -31,19 +31,33 @@ router.post('/modif.html',function(req, res) {
         }
         else
         {
-            var oldpath = files.filetoupload.path;
-            var photo = fs.readFileSync(oldpath);
-            var img = "data:image/png;base64," +  Buffer.from(photo).toString('base64');
-            rq_db3.nb_pic(req.session.login).then(
-                nb_photo =>{
-                    rq_db3.add_picture(req.session.login, img, nb_photo).then(
-                        ret => {
-                            req.session.wrong = "";
-                            res.redirect('/modif_photo');
-                        }
-                    )
-                }
-            )
+            if(files.filetoupload.type != "image/png" && files.filetoupload.type != "image/jpeg")
+            {
+                req.session.wrong = "Veuillez choisir une image jpg ou png";
+                res.redirect('/modif_photo');
+            }
+            else if(!files.filetoupload._writeStream._writableState.needDrain)
+            {
+                req.session.wrong = "Veuillez upload une image";
+                res.redirect('/modif_photo');
+            }
+            else
+            {
+                var oldpath = files.filetoupload.path;
+                var photo = fs.readFileSync(oldpath);
+                var img = "data:image/png;base64," +  Buffer.from(photo).toString('base64');
+                rq_db3.nb_pic(req.session.login).then(
+                    nb_photo =>{
+                        rq_db3.add_picture(req.session.login, img, nb_photo).then(
+                            ret => {
+                                req.session.wrong = "";
+                                res.redirect('/modif_photo');
+                            }
+                        )
+                    }
+                )
+            }
+            
         }
     })
 });

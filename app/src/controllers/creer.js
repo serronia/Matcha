@@ -33,16 +33,16 @@ router.post('/create.html', function(request, response)
         .then (ret => {
           if (ret == 1)
           {
-            create.create_user(post.nom, post.prenom, hash, post.naissance, post.login, post.mail, post.genre)
+            if(!post.genre)
+              var genre = 0;
+            else
+              genre = post.genre;
+            create.create_user(post.nom, post.prenom, hash, post.naissance, post.login, post.mail, genre)
             .then(res => {
               if (res == 1)
               {
                 if (post.latitude != "")
                 {
-                  console.log("latitude = ");
-                  console.log(post.latitude);
-                  console.log("longitude = ");
-                  console.log(post.longitude);
                   create.coordonate_to_city(post.latitude, post.longitude)
                     .then( city => {
                       create.add_city(city[0].city, city[0].code_postal,post.latitude,post.longitude, post.login).then(res => {

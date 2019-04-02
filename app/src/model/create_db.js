@@ -2,32 +2,12 @@ var express = require('express');
 var router = express.Router();
 var create = require('./user');
 
-/*
-var mysql = require('mysql');
-var database_var = process.env.DB_NAME;
-var con = mysql.createConnection(
-    {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME
-    });
-*/
 var con = require('../db');
 
 router.get('/db', function(req, res)
 {
     console.log("first" + con + res);
     console.log("Connected!");
-    //si la db plante car une table est buger, utilise ca pour la table qui bug
-
-    /*  var sql = "DROP TABLE `utilisateur`";
-    con.query(sql, function (err, result) 
-    {
-    if (err) throw err;
-      console.log("utilisateur deleted");
-    });
-    */  
 
     var sql = "CREATE TABLE IF NOT EXISTS utilisateur (id INT(255) not null auto_increment primary key,\
               nom VARCHAR(255) not null, prenom VARCHAR(255) not null, mail VARCHAR(255) not null UNIQUE,\

@@ -278,6 +278,7 @@ module.exports={
             );
         });
     },
+
     add_date_deco: function(login, deco)
     {
         return new Promise ((success, error) =>{

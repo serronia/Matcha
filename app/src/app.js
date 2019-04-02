@@ -6,7 +6,6 @@ var path = require("path");
 var rq_db = require('./model/rq_db');
 
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use(cookieSession({login: 'none' }));
 var router = express.Router();
 
 router.use(cookieSession({
